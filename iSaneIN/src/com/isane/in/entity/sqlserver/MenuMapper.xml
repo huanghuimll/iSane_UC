@@ -164,16 +164,6 @@
 			and actionType = #{actionType}
 		</if>
 	</select>
-
-	<select id="menuByUser" parameterType="Menu" resultType="Menu">
-		SELECT a.* FROM sys_menu a INNER JOIN sys_res_permission rp ON a.plantCode = rp.plantCode AND a.menuCode = rp.resource 
-		WHERE rp.plantCode=#{plantCode} AND rp.roleCode in (SELECT roleCode FROM sys_roleuser WHERE plantCode=#{plantCode} 
-		AND userCode = #{userCode}) AND rp.resourceType='menu'
-		<if test="actionType != 0">
-				and a.actionType = #{actionType}
-		</if>
-		GROUP BY id
-	</select>
 	
 	<select id="countBiz" parameterType="Menu" resultType="int">
 		select count(id) from sys_menu
@@ -186,5 +176,31 @@
 			</if>
 		</where>
 	</select>
+	
+	<!--menun and role -->
+	<select id="queryMenuByroleCode" parameterType="Menu" resultType="Menu">
+		select DISTINCT * from SYS_MENU
+		where id in
+		(
+			select childCode from SYS_ROLEPERMISSION where roleCode = #{roleCode} and typeid = #{permissionTypeId}
+		)
+		order by displayOrder
+	</select>
+
+	<!--menu and user --> 
+	<select id="menuByUser" parameterType="Menu" resultType="Menu">
+		select DISTINCT * from SYS_MENU
+		where menuCode in
+		(
+			select childCode from SYS_ROLEPERMISSION where roleCode in
+			(
+				select roleCode from SYS_ROLEUSER where userCode = #{userCode}
+			) and typeId = #{menuTypeId}
+		)
+		<if test="actionType !=0 ">
+			and actionType = #{actionType}
+		</if>
+		order by displayOrder
+	</select>	
 
 </mapper>

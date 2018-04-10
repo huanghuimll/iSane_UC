@@ -4,8 +4,8 @@ Ext.define('isane.store.mainview.MenuTree',{
 	autoLoad: false,
     proxy: {
         type: 'ajax',
-        //url: 'api/Menu/listByUser',
-        url: 'api/Menu/4u3d/atree',
+        url: 'api/Menu/menuByUser',
+        //url: 'api/Menu/4u3d/atree',
         //url: 'ext/test/menu.json',
         reader:'json'
     },

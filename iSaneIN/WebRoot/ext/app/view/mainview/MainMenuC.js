@@ -14,7 +14,7 @@ Ext.define('isane.view.mainview.MainMenuC',{
 	        var own = panelHeader.ownerCt;
 			var store = own.getStore();
 	        new Ext.LoadMask(own, {msg:"Loading...", store: store}).show();
-			Ext.apply(store.proxy.extraParams, {actionType: 3});
+			Ext.apply(store.proxy.extraParams, {actionType: 3, menuTypeId: 1});
 			store.load();            
 	    }
    	}
@@ -23,7 +23,7 @@ Ext.define('isane.view.mainview.MainMenuC',{
 		afterrender: function(own){
 			//console.log('CCCC');
 			var store = own.getStore();
-			Ext.apply(store.proxy.extraParams, {actionType: 3});
+			Ext.apply(store.proxy.extraParams, {actionType: 3, menuTypeId: 1});
 			store.load({
 			    scope: this,
 			    callback: function(records, operation, success) {

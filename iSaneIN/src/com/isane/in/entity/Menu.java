@@ -15,6 +15,8 @@ public class Menu implements Entity {
 	private String iconUrl; //
 	private int childrenCount;// 菜单异步加载判断是否有子集
 	private boolean leaf;
+	//用来查询没有实际意义
+	private int menuTypeId;
 
 	private String roleCode;
 	private String resource;
@@ -58,6 +60,14 @@ public class Menu implements Entity {
 
 	public void setLeaf(boolean leaf) {
 		this.leaf = leaf;
+	}
+
+	public int getMenuTypeId() {
+		return menuTypeId;
+	}
+
+	public void setMenuTypeId(int menuTypeId) {
+		this.menuTypeId = menuTypeId;
 	}
 
 	public void setId(long id) {

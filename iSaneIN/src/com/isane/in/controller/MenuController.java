@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.isane.ragdoll.base.entity.User;
 import com.isane.ragdoll.persistent.type.DaoConst;
 import com.isane.ragdoll.service.RagdollService;
 import com.isane.ragdoll.web.RagdollControllerImpl;
 import com.isane.in.entity.Menu;
 import com.isane.in.entity.MenuNode;
 import com.isane.in.entity.MenuNodeC;
+import com.isane.in.entity.User;
 import com.isane.in.service.MenuService;
 import com.isane.in.service.impl.MenuServiceImpl;
 
@@ -78,7 +78,7 @@ public class MenuController extends RagdollControllerImpl<Menu> {
 		return endList;
 	}
 	
-	@RequestMapping(value = "listByUser", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "menuByUser", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
 	public List<MenuNode> listByUser(Menu menu, HttpServletRequest request) {
 		MenuService menuService = new MenuServiceImpl();
@@ -87,7 +87,6 @@ public class MenuController extends RagdollControllerImpl<Menu> {
 		if (user == null) {
 			throw new RuntimeException("not user in session.");
 		} else {
-			menu.setPlantCode(user.getPlantCode());
 			menu.setUserCode(user.getUserCode());
 		}
 		if (menu.getParentCode() == null || menu.getParentCode().equals("")) {

@@ -1,20 +1,20 @@
 package com.isane.in.entity;
 
-import com.isane.ragdoll.persistent.annotation.PinYin;
-import com.isane.ragdoll.persistent.annotation.RogdallEntity;
-import org.springframework.format.annotation.DateTimeFormat;
 import com.isane.ragdoll.persistent.entity.Entity;
 public class RolePermission implements Entity{
 private static final long serialVersionUID = 1L;
 	private long id; //$item.comment
 	private int roleId; //$item.comment
+	private String roleCode;
 	private int childId; //$item.comment
+	private String childCode;
 	private int typeId; //$item.comment
 	private int isAdd; //$item.comment
 	private int isDelete; //$item.comment
 	private int isModify; //$item.comment
 	private int isQuery; //$item.comment
 	private int isSpecial; //$item.comment
+	
 	public void setId (long id) {
 		this.id = id;
 	}
@@ -27,11 +27,23 @@ private static final long serialVersionUID = 1L;
 	public int getRoleId () {
 		return roleId;
 	}
+	public String getRoleCode() {
+		return roleCode;
+	}
+	public void setRoleCode(String roleCode) {
+		this.roleCode = roleCode;
+	}
 	public void setChildId (int childId) {
 		this.childId = childId;
 	}
 	public int getChildId () {
 		return childId;
+	}
+	public String getChildCode() {
+		return childCode;
+	}
+	public void setChildCode(String childCode) {
+		this.childCode = childCode;
 	}
 	public void setTypeId (int typeId) {
 		this.typeId = typeId;

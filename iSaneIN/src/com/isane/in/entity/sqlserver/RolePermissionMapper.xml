@@ -4,13 +4,13 @@
 
 	<sql id="criteriaSql">
 		<where>
-			<if test="roleId != 0">
-				and roleId = #{roleId}
+			<if test="roleCode != null">
+				and roleCode = #{roleCode}
 			</if>
-			<if test="childId != 0">
-				and childId = #{childId}
+			<if test="childCode != null">
+				and childCode = #{childCode}
 			</if>
-			<if test="typeId != 0">
+			<if test="typeId != null">
 				and typeId = #{typeId}
 			</if>
 			<if test="isAdd != 0">
@@ -44,7 +44,7 @@
 	<select id="find" parameterType="RolePermission" resultType="RolePermission">
 		select * from SYS_ROLEPERMISSION
 		<where>
-			<if test="id != 0">
+			<if test="id != null">
 				and id = #{id}
 			</if>
 		</where>
@@ -53,20 +53,20 @@
 	<insert id="insert" parameterType="RolePermission"
 		useGeneratedKeys="true" keyProperty="id">
 		insert into SYS_ROLEPERMISSION (
-		roleId , childId , typeId , isAdd , isDelete , isModify , isQuery ,
-		isSpecial )values ( #{roleId} , #{childId} , #{typeId} , #{isAdd} ,
+		roleCode , childCode , typeId , isAdd , isDelete , isModify , isQuery ,
+		isSpecial )values ( #{roleCode} , #{childCode} , #{typeId} , #{isAdd} ,
 		#{isDelete} , #{isModify} , #{isQuery} , #{isSpecial} )
 	</insert>
 
 	<update id="update" parameterType="RolePermission">
 		update SYS_ROLEPERMISSION
 		<set>
-			<if test="roleId != 0">
-				roleId = #{roleId}
+			<if test="roleCode != null">
+				roleCode = #{roleCode}
 				,
 			</if>
-			<if test="childId != 0">
-				childId = #{childId}
+			<if test="childCode != null">
+				childCode = #{childCode}
 				,
 			</if>
 			<if test="typeId != 0">
@@ -99,7 +99,7 @@
 	<delete id="delete" parameterType="RolePermission">
 		delete from SYS_ROLEPERMISSION
 		<where>
-			<if test="id != 0">
+			<if test="id != null">
 				and id = #{id}
 			</if>
 		</where>

@@ -4,11 +4,11 @@
 
 	<sql id="criteriaSql">
 		<where>
-			<if test="userId != 0">
-				and userId = #{userId}
+			<if test="userCode != null">
+				and userCode = #{userCode}
 			</if>
-			<if test="roleId != 0">
-				and roleId = #{roleId}
+			<if test="roleCode != null">
+				and roleCode = #{roleCode}
 			</if>
 		</where>
 	</sql>
@@ -26,7 +26,7 @@
 	<select id="find" parameterType="RoleUser" resultType="RoleUser">
 		select * from SYS_ROLEUSER
 		<where>
-			<if test="id != 0">
+			<if test="id != null">
 				and id = #{id}
 			</if>
 		</where>
@@ -35,18 +35,18 @@
 	<insert id="insert" parameterType="RoleUser" useGeneratedKeys="true"
 		keyProperty="id">
 		insert into SYS_ROLEUSER (
-		userId , roleId )values ( #{userId} , #{roleId} )
+		userCode , roleCode )values ( #{userCode} , #{roleCode} )
 	</insert>
 
 	<update id="update" parameterType="RoleUser">
 		update SYS_ROLEUSER
 		<set>
-			<if test="userId != 0">
-				userId = #{userId}
+			<if test="userCode != null">
+				userCode = #{userCode}
 				,
 			</if>
-			<if test="roleId != 0">
-				roleId = #{roleId}
+			<if test="roleCode != null">
+				roleCode = #{roleCode}
 			</if>
 		</set>
 		where id = #{id}
@@ -55,7 +55,7 @@
 	<delete id="delete" parameterType="RoleUser">
 		delete from SYS_ROLEUSER
 		<where>
-			<if test="id != 0">
+			<if test="id != null">
 				and id = #{id}
 			</if>
 		</where>
