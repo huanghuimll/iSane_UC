@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.DimOrganizationMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="organKey != null and organKey != ''">
+				and organKey = #{organKey}
+			</if>
+			<if test="organName != null and organName != ''">
+				and organName like '%${ organName }%'
+			</if>
+			<if test="organDesc != null and organDesc != ''">
+				and organDesc like '%${ organDesc }%'
+			</if>
+			<if test="organParentId != 0">
+				and organParentId = #{organParentId}
+			</if>
+		</where>
+	</sql>
+	<select id="select" parameterType="DimOrganization" resultType="DimOrganization">
+		select * from Dim_Organization
+		<include refid="criteriaSql" />
+		order by id
+	</select>
+
+	<select id="count" parameterType="DimOrganization" resultType="int">
+		select count(id) from Dim_Organization
+		<include refid="criteriaSql" />
+	</select>
+
+	<select id="find" parameterType="DimOrganization" resultType="DimOrganization">
+		select * from Dim_Organization
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="DimOrganization"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into Dim_Organization (
+		organKey , organName , organDesc , organParentId )values ( #{organKey}
+		, #{organName} , #{organDesc} , #{organParentId} )
+	</insert>
+
+	<update id="update" parameterType="DimOrganization">
+		update Dim_Organization
+		<set>
+			<if test="organKey != null and organKey != ''">
+				organKey = #{organKey},
+			</if>
+			<if test="organName != null and organName != ''">
+				organName = #{organName},
+			</if>
+			<if test="organDesc != null and organDesc != ''">
+				organDesc = #{organDesc},
+			</if>
+			<if test="organParentId != 0">
+				organParentId = #{organParentId}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="DimOrganization">
+		delete from Dim_Organization
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from Dim_Organization
+	</delete>
+
+
+</mapper>

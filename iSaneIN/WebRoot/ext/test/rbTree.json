@@ -1,0 +1,4 @@
+[
+	{"children": [], "organCode":"HNST", "dispOrder":1, "id":1, "leaf":true, "parentCode":"#", "organName":"汕头电厂值长录入", "organDesc":"汕头电厂" },
+	{"children": [], "organCode":"HNHM", "dispOrder":1, "id":5, "leaf":true, "parentCode":"#", "organName":"海门电厂值长录入", "organDesc":"海门电厂" }		
+]

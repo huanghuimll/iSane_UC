@@ -1,0 +1,6 @@
+[
+	{"menuAction":"isane.view.aq_kjgl_kjxm.kjxmPanel", "menuActionType":1,"children":[],"iconUrl":"img/menu_icon/1.png","dispOrder":1,"id":1,"leaf":true,"parentCode":1,"menuTitle":"科技项目"},
+	{"menuAction":"isane.view.aq_kjgl_zltj.zltjPanel", "menuActionType":1,"children":[],"iconUrl":"img/menu_icon/2.png","dispOrder":2,"id":2,"leaf":true,"parentCode":1,"menuTitle":"专利统计"},
+	{"menuAction":"isane.view.aq_kjgl_lwtj.lwtjPanel", "menuActionType":1,"children":[],"iconUrl":"img/menu_icon/3.png","dispOrder":3,"id":3,"leaf":true,"parentCode":1,"menuTitle":"论文统计"},
+	{"menuAction":"isane.view.aq_kjgl_hlhjy.hlhjyPanel", "menuActionType":1,"children":[],"iconUrl":"img/menu_icon/3.png","dispOrder":3,"id":4,"leaf":true,"parentCode":1,"menuTitle":"合理化建议"}	
+]

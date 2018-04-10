@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.IndexDataMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="indexCode != null and indexCode != ''">
+				and indexCode like '%${ indexCode }%'
+			</if>
+			<if test="dateType != null and dateType != ''">
+				and dateType like '%${ dateType }%'
+			</if>
+			<if test="computeVersion != 0">
+				and computeVersion = #{computeVersion}
+			</if>
+			<if test="storeDate != null">
+				and storeDate = #{storeDate}
+			</if>
+			<if test="computeDate != null">
+				and computeDate = #{computeDate}
+			</if>
+			<if test="computeStatus != 0">
+				and computeStatus = #{computeStatus}
+			</if>
+			<if test="originalDataVersions != null and originalDataVersions != ''">
+				and originalDataVersions like '%${ originalDataVersions
+				}%'
+			</if>
+			<if test="monthOfYear != 0">
+				and monthOfYear = #{monthOfYear}
+			</if>
+		</where>
+	</sql>
+	<select id="select" parameterType="IndexData" resultType="IndexData">
+		select * from SYS_INDEX_DATA
+		<include refid="criteriaSql" />
+		order by id
+	</select>
+
+	<select id="count" parameterType="IndexData" resultType="int">
+		select count(id) from SYS_INDEX_DATA
+		<include refid="criteriaSql" />
+	</select>
+
+	<select id="find" parameterType="IndexData" resultType="IndexData">
+		select * from SYS_INDEX_DATA
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="IndexData" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into SYS_INDEX_DATA (
+		indexCode , dateType , computeVersion , storeDate , computeDate , indexValue ,
+		computeStatus , originalDataVersions , monthOfYear )values (
+		#{indexCode} , #{dateType} , #{computeVersion} , #{storeDate} ,
+		#{computeDate} , #{indexValue} , #{computeStatus} ,
+		#{originalDataVersions} , #{monthOfYear} )
+	</insert>
+
+	<update id="update" parameterType="IndexData">
+		update SYS_INDEX_DATA
+		<set>
+			<if test="indexCode != null and indexCode != ''">
+				indexCode = #{indexCode}
+				,
+			</if>
+			<if test="dateType != null and dateType != ''">
+				dateType = #{dateType}
+				,
+			</if>
+			<if test="computeVersion != 0">
+				computeVersion = #{computeVersion}
+				,
+			</if>
+			<if test="storeDate != null">
+				storeDate = #{storeDate}
+				,
+			</if>
+			<if test="computeDate != null">
+				computeDate = #{computeDate}
+				,
+			</if>
+			<if test="computeStatus != 0">
+				computeStatus = #{computeStatus}
+				,
+			</if>
+			<if test="originalDataVersions != null and originalDataVersions != ''">
+				originalDataVersions = #{originalDataVersions}
+				,
+			</if>
+			<if test="monthOfYear != 0">
+				monthOfYear = #{monthOfYear}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="IndexData">
+		delete from SYS_INDEX_DATA
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from SYS_INDEX_DATA
+	</delete>
+
+
+</mapper>

@@ -1,0 +1,24 @@
+[
+	{
+		"action":"#","title":"人员管理","id":1,"leaf":false,"children":
+		[
+			{"action":"isane.view.user.userPanel","title":"用户信息","id":2,"leaf":true,"children":[]},
+			{"action":"isane.view.user.userPanel","title":"部门信息","id":3,"leaf":true,"children":[]},
+			{"action":"isane.view.user.userPanel","title":"职工信息","id":4,"leaf":true,"children":[]}
+		]
+	},
+	{
+		"action":"isane.view.user.userPanel","title":"费用管理","id":5,"leaf":false,"children":
+		[
+			{"action":"isane.view.user.userPanel","title":"费用录入","id":6,"leaf":true,"children":[]},		
+			{"action":"isane.view.user.userPanel","title":"费用特批","id":7,"leaf":true,"children":[]}	
+		]
+	},
+	{
+		"action":"isane.view.user.userPanel","title":"信息统计","id":8,"leaf":false,"children":
+		[
+			{"action":"isane.view.user.userPanel","title":"人员明细1111111","id":9,"leaf":true,"children":[]},		
+			{"action":"isane.view.user.userPanel","title":"费用明细2222222","id":10,"leaf":true,"children":[]}	
+		]
+	}	
+]	

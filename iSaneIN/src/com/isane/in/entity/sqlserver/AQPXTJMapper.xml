@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.AQPXTJMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="dataValue != 0">
+				and dataValue = #{dataValue}
+			</if>
+			<if test="psDesc != null and psDesc != ''">
+				and psDesc like '%${ psDesc }%'
+			</if>
+			<if test="disOrder != 0">
+				and disOrder = #{disOrder}
+			</if>
+			<if test="dataTypeValue != null and dataTypeValue != ''">
+				and dataTypeValue like '%${ dataTypeValue }%'
+			</if>
+			<if test="dataTime != null">
+				and year(dataTime) = YEAR(#{dataTime}) AND MONTH(dataTime) = MONTH(#{dataTime}) 
+			</if>
+			<if test="inputTime != null">
+				and inputTime = #{inputTime}
+			</if>
+			<if test="plantCode != null and plantCode != ''">
+				and plantCode like '%${ plantCode }%'
+			</if>
+		</where>
+	</sql>
+	<select id="select" parameterType="AQPXTJ" resultType="AQPXTJ">
+		select * from UC_AQ_YXGL_PXTJ
+		<include refid="criteriaSql" />
+		order by id
+	</select>
+
+	<select id="count" parameterType="AQPXTJ" resultType="int">
+		select count(id) from UC_AQ_YXGL_PXTJ
+		<include refid="criteriaSql" />
+	</select>
+
+	<select id="find" parameterType="AQPXTJ" resultType="AQPXTJ">
+		select * from UC_AQ_YXGL_PXTJ
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="AQPXTJ" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into UC_AQ_YXGL_PXTJ (
+		dataValue , psDesc , disOrder , dataTypeValue , dataTime , inputTime ,
+		plantCode )values ( #{dataValue} , #{psDesc} , #{disOrder} ,
+		#{dataTypeValue} , #{dataTime} , #{inputTime} , #{plantCode} )
+	</insert>
+
+	<update id="update" parameterType="AQPXTJ">
+		update UC_AQ_YXGL_PXTJ
+		<set>
+			<if test="dataValue != 0">
+				dataValue = #{dataValue}
+				,
+			</if>
+			<if test="psDesc != null and psDesc != ''">
+				psDesc = #{psDesc}
+				,
+			</if>
+			<if test="disOrder != 0">
+				disOrder = #{disOrder}
+				,
+			</if>
+			<if test="dataTypeValue != null and dataTypeValue != ''">
+				dataTypeValue = #{dataTypeValue}
+				,
+			</if>
+			<if test="dataTime != null">
+				dataTime = #{dataTime}
+				,
+			</if>
+			<if test="inputTime != null">
+				inputTime = #{inputTime}
+				,
+			</if>
+			<if test="plantCode != null and plantCode != ''">
+				plantCode = #{plantCode}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="AQPXTJ">
+		delete from UC_AQ_YXGL_PXTJ
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from UC_AQ_YXGL_PXTJ
+	</delete>
+
+
+</mapper>

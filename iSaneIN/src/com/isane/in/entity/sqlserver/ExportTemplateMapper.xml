@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.ExportTemplateMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="exportName != null and exportName != ''">
+				and exportName like '%${ exportName }%'
+			</if>
+			<if test="exportFile != null and exportFile != ''">
+				and exportFile like '%${ exportFile }%'
+			</if>
+			<if test="exportType != null and exportType != ''">
+				and exportType like '%${ exportType }%'
+			</if>
+			<if test="uploadDate != null">
+				and uploadDate = #{uploadDate}
+			</if>
+			<if test="uploadUser != null and uploadUser != ''">
+				and uploadUser like '%${ uploadUser }%'
+			</if>
+		</where>
+	</sql>
+	
+	<select id="select" parameterType="ExportTemplate" resultType="ExportTemplate">
+		select * from IN_EXPORT_TEMPLATE
+		<include refid="criteriaSql" />
+		order by id
+	</select>
+
+	<select id="count" parameterType="ExportTemplate" resultType="int">
+		select count(id) from IN_EXPORT_TEMPLATE
+		<include refid="criteriaSql" />
+	</select>
+
+	<select id="find" parameterType="ExportTemplate" resultType="ExportTemplate">
+		select * from IN_EXPORT_TEMPLATE
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findNewest" parameterType="ExportTemplate" resultType="ExportTemplate">
+		select top 1 * from IN_EXPORT_TEMPLATE
+		where exportName=#{exportName}
+		order by id desc;
+	</select>	
+
+	<insert id="insert" parameterType="ExportTemplate" useGeneratedKeys="true" keyProperty="id">
+		insert into IN_EXPORT_TEMPLATE ( exportName,  exportFile, exportType, uploadDate, uploadUser, decimalPlace )
+		values ( #{exportName}, #{exportFile}, #{exportType}, #{uploadDate}, #{uploadUser}, #{decimalPlace} )
+	</insert>
+
+	<update id="update" parameterType="ExportTemplate">
+		update IN_EXPORT_TEMPLATE
+		<set>
+			<if test="exportName != null and exportName != ''">
+				exportName = #{exportName},
+			</if>
+			<if test="exportFile != null and exportFile != ''">
+				exportFile = #{exportFile},
+			</if>
+			<if test="exportType != null and exportType != ''">
+				exportType = #{exportType},
+			</if>
+			<if test="uploadDate != null">
+				uploadDate = #{uploadDate},
+			</if>
+			<if test="uploadUser != null and uploadUser != ''">
+				uploadUser = #{uploadUser},
+			</if>
+			<if test="decimalPlace != 0">
+				decimalPlace = #{decimalPlace}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="ExportTemplate">
+		delete from IN_EXPORT_TEMPLATE
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from IN_EXPORT_TEMPLATE
+	</delete>
+
+
+</mapper>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans classpath:/org/springframework/beans/factory/xml/spring-beans-4.0.xsd
+				http://www.springframework.org/schema/context classpath:/org/springframework/context/config/spring-context-4.0.xsd
+				http://www.springframework.org/schema/aop classpath:/org/springframework/aop/config/spring-aop-4.0.xsd
+				http://www.springframework.org/schema/tx classpath:/org/springframework/transaction/config/spring-tx-4.0.xsd 
+				http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+	<!-- 导入Excel模板用 -->
+	<bean id="exportCellDao" class="com.isane.ragdoll.persistent.dao.DaoImpl">
+		<property name="sqlSession" ref="sqlSessionTemplate" />
+		<property name="testMode" value="true" />
+	</bean>
+	
+	<bean id="exportMergeDao" class="com.isane.ragdoll.persistent.dao.DaoImpl">
+		<property name="sqlSession" ref="sqlSessionTemplate" />
+		<property name="testMode" value="true" />
+	</bean>
+
+	<bean id="exportTemplateService" class="com.isane.in.service.impl.ExportTemplateServiceImpl">
+		<property name="dao" ref="dao" />
+		<property name="exportCellDao" ref="exportCellDao" />
+		<property name="exportMergeDao" ref="exportMergeDao" />
+	</bean>
+	
+	<bean id="exportTemplateUpdater" class="com.isane.in.exporter.ExportTemplateUpdaterImpl">
+		<property name="exportTemplateServiceImpl" ref="exportTemplateService" />
+	</bean>
+	
+	<!-- 导出Excel用 -->
+	<bean id="indexService" class="com.isane.index.service.impl.IndexServiceImpl">
+		<property name="dao" ref="dao" />
+	</bean>
+		
+	<bean id="indexDataService" class="com.isane.index.service.impl.IndexDataServiceImpl">
+		<property name="dao" ref="dao" />
+	</bean>
+	
+	<bean id="exportCellService" class="com.isane.in.service.impl.ExportCellServiceImpl">
+		<property name="dao" ref="dao" />
+	</bean>
+	
+	<bean id="reportExport" class="com.isane.in.exporter.ReportExportImpl">
+		<property name="indexServiceImpl" ref="indexService" />
+		<property name="indexDataService" ref="indexDataService" />
+		<property name="exportTemplateServiceImpl" ref="exportTemplateService" />
+		<property name="exportCellServiceImpl" ref="exportCellService" />
+	</bean>
+	
+</beans>

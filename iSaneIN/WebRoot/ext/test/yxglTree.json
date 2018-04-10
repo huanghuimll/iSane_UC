@@ -1,0 +1,6 @@
+[
+	{"menuAction":"isane.view.aq_yxgl_lptj.lptjPanel", "menuActionType":1,"children":[],"iconUrl":"img/menu_icon/1.png","dispOrder":1,"id":1,"leaf":true,"parentCode":1,"menuTitle":"两票统计"},
+	{"menuAction":"isane.view.aq_yxgl_pxtj.pxtjPanel", "menuActionType":1,"children":[],"iconUrl":"img/menu_icon/2.png","dispOrder":2,"id":2,"leaf":true,"parentCode":1,"menuTitle":"培训统计"},
+	{"menuAction":"isane.view.aq_yxgl.operationPanel", "menuActionType":1,"children":[],"iconUrl":"img/menu_icon/3.png","dispOrder":3,"id":3,"leaf":true,"parentCode":1,"menuTitle":"运行分析"},
+	{"menuAction":"isane.view.aq_yxgl.energyPanel", "menuActionType":1,"children":[],"iconUrl":"img/menu_icon/3.png","dispOrder":3,"id":4,"leaf":true,"parentCode":1,"menuTitle":"节能分析"}	
+]

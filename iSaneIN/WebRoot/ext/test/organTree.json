@@ -1,0 +1,19 @@
+[
+	{"children":
+		[
+			{"children":[], "organCode":"ST_1#", "dispOrder":1,"id":2, "leaf":true, "parentCode":"HNST", "organName":"一号机组", "organDesc":"一号机组"},
+			{"children":[], "organCode":"ST_2#", "dispOrder":2,"id":3, "leaf":true, "parentCode":"HNST", "organName":"二号机组", "organDesc":"二号机组"},
+			{"children":[], "organCode":"ST_3#", "dispOrder":3,"id":4, "leaf":true, "parentCode":"HNST", "organName":"三号机组", "organDesc":"三号机组"}
+		],
+		"organCode":"HNST", "dispOrder":1, "id":1, "leaf":false, "parentCode":"#", "organName":"汕头电厂", "organDesc":"汕头电厂"
+	},
+	{"children":
+		[
+			{"children":[], "organCode":"HM_1#", "dispOrder":1,"id":6, "leaf":true, "parentCode":"HNHM", "organName":"一号机组", "organDesc":"一号机组"},
+			{"children":[], "organCode":"HM_2#", "dispOrder":2,"id":7, "leaf":true, "parentCode":"HNHM", "organName":"二号机组", "organDesc":"二号机组"},
+			{"children":[], "organCode":"HM_3#", "dispOrder":3,"id":8, "leaf":true, "parentCode":"HNHM", "organName":"三号机组", "organDesc":"三号机组"},
+			{"children":[], "organCode":"HM_4#", "dispOrder":3,"id":9, "leaf":true, "parentCode":"HNHM", "organName":"四号机组", "organDesc":"四号机组"}
+		],
+		"organCode":"HNHM", "dispOrder":1, "id":5, "leaf":false, "parentCode":"#", "organName":"海门电厂", "organDesc":"海门电厂"
+	}		
+]

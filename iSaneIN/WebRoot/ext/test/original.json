@@ -1,0 +1,15 @@
+{
+	"list":[
+		{"id":1,"plantCode":"GZFGS",'originalCode':'000001', 'originalCode':'000001','originalName':'000001','originalValue':'0','dateType':'000001', 'storeDate':'2016-01-01', 'inputDate':'000001', 'valueUnit':'000001', 'originalDataVersion':'000001', 'dataOrder':'000001'},
+		{"id":2,"plantCode":"GZFGS",'originalCode':'000001', 'originalCode':'000001','originalName':'000001','originalValue':'0','dateType':'000001', 'storeDate':'2016-02-01', 'inputDate':'000001', 'valueUnit':'000001', 'originalDataVersion':'000001', 'dataOrder':'000001'},
+		{"id":3,"plantCode":"GZFGS",'originalCode':'000001', 'originalCode':'000001','originalName':'000001','originalValue':'0','dateType':'000001', 'storeDate':'2016-03-01', 'inputDate':'000001', 'valueUnit':'000001', 'originalDataVersion':'000001', 'dataOrder':'000001'},
+		{"id":4,"plantCode":"GZFGS",'originalCode':'000001', 'originalCode':'000001','originalName':'000001','originalValue':'0','dateType':'000001', 'storeDate':'2016-04-01', 'inputDate':'000001', 'valueUnit':'000001', 'originalDataVersion':'000001', 'dataOrder':'000001'},
+		{"id":5,"plantCode":"GZFGS",'originalCode':'000001', 'originalCode':'000001','originalName':'000001','originalValue':'0','dateType':'000001', 'storeDate':'2016-05-01', 'inputDate':'000001', 'valueUnit':'000001', 'originalDataVersion':'000001', 'dataOrder':'000001'},
+		{"id":6,"plantCode":"GZFGS",'originalCode':'000001', 'originalCode':'000001','originalName':'000001','originalValue':'0','dateType':'000001', 'storeDate':'2016-06-01', 'inputDate':'000001', 'valueUnit':'000001', 'originalDataVersion':'000001', 'dataOrder':'000001'},
+		{"id":7,"plantCode":"GZFGS",'originalCode':'000001', 'originalCode':'000001','originalName':'000001','originalValue':'0','dateType':'000001', 'storeDate':'2016-07-01', 'inputDate':'000001', 'valueUnit':'000001', 'originalDataVersion':'000001', 'dataOrder':'000001'},
+		{"id":8,"plantCode":"GZFGS",'originalCode':'000001', 'originalCode':'000001','originalName':'000001','originalValue':'0','dateType':'000001', 'storeDate':'2016-08-01', 'inputDate':'000001', 'valueUnit':'000001', 'originalDataVersion':'000001', 'dataOrder':'000001'},
+		{"id":9,"plantCode":"GZFGS",'originalCode':'000001', 'originalCode':'000001','originalName':'000001','originalValue':'0','dateType':'000001', 'storeDate':'2016-09-01', 'inputDate':'000001', 'valueUnit':'000001', 'originalDataVersion':'000001', 'dataOrder':'000001'},
+		{"id":10,"plantCode":"GZFGS",'originalCode':'000001', 'originalCode':'000001','originalName':'000001','originalValue':'0','dateType':'000001', 'storeDate':'2016-10-01', 'inputDate':'000001', 'valueUnit':'000001', 'originalDataVersion':'000001', 'dataOrder':'000001'}
+	],
+	"totalCount":10
+}

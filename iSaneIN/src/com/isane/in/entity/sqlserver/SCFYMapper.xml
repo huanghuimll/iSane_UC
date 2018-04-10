@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.SCFYMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="plantCode != null and plantCode != ''">
+				and plantCode like '%${ plantCode }%'
+			</if>
+			<if test="scfyCode != null and scfyCode != ''">
+				and scfyCode like '%${ scfyCode }%'
+			</if>
+			<if test="scfyName != null and scfyName != ''">
+				and scfyName like '%${ scfyName }%'
+			</if>
+			<if test="scfyValue != 0">
+				and scfyValue = #{scfyValue}
+			</if>
+			<if test="startTime != null">
+			<![CDATA[
+				and dataTime >= #{startTime, jdbcType=DATE}  
+				]]>				
+			</if>
+			<if test="endTime != null">
+			<![CDATA[
+				and  dataTime <= #{endTime, jdbcType=DATE} 
+				]]>
+			</if> 			
+			<if test="inputTime != null">
+				and inputTime = #{inputTime}
+			</if>
+			<if test="scfyDesc != null and scfyDesc != ''">
+				and scfyDesc like '%${ scfyDesc }%'
+			</if>
+			<if test="scfyType != null and scfyType != ''">
+				and scfyType = #{scfyType}
+			</if>
+		</where>
+	</sql>
+	<select id="select" parameterType="SCFY" resultType="SCFY">
+		select * from UC_AQ_SCFY
+		<include refid="criteriaSql" />
+		order by id
+	</select>
+
+	<select id="count" parameterType="SCFY" resultType="int">
+		select count(id) from UC_AQ_SCFY
+		<include refid="criteriaSql" />
+	</select>
+
+	<select id="find" parameterType="SCFY" resultType="SCFY">
+		select * from UC_AQ_SCFY
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="SCFY" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into UC_AQ_SCFY (
+		plantCode , scfyCode , scfyName , scfyValue , dataTime , inputTime , scfyDesc ,
+		scfyType )values ( #{plantCode} , #{scfyCode} , #{scfyName} ,
+		#{scfyValue} , #{dataTime} , #{inputTime} , #{scfyDesc} , #{scfyType}
+		)
+	</insert>
+
+	<update id="update" parameterType="SCFY">
+		update UC_AQ_SCFY
+		<set>
+			<if test="plantCode != null and plantCode != ''">
+				plantCode = #{plantCode}
+				,
+			</if>
+			<if test="scfyCode != null and scfyCode != ''">
+				scfyCode = #{scfyCode}
+				,
+			</if>
+			<if test="scfyName != null and scfyName != ''">
+				scfyName = #{scfyName}
+				,
+			</if>
+			<if test="scfyValue != 0">
+				scfyValue = #{scfyValue}
+				,
+			</if>
+			<if test="dataTime != null">
+				dataTime = #{dataTime}
+				,
+			</if>
+			<if test="inputTime != null">
+				inputTime = #{inputTime}
+				,
+			</if>
+			<if test="scfyDesc != null and scfyDesc != ''">
+				scfyDesc = #{scfyDesc}
+				,
+			</if>
+			<if test="scfyType != 0">
+				scfyType = #{scfyType}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="SCFY">
+		delete from UC_AQ_SCFY
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from UC_AQ_SCFY
+	</delete>
+
+
+</mapper>

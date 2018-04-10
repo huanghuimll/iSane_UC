@@ -1,0 +1,10 @@
+[
+	{"children":
+		[
+			{"children":[],"plantCode":"HNHM","catalogCode":"1111","dispOrder":1,"id":2,"leaf":true,"parentCode":1,"catalogName":"工艺目录一"},
+			{"children":[],"plantCode":"HNHM","catalogCode":"2222","dispOrder":2,"id":3,"leaf":true,"parentCode":1,"catalogName":"工艺目录二"},
+			{"children":[],"plantCode":"HNHM","catalogCode":"3333","dispOrder":3,"id":4,"leaf":true,"parentCode":1,"catalogName":"工艺目录三"}
+		],
+		"plantCode":"HNHM","catalogCode":"0000","dispOrder":1,"id":1,"leaf":false,"parentCode":0,"catalogName":"工艺目录"
+	}	
+]

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.DimJzMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="jzKey != null and jzKey != ''">
+				and  a.jzKey = #{jzKey}
+			</if>
+			<if test="jzName != null and jzName != ''">
+				and  a.jzName like '%${ jzName }%'
+			</if>
+			<if test="jzDesc != null and jzDesc != ''">
+				and  a.jzDesc like '%${ jzDesc }%'
+			</if>
+			<if test="periodes != 0">
+				and  a.periodes = #{periodes}
+			</if>
+			<if test="organKey != null and organKey != ''">
+				and  a.organKey = #{organKey}
+			</if>
+			<if test="type != 0">
+				and  a.type = #{type}
+			</if>
+		</where>
+	</sql>
+	<select id="select" parameterType="DimJz" resultType="DimJz">
+		select a.*,do.organName from Dim_Jz a
+		inner join Dim_Organization do on a.organKey=do.organKey 
+		<include refid="criteriaSql" />
+		order by id
+	</select>
+
+	<select id="count" parameterType="DimJz" resultType="int">
+		select count(id) from Dim_Jz a
+		<include refid="criteriaSql" />
+	</select>
+
+	<select id="find" parameterType="DimJz" resultType="DimJz">
+		select * from Dim_Jz
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="DimJz" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into Dim_Jz (
+		jzKey , jzName , jzDesc , periodes , organKey )values ( #{jzKey} ,
+		#{jzName} , #{jzDesc} , #{periodes} , #{organKey} )
+	</insert>
+
+	<update id="update" parameterType="DimJz">
+		update Dim_Jz
+		<set>
+			<if test="jzKey != null and jzKey != ''">
+				jzKey = #{jzKey},
+			</if>
+			<if test="jzName != null and jzName != ''">
+				jzName = #{jzName},
+			</if>
+			<if test="jzDesc != null and jzDesc != ''">
+				jzDesc = #{jzDesc},
+			</if>
+			<if test="periodes != 0">
+				periodes = #{periodes},
+			</if>
+			<if test="organKey != null and organKey != ''">
+				organKey = #{organKey}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="DimJz">
+		delete from Dim_Jz
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from Dim_Jz
+	</delete>
+
+
+</mapper>

@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.KJXMMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="projectCode != null and projectCode != ''">
+				and projectCode like '%${ projectCode }%'
+			</if>
+			<if test="projectName != null and projectName != ''">
+				and projectName like '%${ projectName }%'
+			</if>
+			<if test="projectJC != null and projectJC != ''">
+				and projectJC like '%${ projectJC }%'
+			</if>
+			<if test="developName != null and developName != ''">
+				and developName like '%${ developName }%'
+			</if>
+			<if test="projectContent != null and projectContent != ''">
+				and projectContent like '%${ projectContent }%'
+			</if>
+			<if test="projectCase != null and projectCase != ''">
+				and projectCase like '%${ projectCase }%'
+			</if>
+			<if test="projectResult != null and projectResult != ''">
+				and projectResult like '%${ projectResult }%'
+			</if>
+			<if test="projectCost != 0">
+				and projectCost = #{projectCost}
+			</if>
+			<if test="projectBudget != 0">
+				and projectBudget = #{projectBudget}
+			</if>
+			<if test="projectFinish != 0">
+				and projectFinish = #{projectFinish}
+			</if>
+			<if test="projectTotal != 0">
+				and projectTotal = #{projectTotal}
+			</if>
+			<if test="projectPlan != null and projectPlan != ''">
+				and projectPlan = #{projectPlan}
+			</if>
+			<if test="projectNext != null and projectNext != ''">
+				and projectNext like '%${ projectNext }%'
+			</if>
+			<if test="projectQuest != null and projectQuest != ''">
+				and projectQuest like '%${ projectQuest }%'
+			</if>
+			<if test="projectLeader != null and projectLeader != ''">
+				and projectLeader like '%${ projectLeader }%'
+			</if>
+			<if test="projectDesc != null and projectDesc != ''">
+				and projectDesc like '%${ projectDesc }%'
+			</if>
+			<if test="dataTime != null">
+				and YEAR(dataTime) = YEAR(#{dataTime}) AND MONTH(dataTime) = MONTH(#{dataTime}) 
+			</if>
+			<if test="inputTime != null">
+				and inputTime = #{inputTime}
+			</if>
+		</where>
+	</sql>
+	
+	<select id="selectKJXM" parameterType="KJXM" resultType="KJXM">
+		SELECT * from UC_AQ_KJGL_KJXM 
+		<where>
+			<if test="dataTime != null">
+				and year(dataTime) = YEAR(#{dataTime}) AND MONTH(dataTime) = MONTH(#{dataTime}) 
+			</if>	
+		</where> 
+	</select>
+	
+	<select id="select" parameterType="KJXM" resultType="KJXM">
+		select * from UC_AQ_KJGL_KJXM
+		<include refid="criteriaSql" />
+		order by id
+	</select>
+
+	<select id="count" parameterType="KJXM" resultType="int">
+		select count(id) from UC_AQ_KJGL_KJXM
+		<include refid="criteriaSql" />
+	</select>
+
+	<select id="find" parameterType="KJXM" resultType="KJXM">
+		select * from UC_AQ_KJGL_KJXM
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="KJXM" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into UC_AQ_KJGL_KJXM (
+		projectCode , projectName , developName , projectContent , projectCase ,
+		projectResult , projectCost , projectBudget , projectFinish ,
+		projectTotal , projectPlan , projectNext , projectQuest ,
+		projectLeader , projectDesc , dataTime , inputTime )values (
+		#{projectCode} , #{projectName} , #{developName} , #{projectContent} ,
+		#{projectCase} , #{projectResult} , #{projectCost} , #{projectBudget}
+		, #{projectFinish} , #{projectTotal} , #{projectPlan} , #{projectNext}
+		, #{projectQuest} , #{projectLeader} , #{projectDesc} , #{dataTime} ,
+		#{inputTime} )
+	</insert>
+
+	<update id="update" parameterType="KJXM">
+		update UC_AQ_KJGL_KJXM
+		<set>
+			<if test="projectCode != null and projectCode != ''">
+				projectCode = #{projectCode}
+				,
+			</if>
+			<if test="projectName != null and projectName != ''">
+				projectName = #{projectName}
+				,
+			</if>
+			<if test="developName != null and developName != ''">
+				developName = #{developName}
+				,
+			</if>
+			<if test="projectJC != null and projectJC != ''">
+				projectJC = #{projectJC}
+				,
+			</if>
+			<if test="projectContent != null and projectContent != ''">
+				projectContent = #{projectContent}
+				,
+			</if>
+			<if test="projectCase != null and projectCase != ''">
+				projectCase = #{projectCase}
+				,
+			</if>
+			<if test="projectResult != null and projectResult != ''">
+				projectResult = #{projectResult}
+				,
+			</if>
+			<if test="projectCost != 0">
+				projectCost = #{projectCost}
+				,
+			</if>
+			<if test="projectBudget != 0">
+				projectBudget = #{projectBudget}
+				,
+			</if>
+			<if test="projectFinish != 0">
+				projectFinish = #{projectFinish}
+				,
+			</if>
+			<if test="projectTotal != 0">
+				projectTotal = #{projectTotal}
+				,
+			</if>
+			<if test="projectPlan != null and projectPlan != ''">
+				projectPlan = #{projectPlan}
+				,
+			</if>
+			<if test="projectNext != null and projectNext != ''">
+				projectNext = #{projectNext}
+				,
+			</if>
+			<if test="projectQuest != null and projectQuest != ''">
+				projectQuest = #{projectQuest}
+				,
+			</if>
+			<if test="projectLeader != null and projectLeader != ''">
+				projectLeader = #{projectLeader}
+				,
+			</if>
+			<if test="projectDesc != null and projectDesc != ''">
+				projectDesc = #{projectDesc}
+				,
+			</if>
+			<if test="dataTime != null">
+				dataTime = #{dataTime}
+				,
+			</if>
+			<if test="inputTime != null">
+				inputTime = #{inputTime}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="KJXM">
+		delete from UC_AQ_KJGL_KJXM
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from UC_AQ_KJGL_KJXM
+	</delete>
+
+
+</mapper>

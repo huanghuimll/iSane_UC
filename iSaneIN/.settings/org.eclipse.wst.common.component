@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="iSaneIN">
+        <wb-resource deploy-path="/" source-path="/WebRoot" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <dependent-module archiveName="RagdollUtils.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/RagdollUtils/RagdollUtils">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="RagdollWeb.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/RagdollWeb/RagdollWeb">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="RagdollPersistent.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/RagdollPersistent/RagdollPersistent">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="RagdollService.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/RagdollService/RagdollService">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="iSaneIndex.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/iSaneIndex/iSaneIndex">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="iSaneIN"/>
+        <property name="java-output-path" value="/iSaneIN/WebRoot/WEB-INF/classes"/>
+    </wb-module>
+</project-modules>

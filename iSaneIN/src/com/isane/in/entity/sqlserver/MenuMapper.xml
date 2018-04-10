@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.MenuMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="plantCode != null and plantCode != ''">
+				and plantCode = #{plantCode}
+			</if>
+			<if test="menuCode != null and menuCode != ''">
+				and menuCode = #{menuCode}
+			</if>
+			<if test="menuTitle != null and menuTitle != ''">
+				and menuTitle like '%${menuTitle}%'
+			</if>
+			<if test="menuAction != null and menuAction != ''">
+				and menuAction = #{menuAction}
+			</if>
+			<if test="parentCode != null and parentCode != ''">
+				and parentCode like '%${ parentCode }%'
+			</if>
+			<if test="actionType != 0">
+				and actionType = #{actionType}
+			</if>
+			<if test="displayOrder != 0">
+				and displayOrder = #{displayOrder}
+			</if>
+			<if test="iconUrl != null and iconUrl != ''">
+				and iconUrl like '%${ iconUrl }%'
+			</if>
+		</where>
+	</sql>
+	<select id="select" parameterType="Menu" resultType="Menu">
+		select * from sys_menu
+		<include refid="criteriaSql" />
+		order by displayOrder
+	</select>
+
+	<select id="count" parameterType="Menu" resultType="int">
+		select count(id) from sys_menu
+		<include refid="criteriaSql" />
+	</select>
+
+	<select id="find" parameterType="Menu" resultType="Menu">
+		select * from sys_menu
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="Menu" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into sys_menu (
+		plantCode ,menuCode ,menuTitle
+		,menuAction ,parentCode ,actionType
+		,displayOrder ,iconUrl )values
+		(#{plantCode} ,#{menuCode}
+		,#{menuTitle} ,#{menuAction} ,#{parentCode}
+		,#{actionType}
+		,#{displayOrder} ,#{iconUrl} )
+	</insert>
+
+	<update id="update" parameterType="Menu">
+		update sys_menu
+		<set>
+			<if test="plantCode != null">
+				plantCode = #{plantCode} ,
+			</if>
+			<if test="menuCode != null">
+				menuCode = #{menuCode} ,
+			</if>
+			<if test="menuTitle != null">
+				menuTitle = #{menuTitle} ,
+			</if>
+			<if test="menuAction != null">
+				menuAction = #{menuAction} ,
+			</if>
+			<if test="parentCode != null ">
+				parentCode = #{parentCode} ,
+			</if>
+			<if test="actionType != 0">
+				actionType = #{actionType} ,
+			</if>
+			<if test="displayOrder != 0">
+				displayOrder = #{displayOrder} ,
+			</if>
+			<if test="iconUrl != null">
+				iconUrl = #{iconUrl}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="Menu">
+		delete from sys_menu
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="deleteByKey" parameterType="Menu">
+		delete from sys_menu
+		<where>
+			<if test="plantCode != null and plantCode != ''">
+				and plantCode = #{plantCode}
+			</if>
+			<if test="menuCode != null and menuCode != ''">
+				and menuCode = #{menuCode}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from sys_menu
+	</delete>
+
+	<select id="listIncludeChildCount" parameterType="Menu"
+		resultType="Menu">
+		SELECT
+		m.id,m.plantCode,m.menuCode,m.menuTitle,m.menuAction,m.parentCode,m.actionType,m.displayOrder,m.iconUrl,(SELECT
+		COUNT(0) FROM sys_menu mc WHERE mc.parentCode=m.menuCode) as
+		childrenCount
+		FROM sys_menu m WHERE m.plantCode=#{plantCode} AND
+		m.parentCode=#{parentCode};
+	</select>
+	
+	<!-- 
+	<select id="listAllMenu" parameterType="Menu" resultType="Menu">
+		select
+		* from sys_menu where FIND_IN_SET(parentCode,
+		getMenuList(#{parentCode})) and plantCode=#{plantCode}
+		<if test="actionType != 0">
+			and actionType = #{actionType}
+		</if>
+		order by displayOrder
+	</select>
+	 -->
+	
+	<select id="listAllMenu" parameterType="Menu" resultType="Menu">
+		WITH cte as (
+			SELECT a.* FROM SYS_MENU a WHERE  a.parentCode = #{parentCode}
+			UNION ALL
+			SELECT b.* FROM SYS_MENU b 
+			INNER JOIN cte ON cte.menuCode = b.parentCode
+		)
+		SELECT * FROM cte
+		<where>
+			<if test="actionType != 0">
+				and actionType = #{actionType}
+			</if>
+		</where> 
+		order by displayOrder
+	</select>	
+
+	<select id="listAllMenuC" parameterType="Menu" resultType="Menu">
+		select s.*,p.resource from sys_menu s LEFT JOIN sys_res_permission p
+		on s.menuCode = p.resource and p.plantCode =#{plantCode} and p.roleCode =#{roleCode} where FIND_IN_SET(s.parentCode,
+		getMenuList(#{parentCode})) and s.plantCode=#{plantCode}
+		<if test="actionType != 0">
+			and actionType = #{actionType}
+		</if>
+	</select>
+
+	<select id="menuByUser" parameterType="Menu" resultType="Menu">
+		SELECT a.* FROM sys_menu a INNER JOIN sys_res_permission rp ON a.plantCode = rp.plantCode AND a.menuCode = rp.resource 
+		WHERE rp.plantCode=#{plantCode} AND rp.roleCode in (SELECT roleCode FROM sys_roleuser WHERE plantCode=#{plantCode} 
+		AND userCode = #{userCode}) AND rp.resourceType='menu'
+		<if test="actionType != 0">
+				and a.actionType = #{actionType}
+		</if>
+		GROUP BY id
+	</select>
+	
+	<select id="countBiz" parameterType="Menu" resultType="int">
+		select count(id) from sys_menu
+		<where>
+			<if test="plantCode != null and plantCode != ''">
+				and plantCode = #{plantCode}
+			</if>
+			<if test="menuCode != null and menuCode != ''">
+				and menuCode = #{menuCode}
+			</if>
+		</where>
+	</select>
+
+</mapper>

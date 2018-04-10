@@ -1,0 +1,39 @@
+.list_add { background-image: url(../img/list_icon/list_add.png ) !important;}
+.list_remove {background-image: url( ../img/list_icon/list_delete.png ) !important;}
+.list_update {background-image: url( ../img/list_icon/list_edit.png ) !important;}
+.list_view { background-image: url( ../img/list_icon/list_look.png ) !important;}
+.list_find { background-image: url( ../img/list_icon/list_put.png ) !important;}
+.list_down { background-image: url( ../img/list_icon/list_down.png ) !important;}
+.list_startUse{background-image: url(../img/list_icon/list_startUse.png) !important;}
+.list_closeUse{background-image: url(../img/list_icon/list_closeUse.png) !important;}
+.list_resetPass{background-image: url( ../img/list_icon/list_key.png ) !important;}
+.list_export{background-image: url( ../img/list_icon/list_export.png ) !important;}
+.list_import{background-image: url( ../img/list_icon/list_import.png ) !important;}
+.list_selectAll{background-image: url( ../img/list_icon/list_selectAll.png ) !important;}
+.list_deleteAll{background-image: url( ../img/list_icon/list_deleteAll.png ) !important;}
+.list_save{background-image: url( ../img/list_icon/list_save.png ) !important;}
+.list_left{background-image: url( ../img/list_icon/list_left.png ) !important;}
+.list_right{background-image: url( ../img/list_icon/list_right.png ) !important;}
+.list_tree{background-image: url( ../img/list_icon/list_tree.png ) !important;}
+
+.add { background-image: url(../img/icon/button_add.png ) !important;}
+.delete { background-image: url(../img/icon/button_delete.png ) !important;}
+.delete1 { background-image: url(../img/icon/button_delete1.png ) !important;}
+.edit { background-image: url(../img/icon/button_edit.png ) !important;}
+.ok { background-image: url(../img/icon/button_ok.png ) !important;}
+.ok1 { background-image: url(../img/icon/button_ok1.png ) !important;}
+.refresh { background-image: url(../img/icon/button_refresh.png ) !important;}
+.view { background-image: url(../img/icon/button_look.png ) !important;}
+.up { background-image: url(../img/icon/button_up.png ) !important;}
+.down { background-image: url(../img/icon/button_down.png ) !important;}
+.get { background-image: url(../img/icon/button_get.png ) !important;}
+.put { background-image: url(../img/icon/button_put.png ) !important;}
+.search { background-image: url(../img/icon/button_search.png ) !important;}
+
+.menu_home { background-image: url(../img/menu_icon/menu_home.png ) !important;}
+.menu_group { background-image: url(../img/menu_icon/menu_group.png ) !important;}
+.menu_office { background-image: url(../img/menu_icon/menu_office.png ) !important;}
+.menu_server { background-image: url(../img/menu_icon/menu_server_edit.png ) !important;}
+.menu_password { background-image: url(../img/menu_icon/menu_password_edit.png ) !important;}
+.menu_go { background-image: url(../img/menu_icon/menu_computer_go.png ) !important;}
+.menu_user { background-image: url(../img/menu_icon/menu_user.png ) !important;}

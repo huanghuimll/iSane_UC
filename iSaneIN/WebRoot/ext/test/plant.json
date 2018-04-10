@@ -1,0 +1,9 @@
+{
+	"list":[
+		{"id":1,"deptCode":"GZFGS",'deptName':'广州分公司'},
+		{"id":2,"deptCode":"HNST",'deptName':'汕头电厂'},
+		{"id":3,"deptCode":"HNHM",'deptName':'海门电厂'},
+		{"id":4,"deptCode":"HNGW",'deptName':'港务公司'},
+	],
+	"totalCount":3
+}

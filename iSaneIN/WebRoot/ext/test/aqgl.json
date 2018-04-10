@@ -1,0 +1,11 @@
+{
+	"list":[
+		{"id":1,"plantCode":"GZFGS",'dataType':'AQGL_RSSG', 'dataTypeValue':'AQGL_RSSG_pt','dataValue':'11','dataTime':'2016-01-01', 'disOrder': 1},
+		{"id":2,"plantCode":"GZFGS",'dataType':'AQGL_SBGZ', 'dataTypeValue':'AQGL_SBGZ_pt','dataValue':'12','dataTime':'2016-01-02', 'disOrder': 2},
+		{"id":3,"plantCode":"GZFGS",'dataType':'AQGL_WZQK', 'dataTypeValue':'AQGL_WZQK_ZZ','dataValue':'13','dataTime':'2016-01-03', 'disOrder': 3},
+		{"id":4,"plantCode":"GZFGS",'dataType':'AQGL_RSSG', 'dataTypeValue':'AQGL_RSSG_pt','dataValue':'14','dataTime':'2016-01-04', 'disOrder': 4},
+		{"id":5,"plantCode":"GZFGS",'dataType':'AQGL_SBGZ', 'dataTypeValue':'AQGL_SBGZ_pt','dataValue':'15','dataTime':'2016-01-05', 'disOrder': 5}
+
+	],
+	"totalCount":5
+}

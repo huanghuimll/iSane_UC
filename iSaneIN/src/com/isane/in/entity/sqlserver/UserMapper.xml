@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.UserMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="plantCode != null and plantCode != ''">
+				and a.plantCode = #{plantCode}
+			</if>
+			<if test="userCode != null and userCode != ''">
+				and a.userCode = #{userCode}
+			</if>
+			<if test="userName != null and userName != ''">
+				and (a.userName like '%${ userName }%' or a.userNamePy
+				like '%${ userName }%' or a.userNameFl like '${ userName }%' )
+			</if>
+			<if test="password != null and password != ''">
+				and a.password = #{password}
+			</if>
+			<if test="currentStatus != 0">
+				and a.currentStatus = #{currentStatus}
+			</if>
+			<if test="createTime != null">
+				and a.createTime = #{createTime}
+			</if>
+			<if test="employeCode != null and employeCode != ''">
+				and a.employeCode = #{employeCode}
+			</if>
+			<if test="lastUpdateTime != null">
+				and a.lastUpdateTime = #{lastUpdateTime}
+			</if>
+			<if test="userNamePy != null and userNamePy != ''">
+				and a.userNamePy like '%${ userNamePy }%'
+			</if>
+			<if test="userNameFl != null and userNameFl != ''">
+				and a.userNameFl like '%${ userNameFl }%'
+			</if>
+			<if test="validDate != null">
+				and a.validDate = #{validDate}
+			</if>
+			<if test="sex != null and sex != ''">
+				and a.sex like '%${ sex }%'
+			</if>
+			<if test="mailAddr != null and mailAddr != ''">
+				and a.mailAddr like '%${ mailAddr }%'
+			</if>
+			<if test="phoneNum != null and phoneNum != ''">
+				and a.phoneNum like '%${ phoneNum }%'
+			</if>
+			<if test="photoUrl != null and photoUrl != ''">
+				and a.photoUrl like '%${ photoUrl }%'
+			</if>
+			<if test="disOrder != 0">
+				and a.disOrder = #{disOrder}
+			</if>
+			<if test="userDesc != null and userDesc != ''">
+				and a.userDesc like '%${ userDesc }%'
+			</if>
+		</where>
+	</sql>
+
+	<select id="select" parameterType="User" resultType="User">
+		select a.*, d.organName deptName from sys_user a 
+		inner join Dim_Organization d on a.plantCode=d.organKey
+		<include refid="criteriaSql" />
+		order by id
+	</select>
+
+	<select id="count" parameterType="User" resultType="int">
+		select count(id) from sys_user a
+		<include refid="criteriaSql" />
+	</select>
+	
+	<select id="find" parameterType="User" resultType="User">
+		select * from sys_user
+		<where>
+			<if test="userCode != null and userCode != ''">
+				and userCode = #{userCode} 
+			</if>
+			<if test="password != null and password != ''">
+				and password = #{password} 
+			</if>
+		</where>
+	</select>	
+	
+	<select id="findByCode" parameterType="User" resultType="User">
+		select a.*  from sys_user a 
+		<where>
+			<if test="userCode != null and userCode != ''">
+				and a.userCode = #{userCode}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="User" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into sys_user (
+		plantCode ,userCode ,userName
+		,password ,currentStatus ,createTime
+		,employeCode ,lastUpdateTime
+		,userNamePy ,userNameFl ,validDate ,sex
+		,mailAddr ,phoneNum ,photoUrl
+		,disOrder ,userDesc )values
+		(#{plantCode} ,#{userCode} ,#{userName}
+		,#{password} ,#{currentStatus}
+		,#{createTime} ,#{employeCode}
+		,#{lastUpdateTime} ,#{userNamePy}
+		,#{userNameFl} ,#{validDate} ,#{sex}
+		,#{mailAddr} ,#{phoneNum}
+		,#{photoUrl} ,#{disOrder} ,#{userDesc} )
+	</insert>
+
+	<update id="update" parameterType="User">
+		update sys_user
+		<set>
+			<if test="plantCode != null">
+				plantCode = #{plantCode} ,
+			</if>
+			<if test="userCode != null">
+				userCode = #{userCode} ,
+			</if>
+			<if test="userName != null">
+				userName = #{userName} ,
+			</if>
+			<if test="password != null">
+				password = #{password} ,
+			</if>
+			<if test="currentStatus != 0">
+				currentStatus = #{currentStatus} ,
+			</if>
+			<if test="createTime != null">
+				createTime = #{createTime} ,
+			</if>
+			<if test="employeCode != null">
+				employeCode = #{employeCode} ,
+			</if>
+			<if test="lastUpdateTime != null">
+				lastUpdateTime = #{lastUpdateTime} ,
+			</if>
+			<if test="userNamePy != null">
+				userNamePy = #{userNamePy} ,
+			</if>
+			<if test="userNameFl != null">
+				userNameFl = #{userNameFl} ,
+			</if>
+			<if test="validDate != null">
+				validDate = #{validDate} ,
+			</if>
+			<if test="sex != null">
+				sex = #{sex} ,
+			</if>
+			<if test="mailAddr != null">
+				mailAddr = #{mailAddr} ,
+			</if>
+			<if test="phoneNum != null">
+				phoneNum = #{phoneNum} ,
+			</if>
+			<if test="photoUrl != null">
+				photoUrl = #{photoUrl} ,
+			</if>
+			<if test="disOrder != 0">
+				disOrder = #{disOrder} ,
+			</if>
+			<if test="userDesc != null">
+				userDesc = #{userDesc}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="User">
+		delete from sys_user
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from sys_user
+	</delete>
+
+	<select id="login" parameterType="User" resultType="User">
+		select * from sys_user
+		<where>
+			<if test="plantCode != null and plantCode != ''">
+				and plantCode = #{plantCode}
+			</if>
+			<if test="userCode != null and userCode != ''">
+				and userCode = #{userCode}
+			</if>
+			<if test="employeCode != null and employeCode != ''">
+				and employeCode = #{employeCode}
+			</if>
+		</where>
+	</select>
+
+	<select id="queryByHave" parameterType="User" resultType="User">
+		SELECT
+		u.*,r.roleCode FROM sys_user u LEFT JOIN sys_roleuser r ON
+		u.plantCode = r.plantCode AND u.userCode = r.userCode WHERE
+		r.plantCode = #{plantCode} AND r.roleCode=#{roleCode}
+		<if test="userName != null and userName != ''">
+			and (u.userName like '%${ userName }%' or u.userNamePy
+			like '%${ userName }%' or u.userNameFl like '${ userName }%' )
+		</if>
+	</select>
+	<select id="queryByNot" parameterType="User" resultType="User">
+		SELECT * FROM sys_user WHERE plantCode = #{plantCode} AND userCode NOT IN
+		(SELECT userCode FROM sys_roleuser where plantCode = #{plantCode} AND
+		roleCode=#{roleCode})
+		<if test="userName != null and userName != ''">
+			and (u.userName like '%${ userName }%' or u.userNamePy
+			like '%${ userName }%' or u.userNameFl like '${ userName }%' )
+		</if>
+	</select>
+
+	<update id="updateByCode" parameterType="User">
+		update sys_user
+		<set>
+			<if test="password != null and password != ''">
+				password = #{password}
+			</if>
+		</set>
+		where userCode = #{userCode}
+	</update>
+	
+	<select id="countBiz" parameterType="User" resultType="int">
+		select count(id) from sys_user a
+		<where>
+			<if test="plantCode != null and plantCode != ''">
+				and a.plantCode = #{plantCode}
+			</if>
+			<if test="userCode != null and userCode != ''">
+				and a.userCode = #{userCode}
+			</if>
+		</where>
+	</select>
+
+</mapper>
