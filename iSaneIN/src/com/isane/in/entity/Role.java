@@ -1,9 +1,7 @@
 package com.isane.in.entity;
 
-import com.isane.ragdoll.persistent.annotation.PinYin;
-import com.isane.ragdoll.persistent.annotation.RogdallEntity;
-import org.springframework.format.annotation.DateTimeFormat;
 import com.isane.ragdoll.persistent.entity.Entity;
+
 public class Role implements Entity{
 private static final long serialVersionUID = 1L;
 	private long id; //$item.comment
