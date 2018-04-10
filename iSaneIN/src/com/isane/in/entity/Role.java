@@ -1,7 +1,6 @@
 package com.isane.in.entity;
 
 import com.isane.ragdoll.persistent.entity.Entity;
-
 public class Role implements Entity{
 private static final long serialVersionUID = 1L;
 	private long id; //$item.comment

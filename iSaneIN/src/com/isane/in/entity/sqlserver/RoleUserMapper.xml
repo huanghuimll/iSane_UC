@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.RoleUserMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="userId != 0">
+				and userId = #{userId}
+			</if>
+			<if test="roleId != 0">
+				and roleId = #{roleId}
+			</if>
+		</where>
+	</sql>
+	<select id="select" parameterType="RoleUser" resultType="RoleUser">
+		select * from SYS_ROLEUSER
+		<include refid="criteriaSql" />
+		order by id
+	</select>
+
+	<select id="count" parameterType="RoleUser" resultType="int">
+		select count(id) from SYS_ROLEUSER
+		<include refid="criteriaSql" />
+	</select>
+
+	<select id="find" parameterType="RoleUser" resultType="RoleUser">
+		select * from SYS_ROLEUSER
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="RoleUser" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into SYS_ROLEUSER (
+		userId , roleId )values ( #{userId} , #{roleId} )
+	</insert>
+
+	<update id="update" parameterType="RoleUser">
+		update SYS_ROLEUSER
+		<set>
+			<if test="userId != 0">
+				userId = #{userId}
+				,
+			</if>
+			<if test="roleId != 0">
+				roleId = #{roleId}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="RoleUser">
+		delete from SYS_ROLEUSER
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from SYS_ROLEUSER
+	</delete>
+
+
+</mapper>
