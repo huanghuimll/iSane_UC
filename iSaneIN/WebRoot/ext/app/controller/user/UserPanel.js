@@ -117,7 +117,24 @@ Ext.define('isane.controller.user.UserPanel', {
 		var store = grid.getStore();
 		var url = store.proxy.api.publicUrl;
 		//return;
-		form.getForm().submit({
+		Ext.Ajax.request({
+			scope: this,
+			method: 'post',
+			url: url+'addUser',
+			params: record,
+			success: function(response){
+				/*var text = response.responseText;
+				var rec = Ext.decode(text);*/
+				store.add(record);
+				win.close();
+				Ext.example.msg('系统提示！', "增加成功！");
+			},
+			failure: function(response){
+				QJ_UtilEntity.failWin(response);
+			}
+		});			
+		//return;
+		/*form.getForm().submit({
 			scope: this,
 			method: 'post',
 			url: url+'addUser',
@@ -132,7 +149,7 @@ Ext.define('isane.controller.user.UserPanel', {
 				QJ_UtilEntity.failWin(action.response);
 				//Ext.example.msg('系统提示！', "删除失败！<br/>error:"+status+"<br/>errorText:"+statusText);
 			}			
-		});	
+		});	*/
 	},
 	
 	click_view: function(own) {
@@ -155,11 +172,11 @@ Ext.define('isane.controller.user.UserPanel', {
 			QJ_UtilEntity.setReadOnly(win.down('form'));
 			win.show();
 			//头像处理
-			if(records[0].data.photoUrl != null && records[0].data.photoUrl != ''){
+			/*if(records[0].data.photoUrl != null && records[0].data.photoUrl != ''){
 				Ext.getCmp('user-UserForm-box').getEl().dom.src = records[0].data.photoUrl;
 			}else{
 				Ext.getCmp('user-UserForm-box').getEl().dom.src = 'img/default.png';
-			}
+			}*/
 		}
 	},
 	

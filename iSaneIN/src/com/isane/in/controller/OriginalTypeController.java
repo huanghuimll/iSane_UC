@@ -45,7 +45,7 @@ public class OriginalTypeController extends RagdollControllerImpl<OriginalType> 
 	public List<OriginalType> queryAll(OriginalType originalType) {
 		List<OriginalType> list = getService().listCustom(originalType, DaoConst.PAGE_DEFAULT_START,
 				DaoConst.PAGE_DEFAULT_LIMIT, "selectByCode");
-		System.out.println(list.get(0));
+		//System.out.println(list.get(0));
 		
 		return list;
 	}

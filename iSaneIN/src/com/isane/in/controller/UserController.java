@@ -64,6 +64,7 @@ public class UserController extends RagdollControllerImpl<User> {
 		
 		return op;
 	}
+	
 	@RequestMapping(value = "/updateUser", method = RequestMethod.POST)
 	@ResponseBody
 	public Operation update(User user) {

@@ -1,14 +1,18 @@
 package com.isane.in.entity;
 
-import com.isane.ragdoll.persistent.annotation.PinYin;
-import com.isane.ragdoll.persistent.annotation.RogdallEntity;
-import org.springframework.format.annotation.DateTimeFormat;
 import com.isane.ragdoll.persistent.entity.Entity;
+
 public class RoleUser implements Entity{
 private static final long serialVersionUID = 1L;
 	private long id; //$item.comment
 	private int userId; //$item.comment
 	private int roleId; //$item.comment
+	private String userCode;
+	private String userName;
+	private String roleCode;
+	private String roleName;
+	private int userStatus;
+	
 	public void setId (long id) {
 		this.id = id;
 	}
@@ -28,7 +32,37 @@ private static final long serialVersionUID = 1L;
 		return roleId;
 	}
 
-@Override
+	public String getUserCode() {
+		return userCode;
+	}
+	public void setUserCode(String userCode) {
+		this.userCode = userCode;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getRoleCode() {
+		return roleCode;
+	}
+	public void setRoleCode(String roleCode) {
+		this.roleCode = roleCode;
+	}
+	public String getRoleName() {
+		return roleName;
+	}
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
+	public int getUserStatus() {
+		return userStatus;
+	}
+	public void setUserStatus(int userStatus) {
+		this.userStatus = userStatus;
+	}
+	@Override
 	public boolean isEmptyProperties() {
 		if(id != 0) {
 			return false;
@@ -49,7 +83,7 @@ private static final long serialVersionUID = 1L;
 
 	@Override
 	public String toString() {
-		return String.format(" id:%s ,  userId:%s ,  roleId:%s  ", 
-				 id ,  userId ,  roleId  );
+		return String.format(" id:%s ,  userCode:%s ,  roleCode:%s  ", 
+				 id ,  userCode ,  roleCode  );
 	}
 }
