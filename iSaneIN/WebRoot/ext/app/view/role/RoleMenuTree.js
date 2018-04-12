@@ -1,15 +1,14 @@
-Ext.define('isane.view.role.RoleMenuLTree',{
+Ext.define('isane.view.role.RoleMenuTree',{
 	extend:'Ext.tree.Panel',
-	alias:'widget.role-RoleMenuLTree', 
-	id: 'role-RoleMenuLTree-id',
-	rootVisible: false, 
-	store:'role.RoleMenuLTree',
-	bbar: [
-	'->',
+	alias:'widget.role-RoleMenuTree', 
+	id: 'role-RoleMenuTree-id',
+	//rootVisible: false, 
+	store: Ext.create('isane.store.role.RoleMenuTree'),
+	tbar: [
 	{
 		width: 60,
 		iconCls: 'treeBt',
-		id: 'role-RoleMenuLTree-ZS',
+		id: 'role-RoleMenuTree-ZS',
 		text: '展开'
 	},
 	{
@@ -28,7 +27,7 @@ Ext.define('isane.view.role.RoleMenuLTree',{
 	   width: 80,
 	   text:'权限保存',
 	   disabled: true,
-	   id: 'role-RoleMenuLTree-saveQX',
+	   id: 'role-RoleMenuTree-saveQX',
 	   iconCls: 'list_save'		
 	}
 	]

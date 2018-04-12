@@ -76,4 +76,27 @@ public class MenuServiceImpl extends RagdollServiceImpl<Menu>implements MenuServ
 		return mndList;
 	}
 
+	/*@Override
+	public List<MenuNodeC> getMenuNodesC(List<Menu> rmList, List<Menu> list) {
+		List<MenuNodeC> mnList = new ArrayList<MenuNodeC>();
+		//先将总集合树形化
+		for(Menu menu : list){
+			MenuNodeC mn = new MenuNodeC();
+			mn.copyFrom(menu); //关键步骤
+			mnList.add(mn);
+		}
+		//为有树形复选框属性赋值(打钩)
+		for (MenuNodeC menuNodeC : mnList) {
+			String code = menuNodeC.getMenuCode();
+			for (Menu rmenu : rmList) {
+				if (code == rmenu.getMenuCode()) {
+					menuNodeC.setChecked(true);
+					continue;
+				}
+			}
+		}
+		
+		return mnList;
+	}*/
+
 }

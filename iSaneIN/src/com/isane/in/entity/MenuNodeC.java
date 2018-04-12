@@ -140,7 +140,7 @@ public class MenuNodeC {
 		this.childrenCount = m.getChildrenCount();
 		this.leaf = m.getLeaf();
 		//this.iconUrl = m.getIconUrl();
-		this.checked = m.getResource() == null || "".equals(m.getResource()) ? false : true;
+		//this.checked = m.getResource() == null || "".equals(m.getResource()) ? false : true;
 	}
 
 }

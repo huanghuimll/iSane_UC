@@ -178,11 +178,11 @@
 	</select>
 	
 	<!--menun and role -->
-	<select id="queryMenuByroleCode" parameterType="Menu" resultType="Menu">
+	<select id="menuByRole" parameterType="Menu" resultType="Menu">
 		select DISTINCT * from SYS_MENU
-		where id in
+		where menuCode in
 		(
-			select childCode from SYS_ROLEPERMISSION where roleCode = #{roleCode} and typeid = #{permissionTypeId}
+			select childCode from SYS_ROLEPERMISSION where roleCode = #{roleCode} and typeId = #{menuTypeId}
 		)
 		order by displayOrder
 	</select>

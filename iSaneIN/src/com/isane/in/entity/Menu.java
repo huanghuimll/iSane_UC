@@ -19,7 +19,6 @@ public class Menu implements Entity {
 	private int menuTypeId;
 
 	private String roleCode;
-	private String resource;
 	private String userCode;
 
 	public String getUserCode() {
@@ -37,15 +36,7 @@ public class Menu implements Entity {
 	public void setRoleCode(String roleCode) {
 		this.roleCode = roleCode;
 	}
-
-	public String getResource() {
-		return resource;
-	}
-
-	public void setResource(String resource) {
-		this.resource = resource;
-	}
-
+	
 	public int getChildrenCount() {
 		return childrenCount;
 	}
@@ -182,8 +173,8 @@ public class Menu implements Entity {
 	@Override
 	public String toString() {
 		return String.format(
-				" id:%s ,  plantCode:%s ,  menuCode:%s ,  menuTitle:%s ,  menuAction:%s ,  parentCode:%s ,  actionType:%s ,  displayOrder:%s ,  iconUrl:%s  ,resource:%s",
-				id, plantCode, menuCode, menuTitle, menuAction, parentCode, actionType, displayOrder, iconUrl,
-				resource);
+				" id:%s ,  plantCode:%s ,  menuCode:%s ,  menuTitle:%s ,  menuAction:%s ,  parentCode:%s ,  actionType:%s ,  displayOrder:%s ,  iconUrl:%s",
+				id, plantCode, menuCode, menuTitle, menuAction, parentCode, actionType, displayOrder, iconUrl
+				);
 	}
 }

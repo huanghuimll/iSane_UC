@@ -1,5 +1,6 @@
 package com.isane.in.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import com.isane.ragdoll.web.RagdollControllerImpl;
 import com.isane.in.entity.Menu;
 import com.isane.in.entity.MenuNode;
 import com.isane.in.entity.MenuNodeC;
+import com.isane.in.entity.Role;
 import com.isane.in.entity.User;
 import com.isane.in.service.MenuService;
 import com.isane.in.service.impl.MenuServiceImpl;
@@ -49,7 +51,8 @@ public class MenuController extends RagdollControllerImpl<Menu> {
 
 		return list;
 	}
-
+	
+	
 	@RequestMapping(value = MAPPING_API_FOR_UNITY3D + MAPPING_ASYNC_TREE, method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
 	public List<MenuNode> listTB(Menu menu, HttpServletRequest request) {
@@ -78,9 +81,10 @@ public class MenuController extends RagdollControllerImpl<Menu> {
 		return endList;
 	}
 	
+	//1、后台根据用户查询菜单
 	@RequestMapping(value = "menuByUser", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public List<MenuNode> listByUser(Menu menu, HttpServletRequest request) {
+	public List<MenuNode> menuByUser(Menu menu, HttpServletRequest request) {
 		MenuService menuService = new MenuServiceImpl();
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("USER");
@@ -104,31 +108,91 @@ public class MenuController extends RagdollControllerImpl<Menu> {
 
 		return endList;
 	}
-
-	@RequestMapping(value = MAPPING_API_FOR_UNITY3D + MAPPING_ASYNC_TREE + "/c", method = { RequestMethod.GET, RequestMethod.POST })
+	
+	//2、根据角色获取后台菜单(带复选框)
+	@RequestMapping(value = "menuByRoleC", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public List<MenuNodeC> listC(Menu menu, HttpServletRequest request) {
-		MenuService menuService = new MenuServiceImpl();
-		HttpSession session = request.getSession();
-		User user = (User) session.getAttribute("USER");
-		if (user == null) {
-			throw new RuntimeException("not user in session.");
-		} else {
-			menu.setPlantCode(user.getPlantCode());
+	public List<MenuNodeC> listByRoleC(Role role, int menuTypeId) {
+		List<MenuNodeC> list = new ArrayList<MenuNodeC>();
+		
+		if(role == null || role.getRoleCode() == null){
+			logger.error("param: role is null.");
+			return list;
 		}
-		if (menu.getParentCode() == null || menu.getParentCode().equals("")) {
-			menu.setParentCode("#");
+		
+		if(menuTypeId == 0){
+			logger.error("param: menuTypeId is 0.");
+			return list;
 		}
-		List<Menu> list = service.listCustom(menu, DaoConst.PAGE_DEFAULT_START, DaoConst.PAGE_DEFAULT_LIMIT,
-				"listAllMenuC");// sql中已经递归
-		list = menuService.getMList(list);
-		// 将menu结合转换成树形属性集合
-		List<MenuNodeC> mnList = menuService.getNodeListC(list);
-		// 将树形集合转化成有子父结构的集合(获取子菜单)
-		MenuNodeC mn = new MenuNodeC();
-		mn.setMenuCode("#");
-		List<MenuNodeC> endList = menuService.getChildMenuC(mnList, mn);
-
-		return endList;
-	}
+		
+		//1.查询出所有后台菜单
+		List<Menu> allList = service.list(new Menu(), DaoConst.PAGE_DEFAULT_START, DaoConst.PAGE_DEFAULT_LIMIT);
+		//2.查询出角色与后台菜单绑定的数据
+		Menu m = new Menu();
+		m.setRoleCode(role.getRoleCode());
+		m.setMenuTypeId(menuTypeId);
+		List<Menu> rmList = service.listCustom(m, DaoConst.PAGE_DEFAULT_START, DaoConst.PAGE_DEFAULT_LIMIT, "menuByRole");
+		//3.循环遍历1与2整合到一个集合中，并转化成具有复选框的树结构
+		list = this.getMenuNodesC(rmList, allList);
+		//4.转化成Ext树结构(递归)
+		MenuNodeC mnc = new MenuNodeC();
+		mnc.setMenuCode("#");
+		list = this.getChildMenuC(list, mnc);
+		return list;
+	}	
+	
+	/**
+	 * 获取角色菜单，带有复选框，并根据角色与菜单的绑定数据已经对复选框做出处理
+	 * @param rmList 角色与菜单绑定数据
+	 * @param list   所有菜单数据
+	 * @return       返回具有复选框的角色数据
+	 */
+	public List<MenuNodeC> getMenuNodesC(List<Menu> rmList, List<Menu> list) {
+		List<MenuNodeC> mnList = new ArrayList<MenuNodeC>();
+		//1、复选框的角色数据
+		for(Menu menu : list){
+			MenuNodeC c = new MenuNodeC();
+			c.copyFrom(menu);//关键步骤
+			for(Menu rm : rmList){
+				if(c.getMenuCode().equalsIgnoreCase(rm.getMenuCode())){
+					c.setChecked(true);
+					break;
+				}
+			}
+			mnList.add(c);
+		}
+		//2.将叶子节点设置成true
+		for (MenuNodeC menu : mnList) {
+			//1.给父类节点leaf赋值
+			for (MenuNodeC m : mnList) {
+				if (menu.getMenuCode().equalsIgnoreCase(m.getParentCode())) {
+					menu.setLeaf(false);
+					break;
+				}else {
+					menu.setLeaf(true);
+				}
+			}		
+		}
+		
+		return mnList;
+	}	
+	/**
+	 * 转化成Ext树结构
+	 * @param mnList
+	 * @param menuNode
+	 * @return
+	 */
+	public List<MenuNodeC> getChildMenuC(List<MenuNodeC> mnList, MenuNodeC menuNode) {
+		List<MenuNodeC> mndList = new ArrayList<MenuNodeC>();
+		for(MenuNodeC mn : mnList){
+			if (menuNode.getMenuCode().equalsIgnoreCase(mn.getParentCode()) ) {
+				mndList.add(mn);
+				//获取子菜单
+				List<MenuNodeC> childList = getChildMenuC(mnList, mn);
+				mn.setChildren(childList);
+			}
+		}
+		return mndList;
+	}	
+	
 }

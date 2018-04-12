@@ -1,18 +1,11 @@
 Ext.define('isane.controller.role.rolePanel', {
 	extend : 'Ext.app.Controller',
-	/*stores : ['role.Role','role.RoleUserR','role.RoleUserL','role.RoleMenuLTree','role.RoleMenuR', 'role.RoleNewsTypeTreeL','role.RoleNewsTypeTreeR',
-	          'role.ProjectTreeL', 'role.RoleProjectR'//,'role.RoleMenuLTreeAct', 'role.RoleMenuRAct'
-	          ],
-	models : ['Role','UserRole','RoleMenuLTree', 'RoleNewsTypeTree'],
-	views : ['role.rolePanel','role.roleSearch', 'role.roleList', 'role.roleForm',
-			 'role.RoleUserRelation','role.RoleUserSearchL','role.RoleUserListL','role.RoleUserSearchR','role.RoleUserListR',
-			 'role.RoleMenuRelation','role.RoleMenuLTree','role.RoleMenuRGrid', 'role.RoleNewsTypeRelation', 'role.RoleNewsTypeTreeL', 'role.RoleNewsTypeTreeR',
-			  'role.RoleMenuRGridAct', 'role.ProjectRelation', 'role.ProjectTreeL', 'role.ProjectGridR',
-			 'role.mergeForm'//'role.RoleMenuRelationAct', 'role.RoleMenuLTreeAct',
-			 ],*/
-	stores: ['role.Role', 'role.RoleUserL', 'role.RoleUserR'],
-	models: ['Role', 'RoleUser'],
-	views: ['role.rolePanel', 'role.roleList', 'role.roleForm', 'role.RoleUserRelation', 'role.RoleUserListL','role.RoleUserListR'],
+	stores: ['role.Role', 'role.RoleUserL', 'role.RoleUserR', 'role.RoleMenuTree'],
+	models: ['Role', 'RoleUser', 'RoleMenuTree'],
+	views: ['role.rolePanel', 'role.roleList', 'role.roleForm', 
+	        'role.RoleUserRelation', 'role.RoleUserListL','role.RoleUserListR',
+	        'role.RoleMenuTree'
+	        ],
 	utilWin: null,			 
 	init: function() {
 		//this.utilWin = Ext.create('isane.util.Win');
@@ -53,90 +46,22 @@ Ext.define('isane.controller.role.rolePanel', {
 			'role-RoleUserListR button[text=查询]':{
 				click: this.RoleUserSearchR
 			},
-			
-			/*
-			//角色与网站菜单
-			'role-RoleMenuLTree #role-RoleMenuLTree-ZS':{
+			//角色与后台菜单
+			'role-RoleMenuTree #role-RoleMenuTree-ZS':{
 				click: this.openAndClose
 			},
-			'role-RoleMenuLTree button[text=选取所有]':{
+			'role-RoleMenuTree button[text=选取所有]':{
 				click: this.selectAll
 			},
-			'role-RoleMenuLTree button[text=取消所有]':{
+			'role-RoleMenuTree button[text=取消所有]':{
 				click: this.removeAll
 			},
-			'role-RoleMenuLTree button[text=权限保存]':{
+			'role-RoleMenuTree button[text=权限保存]':{
 				click: this.menuSave
 			},
-			'role-RoleMenuLTree':{
+			'role-RoleMenuTree':{
 				checkchange: this.checkchange
-			},
-			'role-RoleMenuRGrid #role-RoleMenuRGrid-modifybt':{
-				click: this.roleMenuUpdate
-			},
-			//角色与资讯类型
-			'role-RoleNewsTypeRelation':{
-				beforerender: this.onBeforeRender
-			},
-			'role-RoleNewsTypeTreeL #role-RoleNewsTypeTreeL-ZS':{
-				click: this.openAndClose
-			},
-			'role-RoleNewsTypeTreeL button[text=选取所有]':{
-				click: this.selectAll_RoleNewsTypeTreeL
-			},
-			'role-RoleNewsTypeTreeL button[text=取消所有]':{
-				click: this.removeAll_RoleNewsTypeTreeL
-			},
-			'role-RoleNewsTypeTreeL button[text=权限保存]':{
-				click: this.menuSave_RoleNewsTypeTreeL
-			},
-			'role-RoleNewsTypeTreeL':{
-				checkchange: this.checkchange
-			},
-			'role-RoleNewsTypeTreeR #role-RoleNewsTypeTreeR-ZS':{
-				click: this.openAndClose
-			},*/
-			//角色与工作流菜单
-//			'role-RoleMenuLTreeAct #role-RoleMenuLTreeAct-ZS':{
-//				click: this.openAndClose
-//			},
-//			'role-RoleMenuLTreeAct button[text=选取所有]':{
-//				click: this.selectAll_Act
-//			},
-//			'role-RoleMenuLTreeAct button[text=取消所有]':{
-//				click: this.removeAll_Act
-//			},
-//			'role-RoleMenuLTreeAct button[text=权限保存]':{
-//				click: this.menuSave_Act
-//			},
-//			'role-RoleMenuLTreeAct':{
-//				checkchange: this.checkchange
-//			},
-//			'role-RoleMenuRGridAct #role-RoleMenuRGridAct-modifybt':{
-//				click: this.roleMenuUpdate_Act
-//			},
-			//角色与专题
-			/*'role-ProjectRelation':{
-				beforerender: this.onBeforeRender_project
-			},
-			'role-ProjectTreeL #role-RoleMenuLTreeAct-ZS':{
-				click: this.openAndClose
-			},
-			'role-ProjectTreeL':{
-				checkchange: this.checkchange
-			},			
-			'role-ProjectTreeL button[text=选取所有]':{
-				click: this.selectAll_ProjectTreeL
-			},
-			'role-ProjectTreeL button[text=取消所有]':{
-				click: this.removeAll_ProjectTreeL
-			},
-			'role-ProjectTreeL button[text=权限保存]':{
-				click: this.menuSave_ProjectTreeL
-			},
-			'role-ProjectGridR #role-ProjectGridR-modifybt':{
-				click: this.roleMenuUpdate
-			}	*/	
+			}
 		});
 	},
 
@@ -151,17 +76,11 @@ Ext.define('isane.controller.role.rolePanel', {
 		Ext.getCmp('role-roleList-editButton').setDisabled(false);
 		Ext.getCmp('role-roleList-removeButton').setDisabled(false);
 		//控制权限按钮
-		/*Ext.getCmp('role-RoleMenuLTree-saveQX').setDisabled(false);
-		Ext.getCmp('role-RoleMenuRGrid-modifybt').setDisabled(false);
-		Ext.getCmp('role-RoleNewsTypeTreeL-saveQX').setDisabled(false);
-		Ext.getCmp('role-ProjectTreeL-saveQX').setDisabled(false);//专题
-		Ext.getCmp('role-ProjectGridR-modifybt').setDisabled(false);//专题	
-*/		
+		Ext.getCmp('role-RoleMenuTree-saveQX').setDisabled(false);
+		
 		var roleCode = record.data.roleCode;	
 		Ext.getCmp("role-RoleUserListL-roleCode").setValue(roleCode);
 		Ext.getCmp("role-RoleUserListR-roleCode").setValue(roleCode);
-		
-		//var value1 = '{"roleId":"'+id+'"}';
 		
 		var btnL = Ext.getCmp('role-RoleUserListL-btn')
 		this.RoleUserSearchL(btnL);
@@ -169,28 +88,15 @@ Ext.define('isane.controller.role.rolePanel', {
 		var btnR = Ext.getCmp('role-RoleUserListR-btn')
 		this.RoleUserSearchR(btnR);
 		
-		/*
-		var RoleUserL=this.getStore('role.RoleUserL');
-		Ext.apply(RoleUserL.proxy.extraParams,{ jsonString: value1});
-		Ext.getCmp('RoleUserListLPaging-id').moveFirst();		
-		
-		var treeStore = this.getStore('role.RoleMenuLTree');
-		Ext.apply(treeStore.proxy.extraParams,{ jsonString: value2});
-		treeStore.reload();
-
-		var value3 = "{'roleId':"+id+",'typeId':1}";
-		var menuRStore = Ext.getStore('role.RoleMenuR');
-		Ext.apply(menuRStore.proxy.extraParams,{ jsonString: value3});
-		Ext.getCmp('role-RoleMenuRGrid-pagingAreaR').moveFirst();
-		//role<->newstype
-		var treeStore = this.getStore('role.RoleNewsTypeTreeL');
-		Ext.apply(treeStore.proxy.extraParams,{ jsonString: value1});
-		treeStore.reload();	
-		
-		var treeStore = this.getStore('role.RoleNewsTypeTreeR');
-		Ext.apply(treeStore.proxy.extraParams,{ jsonString: value1});
-		treeStore.reload();	*/
-				
+		var mr = {
+			roleCode: roleCode,
+			menuTypeId: 1
+		}
+		var rmt = Ext.getCmp('role-RoleMenuTree-id');
+		var rmtStore = rmt.getStore();
+		Ext.apply(rmtStore.proxy.extraParams, mr);
+		rmtStore.reload();
+		rmtStore.getRootNode().set('expanded', true);
 	},	
 	
 	// 弹出增加窗口
@@ -346,7 +252,7 @@ Ext.define('isane.controller.role.rolePanel', {
 		jsonString = Ext.encode(jsonString);
 		var RoleUserR = this.getStore('role.RoleUserR');
 		var RoleUserL = this.getStore('role.RoleUserL');
-		var RoleMenuLTree = this.getStore('role.RoleMenuLTree');
+		var RoleMenuTree = this.getStore('role.RoleMenuTree');
 		var RoleMenuR = this.getStore('role.RoleMenuR');
 		Ext.Ajax.request({
 			scope: this,
@@ -360,7 +266,7 @@ Ext.define('isane.controller.role.rolePanel', {
 		        var flag  = result.success;
 		        if(flag){
 		        	store.remove(record);
-		        	//初始化数据:'role.RoleUserR','role.RoleUserL','role.RoleMenuLTree','role.RoleMenuR','role.RoleDevicePicL','role.RoleDevicePicR'
+		        	//初始化数据:'role.RoleUserR','role.RoleUserL','role.RoleMenuTree','role.RoleMenuR','role.RoleDevicePicL','role.RoleDevicePicR'
 		        	RoleUserR.removeAll();
 		        }else{	        	
 		        	if(result.forceDelete){
@@ -378,6 +284,7 @@ Ext.define('isane.controller.role.rolePanel', {
 		    }
 		});			
 	},*/
+	
 	//右下角收缩控制
     showOrHideroleList: function(button) {
         Ext.getCmp('role-RoleUserRelation-west').toggleCollapse();
@@ -438,7 +345,6 @@ Ext.define('isane.controller.role.rolePanel', {
         for(var i = 0;i < data.records.length; i++){                       
             values_1.push(data.records[i].data);
         };  
-        
         //console.log(values_1);
     	//return;
         Ext.Ajax.request({
@@ -562,7 +468,8 @@ Ext.define('isane.controller.role.rolePanel', {
 	},
 	
 	selectAll:function(){
-	   var rootnode = this.getStore('role.RoleMenuLTree').getRootNode();
+	   var tree = Ext.getCmp('role-RoleMenuTree-id');
+	   var rootnode = tree.getStore().getRootNode();
 	   rootnode.set('checked',true);
 	   var treechecktrue=function(node){
 		   if(node.hasChildNodes()){
@@ -574,21 +481,10 @@ Ext.define('isane.controller.role.rolePanel', {
 	   };
 	   treechecktrue(rootnode);		
 	},
-	selectAll_RoleNewsTypeTreeL:function(){
-	   var rootnode = this.getStore('role.RoleNewsTypeTreeL').getRootNode();
-	   rootnode.set('checked',true);
-	   var treechecktrue=function(node){
-		   if(node.hasChildNodes()){
-			   node.eachChild(function(child){		                    	    		
-				   child.set('checked',true);
-				   treechecktrue(child);		                    	    			   
-			   });
-		   }
-	   };
-	   treechecktrue(rootnode);		
-	},
+	
 	removeAll:function(){
-		   var rootnode = this.getStore('role.RoleMenuLTree').getRootNode();
+		   var tree = Ext.getCmp('role-RoleMenuTree-id');
+		   var rootnode = tree.getStore().getRootNode();
 		   rootnode.set('checked', false);
 //		   rootnode.checked = false;
 		   var treechecktrue=function(node){
@@ -601,24 +497,10 @@ Ext.define('isane.controller.role.rolePanel', {
 			   }
 		   };
 		   treechecktrue(rootnode);		
-		},	
-	removeAll_RoleNewsTypeTreeL:function(){
-	   var rootnode = this.getStore('role.RoleNewsTypeTreeL').getRootNode();
-	   rootnode.set('checked', false);
-//	   rootnode.checked = false;
-	   var treechecktrue=function(node){
-		   if(node.hasChildNodes()){
-			   node.eachChild(function(child){		                    	    		
-				   child.set('checked', false);
-//				   child.checked = false;
-				   treechecktrue(child);		                    	    			   
-			   });
-		   }
-	   };
-	   treechecktrue(rootnode);		
-	},
+	},	
+
 	menuSave:function(){
-	   var records = Ext.getCmp('role-RoleMenuLTree-id').getChecked();
+	   var records = Ext.getCmp('role-RoleMenuTree-id').getChecked();
 	   var values_1 = [];
 	   for(var i = 0;i < records.length; i++){  
 			if(records[i].data.id=='root'){
@@ -652,206 +534,8 @@ Ext.define('isane.controller.role.rolePanel', {
     	    }
     	});		
 	},
-	menuSave_RoleNewsTypeTreeL:function(){
-	   var records = Ext.getCmp('role-RoleNewsTypeTreeL-id').getChecked();
-	   var values_1 = [];
-	   for(var i = 0;i < records.length; i++){  
-			if(records[i].data.id=='root'){
-				continue;
-			}
-	    	record = "{'id':'"+records[i].data.id+"'}";
-	    	values_1.push(record);
-       };
-	   Ext.Ajax.request({
-	   		scope: this,
-    	    url: 'addRoleMenu',
-    	    params: {
-		        jsonString:'['+values_1+']',
-		        roleId:Ext.getCmp("role-RoleUserSearchL-roleId").getValue(),
-		        typeId: 2 //1是菜单2是资讯
-		    },
-    	    success: function(response){		       		                    	    	
-    	    	var obj = Ext.decode(response.responseText);
-                if(!obj.success) { 
-//                	Ext.Msg.alert("系统提示！","保存失败！");
-                	Ext.example.msg("系统提示！","保存失败！");
-                }
-                else {
-                	Ext.Msg.alert("系统提示！","保存成功！");
-                	var storeL = this.getStore('role.RoleNewsTypeTreeR');
-                	storeL.reload();
-                }
-    	    },
-    	    failure: function(){
-    	    	Ext.example.msg("系统提示！","保存失败！");
-    	    }
-    	});		
-	},
-    roleMenuUpdate: function(bt){
-		var grid = bt.ownerCt.ownerCt;
-		var store = grid.getStore();
-		var records = []; 
-		records = store.getModifiedRecords();
-		if(records.length <= 0){
-			Ext.MessageBox.show({
-				title : '系统提示',
-				msg : '设置没有改动!',
-				buttons : Ext.MessageBox.OK,
-				icon: Ext.MessageBox.WARNING
-			});
-			return;			
-		}
-		var grid = Ext.getCmp('role-roleList-id');
-		var items = grid.getSelectionModel().getSelection();
-		var flag = Ext.create('isane.util.Win').onWin(items);
-		if(!flag){return;};		
-		var item = items[0];
-		var roleId = item.data.id;
-		var json = '[';
-		for(var i = 0; i < records.length; i++){
-			var record = records[i];
-			var data = record.data;
-			var id = data.id;
-			var isAdd = this.changeInt(data.isAdd);
-			var isDelete = this.changeInt(data.isDelete);
-			var isModify = this.changeInt(data.isModify);
-			var isQuery = this.changeInt(data.isQuery);
-			var isSpecial = this.changeInt(data.isSpecial);	
-			if(i!=records.length-1){
-				json = json + '{id:'+id+',roleId:'+roleId+',isAdd:'+isAdd+',isDelete:'+isDelete+',isModify:'+isModify+',isQuery:'+isQuery+',isSpecial:'+isSpecial+'},';
-			}else{
-				json = json + '{id:'+id+',roleId:'+roleId+',isAdd:'+isAdd+',isDelete:'+isDelete+',isModify:'+isModify+',isQuery:'+isQuery+',isSpecial:'+isSpecial+'}]';
-			}
-		};	
-		Ext.Ajax.request({
-			url: 'roleMenuUpdate',
-			params: {jsonString:json },
-			success: function(response){
-				var result = response.responseText;
-				var value = Ext.decode(result);
-				Ext.Msg.alert('系统信息！',value.message);
-//				grid.getStore().reload();
-				bt.ownerCt.ownerCt.getStore().commitChanges();
-			},
-			failure: function(response){
-				Ext.Msg.alert('系统信息！','访问出错！');
-			}
-		});
-    },
 	//角色与设备图
-    devicedropL: function(node, data, dropRec, dropPosition) {
-        var sr = this.getStore('role.RoleDevicePicR');
-        var sm = this.getStore('role.RoleDevicePicL');
-        var values_1 = [];
-        for(var i = 0;i < data.records.length; i++){                       
-            record = Ext.encode(data.records[i].data);
-            values_1.push(record);
-        };
-        var url = sm.proxy.api.destroy;
-        Ext.Ajax.request({
-        	scope: this,
-            timeout: 5000,
-            url: url,
-            params: {
-                jsonString: '['+values_1+']'
-            },
-            success: function(response){
-                var obj = Ext.decode(response.responseText);
-                    if(!obj.success) {
-//                        this.deleteFromUserRolesFailure(sm, sr, data.records);
-                    }
-                    else {
-//                        GLSG.ux.StoreUtil.refreshPagingToolbar("role-pagingAreaR",0);
-//                        GLSG.ux.StoreUtil.refreshPagingToolbar("role-pagingAreaL",1);
-                        sm.commitChanges();
-                        sr.commitChanges();
-                    }
-                    //刷新store
-                    sr.reload();
-            },
-            failure: function() {
-//                this.deleteFromUserRolesFailure(sm, sr, data.records);
-            }
-      	});
-    },
-
-    devicedropR: function(node, data, dropRec, dropPosition) {
-        var sr = this.getStore('role.RoleDevicePicR');
-        var sm = this.getStore('role.RoleDevicePicL');
-        //获取roleId;
-        var records = Ext.getCmp('role-roleList-id').getSelectionModel().getSelection();
-        if(records.length == 0 ){
-        	return;
-        }
-        var roleId = records[0].data.id;
-        var values_1 = [];
-        for(var i = 0;i < data.records.length; i++){ 
-        	data.records[i].set('roleId', roleId);
-        	data.records[i].set('typeId', 2);
-            record = Ext.encode(data.records[i].data);
-            values_1.push(record);
-        }; 
-        var url = sr.proxy.api.create;
-        Ext.Ajax.request({
-            url: url,
-            scope: this,
-            timeout: 5000,
-            params: {
-                jsonString:'['+values_1+']'
-            },
-            success: function(response){
-                var obj = Ext.decode(response.responseText);
-                if(!obj.success) { 
-//                        this.addToUserRolesFailure(sm, sr, data.records);
-                }
-                else {
-//                        GLSG.ux.StoreUtil.refreshPagingToolbar("role-pagingAreaR",1);
-//                        GLSG.ux.StoreUtil.refreshPagingToolbar("role-pagingAreaL",0);
-                    sm.commitChanges();
-                    sr.commitChanges();
-                }
-                sm.reload();
-            },
-            failure: function(){
-               this.addToUserRolesFailure(sm, sr, data.records);
-            }
-          
-        });
-    },
-    
-    searchBtL: function(btn){
-        var form = btn.up('form');
-        var records = Ext.getCmp('role-roleList-id').getSelectionModel().getSelection();
-        if(records.length == 0 ) return;    
-        Ext.getCmp('role-RoleDevicePicSearchL-roleId').setValue(records[0].data.id);
-        Ext.getCmp('role-RoleDevicePicSearchL-typeId').setValue(2);
-        if(form.getValues().roleId == "") return;
-        var values = Ext.encode(form.getValues());  
-        var storeL=this.getStore('role.RoleDevicePicL');
-        Ext.apply(storeL.proxy.extraParams,{ jsonString: values}); 
-        Ext.getCmp('RoleDevicePicListL-page-id').moveFirst();     	
-    },
-    
-    searchBtR: function(btn){
-        var form = btn.up('form');
-        var records = Ext.getCmp('role-roleList-id').getSelectionModel().getSelection();
-        if(records.length == 0 ) return;    
-        Ext.getCmp('role-RoleDevicePicSearchR-roleId').setValue(records[0].data.id);
-        Ext.getCmp('role-RoleDevicePicSearchR-typeId').setValue(2);
-        if(form.getValues().roleId == "") return;
-        var values = Ext.encode(form.getValues());  
-        var storeL=this.getStore('role.RoleDevicePicR');
-        Ext.apply(storeL.proxy.extraParams,{ jsonString: values}); 
-        Ext.getCmp('RoleDevicePicListR-page-id').moveFirst();     	
-    },
-    
-    RoleAreaL_SelectAll: function(){
-    	Ext.getCmp('role-RoleAreaL-id').getSelectionModel().selectAll();
-    },
-    RoleAreaR_SelectAll: function(){
-    	Ext.getCmp('role-RoleAreaR-id').getSelectionModel().selectAll();
-    	
-    },
+   
     deleteFromUserRolesFailure: function(storeRole, storeRelation, records) {
         storeRelation.add(records);
         storeRole.remove(records);
@@ -885,222 +569,5 @@ Ext.define('isane.controller.role.rolePanel', {
     		tree.collapseAll();
     		btn.setText("展开");
     	}
-    },
-    
-	RoleDevicePicListL: function(){
-		Ext.getCmp('role-RoleDevicePicListL-id').getSelectionModel().selectAll();
-	},
-	
-	RoleDevicePicListR: function(){
-		Ext.getCmp('role-RoleDevicePicListR-id').getSelectionModel().selectAll();
-	},
-	onBeforeRender: function(){
-		var own = Ext.getCmp('role-RoleNewsTypeTreeL-id');
-		var storeTre = own.getStore();
-		Ext.apply(storeTre.proxy.extraParams, {});
-		storeTre.load();
-		storeTre.getRootNode().set('expanded', true);
-		
-		var own = Ext.getCmp('role-RoleNewsTypeTreeR-id');
-		var storeTre = own.getStore();
-		Ext.apply(storeTre.proxy.extraParams, {});
-		storeTre.load();
-		storeTre.getRootNode().set('expanded', true);
-	},
-	//角色与网站菜单
-	selectAll_Act:function(){
-	   var rootnode = this.getStore('role.RoleMenuLTreeAct').getRootNode();
-	   rootnode.set('checked',true);
-	   var treechecktrue=function(node){
-		   if(node.hasChildNodes()){
-			   node.eachChild(function(child){		                    	    		
-				   child.set('checked',true);
-				   treechecktrue(child);		                    	    			   
-			   });
-		   }
-	   };
-	   treechecktrue(rootnode);		
-	},
-	removeAll_Act: function(){
-	   var rootnode = this.getStore('role.RoleMenuLTreeAct').getRootNode();
-	   rootnode.set('checked',false);
-	   var treechecktrue=function(node){
-		   if(node.hasChildNodes()){
-			   node.eachChild(function(child){		                    	    		
-				   child.set('checked',false);
-				   treechecktrue(child);		                    	    			   
-			   });
-		   }
-	   };
-	   treechecktrue(rootnode);		
-	},
-	menuSave_Act: function(){
-	   var records = Ext.getCmp('role-roleList-id').getSelectionModel().getSelection();
-	   var roleId = records[0].data.id;
-	   var records = Ext.getCmp('role-RoleMenuLTreeAct-id').getChecked();
-	   var values_1 = [];
-	   for(var i = 0;i < records.length; i++){  
-			if(records[i].data.id=='root'){
-				continue;
-			}
-	    	record = "{'id':'"+records[i].data.id+"'}";
-	    	values_1.push(record);
-       };
-	   Ext.Ajax.request({
-	   		scope: this,
-    	    url: isane.util.URL.URLACT+'addRoleMenu',
-    	    params: {
-		        jsonString:'['+values_1+']',
-		        roleId: roleId,
-		        typeId: 1 //1是菜单2是资讯
-		    },
-    	    success: function(response){		       		                    	    	
-    	    	var obj = Ext.decode(response.responseText);
-                if(!obj.success) { 
-                	Ext.example.msg("系统提示！","保存失败！");
-                }
-                else {
-                	Ext.Msg.alert("系统提示！","保存成功！");
-                	var storeL = this.getStore('role.RoleMenuRAct');
-                	storeL.reload();
-                }
-    	    },
-    	    failure: function(){
-    	    	Ext.example.msg("系统提示！","保存失败！");
-    	    }
-    	});		
-	},	
-    roleMenuUpdate_Act: function(bt){
-		var grid = bt.ownerCt.ownerCt;
-		var store = grid.getStore();
-		var records = []; 
-		records = store.getModifiedRecords();
-		if(records.length <= 0){
-			Ext.MessageBox.show({
-				title : '系统提示',
-				msg : '设置没有改动!',
-				buttons : Ext.MessageBox.OK,
-				icon: Ext.MessageBox.WARNING
-			});
-			return;			
-		}
-		var grid = Ext.getCmp('role-roleList-id');
-		var items = grid.getSelectionModel().getSelection();
-		var flag = Ext.create('isane.util.Win').onWin(items);
-		if(!flag){return;};		
-		var item = items[0];
-		var roleId = item.data.id;
-		var json = '[';
-		for(var i = 0; i < records.length; i++){
-			var record = records[i];
-			var data = record.data;
-			var id = data.id;
-			var isAdd = this.changeInt(data.isAdd);
-			var isDelete = this.changeInt(data.isDelete);
-			var isModify = this.changeInt(data.isModify);
-			var isQuery = this.changeInt(data.isQuery);
-			var isSpecial = this.changeInt(data.isSpecial);	
-			if(i!=records.length-1){
-				json = json + '{id:'+id+',roleId:'+roleId+',isAdd:'+isAdd+',isDelete:'+isDelete+',isModify:'+isModify+',isQuery:'+isQuery+',isSpecial:'+isSpecial+'},';
-			}else{
-				json = json + '{id:'+id+',roleId:'+roleId+',isAdd:'+isAdd+',isDelete:'+isDelete+',isModify:'+isModify+',isQuery:'+isQuery+',isSpecial:'+isSpecial+'}]';
-			}
-		};	
-		Ext.Ajax.request({
-			url: isane.util.URL.URLACT+'roleMenuUpdate',
-			params: {jsonString:json },
-			success: function(response){
-				var result = response.responseText;
-				var value = Ext.decode(result);
-				Ext.Msg.alert('系统信息！',value.message);
-//				grid.getStore().reload();
-				bt.ownerCt.ownerCt.getStore().commitChanges();
-			},
-			failure: function(response){
-				Ext.Msg.alert('系统信息！','访问出错！');
-			}
-		});
-    },
-    //-----------------------角色与专题资讯-----------------------------------------------
-	onBeforeRender_project: function(){
-		var own = Ext.getCmp('role-ProjectTreeL-id');
-		var storeTre = own.getStore();
-		Ext.apply(storeTre.proxy.extraParams, {});
-		storeTre.load();
-		storeTre.getRootNode().set('expanded', true);
-		
-//		var own = Ext.getCmp('role-RoleNewsTypeTreeR-id');
-//		var storeTre = own.getStore();
-//		Ext.apply(storeTre.proxy.extraParams, {});
-//		storeTre.load();
-//		storeTre.getRootNode().set('expanded', true);
-	}, 
-	selectAll_ProjectTreeL:function(){
-	   var treeL = Ext.getCmp('role-ProjectTreeL-id');
-	   var storeL = treeL.getStore();
-	   var rootNode = storeL.getRootNode();
-	   rootNode.set('checked',true);
-	   var treechecktrue=function(node){
-		   if(node.hasChildNodes()){
-			   node.eachChild(function(child){		                    	    		
-				   child.set('checked',true);
-				   treechecktrue(child);		                    	    			   
-			   });
-		   }
-	   };
-	   treechecktrue(rootNode);		
-	},	
-	removeAll_ProjectTreeL: function(){
-	   var treeL = Ext.getCmp('role-ProjectTreeL-id');
-	   var storeL = treeL.getStore();
-	   var rootNode = storeL.getRootNode();		
-	   rootNode.set('checked',false);
-	   var treechecktrue=function(node){
-		   if(node.hasChildNodes()){
-			   node.eachChild(function(child){		                    	    		
-				   child.set('checked',false);
-				   treechecktrue(child);		                    	    			   
-			   });
-		   }
-	   };
-	   treechecktrue(rootNode);		
-	},	
-	menuSave_ProjectTreeL: function(){
-	   var records = Ext.getCmp('role-roleList-id').getSelectionModel().getSelection();
-	   var roleId = records[0].data.id;
-	   var records = Ext.getCmp('role-ProjectTreeL-id').getChecked();
-	   var values_1 = [];
-	   for(var i = 0;i < records.length; i++){  
-			if(records[i].data.id =='root' || records[i].data.id <= 0){
-				continue;
-			}
-	    	record = "{'id':'"+records[i].data.id+"'}";
-	    	values_1.push(record);
-       };
-//       console.log(values_1);
-	   Ext.Ajax.request({
-	   		scope: this,
-    	    url:'addRoleProject',
-    	    params: {
-		        jsonString:'['+values_1+']',
-		        roleId: roleId,
-		        typeId: 3 //1是菜单2是资讯3专题
-		    },
-    	    success: function(response){		       		                    	    	
-    	    	var obj = Ext.decode(response.responseText);
-                if(!obj.success) { 
-                	Ext.example.msg("系统提示！","保存失败！");
-                }
-                else {
-                	Ext.Msg.alert("系统提示！","保存成功！");
-                	var treeR = Ext.getCmp('role-ProjectGridR-id');
-                	var storeR = treeR.getStoe();
-                	treeR.reload();
-                }
-    	    },
-    	    failure: function(){
-    	    	Ext.example.msg("系统提示！","保存失败！");
-    	    }
-    	});		
-	}
+    }
 });
