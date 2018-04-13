@@ -30,6 +30,7 @@ public class AQGLController extends RagdollControllerImpl<AQGL> {
 		if (pageList.size() == 0 || pageList == null) {
 			return null;
 		}
+		
 		List<AQGL> insertList = pageList.stream().filter(c -> c.getId() == 0).collect(Collectors.toList());
 		List<AQGL> updateList = pageList.stream().filter(c -> c.getId() > 0).collect(Collectors.toList());
 

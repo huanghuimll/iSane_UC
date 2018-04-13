@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.isane.ragdoll.persistent.entity.ListEntity;
 import com.isane.ragdoll.persistent.entity.Operation;
+import com.isane.ragdoll.persistent.type.DaoConst;
 import com.isane.ragdoll.service.RagdollService;
 import com.isane.ragdoll.web.Errors;
 import com.isane.ragdoll.web.RagdollControllerImpl;
@@ -42,7 +43,7 @@ public class RoleUserController extends RagdollControllerImpl<RoleUser> {
 		
 		RagdollService<RoleUser> rus = getService();
 		
-		List<RoleUser> list = rus.listCustom(ru, 0, 100000, "queryUsersNotIn");
+		List<RoleUser> list = rus.listCustom(ru, DaoConst.PAGE_DEFAULT_START, DaoConst.PAGE_DEFAULT_LIMIT, "queryUsersNotIn");
 		if(list != null){
 			le.setList(list);
 		}
@@ -67,7 +68,7 @@ public class RoleUserController extends RagdollControllerImpl<RoleUser> {
 		
 		RagdollService<RoleUser> rus = getService();
 		
-		List<RoleUser> list = rus.listCustom(ru, 0, 100000, "queryUsersIn");
+		List<RoleUser> list = rus.listCustom(ru, DaoConst.PAGE_DEFAULT_START, DaoConst.PAGE_DEFAULT_LIMIT, "queryUsersIn");
 		if(list != null){
 			le.setList(list);
 		}
@@ -84,7 +85,7 @@ public class RoleUserController extends RagdollControllerImpl<RoleUser> {
 	@ResponseBody
 	public Operation addRoleUsers(@RequestBody List<RoleUser> list) {
 		//System.out.println(list);
-		if (list.size() == 0 || list == null) {
+		if (list == null || list.size() == 0) {
 			return null;
 		}
 		int total = 0;

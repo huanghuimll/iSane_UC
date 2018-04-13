@@ -10,7 +10,7 @@
 			<if test="childCode != null">
 				and childCode = #{childCode}
 			</if>
-			<if test="typeId != null">
+			<if test="typeId != 0">
 				and typeId = #{typeId}
 			</if>
 			<if test="isAdd != 0">

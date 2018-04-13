@@ -500,33 +500,48 @@ Ext.define('isane.controller.role.rolePanel', {
 	},	
 
 	menuSave:function(){
-	   var records = Ext.getCmp('role-RoleMenuTree-id').getChecked();
-	   var values_1 = [];
+	   //1、获取所选角色编码
+	   var roleGrid = Ext.getCmp('role-roleList-id');
+	   var models = roleGrid.getSelectionModel().getSelection();
+	   var roleCode = models[0].data.roleCode;
+	   //2、获取已经勾选的节点，并放到数组中
+	   var menuTree = Ext.getCmp('role-RoleMenuTree-id');
+	   var store = menuTree.getStore();
+	   var records = menuTree.getChecked();
+	   var values = [];
 	   for(var i = 0;i < records.length; i++){  
 			if(records[i].data.id=='root'){
 				continue;
 			}
-	    	record = "{'id':'"+records[i].data.id+"'}";
-	    	values_1.push(record);
+			var menuCode = records[i].data.menuCode;
+			var record =  Ext.create('isane.model.RolePermission',{
+				childCode: menuCode,
+				roleCode: roleCode,
+				typeId: 1,
+				isAdd: 1,
+				isDelete: 1,
+				isModify: 1,
+				isQuery: 1,
+				isSpecial: 1
+			})
+	    	values.push(record.data);
        };
+       console.log(values);
+       console.log(Ext.encode(values));
+       //return;
 	   Ext.Ajax.request({
-	   		scope: this,
-    	    url: 'addRoleMenu',
-    	    params: {
-		        jsonString:'['+values_1+']',
-		        roleId:Ext.getCmp("role-RoleUserSearchL-roleId").getValue(),
-		        typeId: 1 //1是菜单2是资讯
-		    },
+	       	scope: this,
+	        timeout: 5000,
+	        url: 'api/RolePermission/addAndRemove',
+	        jsonData: Ext.encode(values),
     	    success: function(response){		       		                    	    	
     	    	var obj = Ext.decode(response.responseText);
                 if(!obj.success) { 
-//                	Ext.Msg.alert("系统提示！","保存失败！");
-                	Ext.example.msg("系统提示！","保存失败！");
+                	Ext.example.msg("系统提示！",obj.message);
                 }
                 else {
-                	Ext.Msg.alert("系统提示！","保存成功！");
-                	var storeL = this.getStore('role.RoleMenuR');
-                	storeL.reload();
+                	Ext.example.msg("系统提示！",obj.message);
+                	store.reload();
                 }
     	    },
     	    failure: function(){

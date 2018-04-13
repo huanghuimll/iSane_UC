@@ -10,18 +10,18 @@ Ext.define('isane.view.role.RoleMenuTree',{
 		iconCls: 'treeBt',
 		id: 'role-RoleMenuTree-ZS',
 		text: '展开'
-	},
+	},'-',
 	{
 	   width: 80,
 	   iconCls: 'list_selectAll',
 	   text:'选取所有'	
-	},
+	},'-',
 	{
 	   xtype:'button',
 	   width: 80,
 	   text:'取消所有',
 	   iconCls: 'list_deleteAll'		
-	},
+	},'-',
 	{
 	   xtype:'button',
 	   width: 80,
