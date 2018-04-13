@@ -25,7 +25,7 @@ Ext.define('isane.controller.cw_zb.zbPanel', {
 			'cw_zb-zbListN actioncolumn':{
 				saveSingle: this.singleSave
 			},				
-			//cw-north
+			//cw-center
 			'cw_zb-zbListC':{
 				//afterrender:this.afterrenderC
 			},	

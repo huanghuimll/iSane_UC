@@ -2,19 +2,26 @@ Ext.define('isane.controller.dl_fdl.fdlPanel', {
 	extend : 'Ext.app.Controller',
 	stores : ['original.original'],
 	models : ['original'],	
-	views : ['dl_fdl.fdlPanel', 'dl_fdl.fdlListN', 'dl_fdl.fdlListC', 'dl_fdl.fdlImportForm'],
+	views : ['dl_fdl.fdlPanel', 'dl_fdl.fdlWest', 'dl_fdl.fdlListN', 'dl_fdl.fdlListC', 'dl_fdl.fdlImportForm'],
 	init: function() {
 		this.control({
+			//cw-west
+			'dl_fdl-fdlPanel':{
+				beforerender: this.onBeforeRender
+			},				
+			'dl_fdl-fdlWest':{
+    			itemclick: this.itemclick_dt
+    		},
+    		//cw-north
 			'dl_fdl-fdlListN':{
-				afterrender:this.afterrenderN
-				//itemclick: this.itemclick
+				//afterrender:this.afterrenderN
 			},	
 			'dl_fdl-fdlListN button[text=搜索]':{
 				click:this.click_searchN
-			},	
+			},
+			//cw-center
 			'dl_fdl-fdlListC':{
-				afterrender:this.afterrenderC
-				//itemclick: this.itemclick
+				//afterrender:this.afterrenderC
 			},	
 			'dl_fdl-fdlListC button[text=搜索]':{
 				click:this.click_searchC
@@ -37,46 +44,94 @@ Ext.define('isane.controller.dl_fdl.fdlPanel', {
 		});
 	},
 	
-	afterrenderN: function(panel){
-		//var storeDate  = Ext.getCmp('dl_fdl-fdlListN-storeDate').getValue();
+	onBeforeRender: function(item){
+		var own = Ext.getCmp('dl_fdl-fdlWest-id');
+		var storeTre = own.getStore();
+		Ext.apply(storeTre.proxy.extraParams, {uid:0});
+		storeTre.load();
+		storeTre.getRootNode().set('expanded', true);
+	},
+	
+    itemclick_dt: function(own, record, item, index, e, eOpts){
+    	this.record = record; 
+		if(!record.data.leaf){
+			return;
+		}
+		//console.log(record.data);
+		var organCode = record.data.organCode;
+		//north
+		Ext.getCmp('dl_fdl-fdlListN-organCode').setValue(organCode);
+		Ext.getCmp('dl_fdl-fdlListN-searchButton').setDisabled(false);
+		Ext.getCmp('dl_fdl-fdlListN-saveButton').setDisabled(false);		
+		Ext.getCmp('dl_fdl-fdlListN-refresh').setDisabled(false);	
+		
 		var storeY = Ext.getCmp('dl_fdl-fdlListN-storeY').getValue();
 		var storeM = Ext.getCmp('dl_fdl-fdlListN-storeM').getValue();
+		var storeD = Ext.getCmp('dl_fdl-fdlListN-storeD').getValue();	
 		var dateType = Ext.getCmp('dl_fdl-fdlListN-dateType').getValue();
 		
+		var grid = Ext.getCmp('dl_fdl-fdlListN-id');
 		var obt = {
-				plantCode: QJ_PlantCode,
-				//storeDate: Ext.Date.format(storeDate, 'Y-m-d'),
-				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM),
-				dataType: 'AQ',
+				plantCode: organCode,
+				dataType: 'DL-PAGE',
+				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
 				dateType: dateType
-			};			
+		};			
+		this.afterrender(grid, obt);
+		//center
+		Ext.getCmp('dl_fdl-fdlListC-organCode').setValue(organCode);
+		Ext.getCmp('dl_fdl-fdlListC-searchButton').setDisabled(false);
+		Ext.getCmp('dl_fdl-fdlListC-saveButton').setDisabled(false);		
+		Ext.getCmp('dl_fdl-fdlListC-importButton').setDisabled(false);		
+		Ext.getCmp('dl_fdl-fdlListC-refresh').setDisabled(false);	
+		
+		var dateType = Ext.getCmp('dl_fdl-fdlListC-dateType').getValue();
+		
+		var grid = Ext.getCmp('dl_fdl-fdlListC-id');
+		var obt = {
+				plantCode: organCode,
+				dataType: 'DL-XLS',
+				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
+				dateType: dateType
+		};	
+		
+		this.afterrender(grid, obt);
+    },	
+    
+	afterrender: function(panel, obt){
 		var store = panel.getStore();	
 		Ext.apply(store.proxy.extraParams, obt);
 		store.load();
-	},
+	}, 
 	
 	click_searchN: function(btn){
-		this.afterrenderN(btn.up('grid'));
-	},
-	
-	afterrenderC: function(panel){
-		var storeY = Ext.getCmp('dl_fdl-fdlListC-storeY').getValue();
-		var storeM = Ext.getCmp('dl_fdl-fdlListC-storeM').getValue();
-		var dateType = Ext.getCmp('dl_fdl-fdlListC-dateType').getValue();	
-		
+		var storeY = Ext.getCmp('dl_fdl-fdlListN-storeY').getValue();
+		var storeM = Ext.getCmp('dl_fdl-fdlListN-storeM').getValue();
+		var storeD = Ext.getCmp('dl_fdl-fdlListN-storeD').getValue();
+		var organCode = Ext.getCmp('dl_fdl-fdlListN-organCode').getValue();
+		var dateType = Ext.getCmp('dl_fdl-fdlListN-dateType').getValue();
 		var obt = {
-				plantCode: QJ_PlantCode,
-				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM),
-				dataType: 'AQ',
+				plantCode: organCode,
+				dataType: 'DL-PAGE',
+				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
 				dateType: dateType
-		};		
-		var store = panel.getStore();	
-		Ext.apply(store.proxy.extraParams, obt);
-		store.load();
-	},
+		};			
+		this.afterrender(btn.up('grid'), obt);
+	},	
 	
 	click_searchC: function(btn){
-		this.afterrenderC(btn.up('grid'));
+		var storeY = Ext.getCmp('dl_fdl-fdlListC-storeY').getValue();
+		var storeM = Ext.getCmp('dl_fdl-fdlListC-storeM').getValue();
+		var storeD = Ext.getCmp('dl_fdl-fdlListC-storeD').getValue();
+		var organCode = Ext.getCmp('dl_fdl-fdlListC-organCode').getValue();
+		var dateType = Ext.getCmp('dl_fdl-fdlListC-dateType').getValue();
+		var obt = {
+				plantCode: organCode,
+				dataType: 'DL-XLS',
+				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
+				dateType: dateType
+		};			
+		this.afterrender(btn.up('grid'), obt);
 	},	
 	
 	itemclick: function(grid){

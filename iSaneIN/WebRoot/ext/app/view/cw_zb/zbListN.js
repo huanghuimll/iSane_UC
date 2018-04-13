@@ -65,7 +65,7 @@ Ext.define('isane.view.cw_zb.zbListN',{
 		//readOnly: true,
 		editable: false,
 		emptyText: '--请选择--'
-	},'-',			
+	},			
 	{
 		text: '搜索',
 	    id: 'cw_zb-zbListN-searchButton',

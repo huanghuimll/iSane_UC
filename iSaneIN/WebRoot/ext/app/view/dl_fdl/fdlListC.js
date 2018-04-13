@@ -14,12 +14,12 @@ Ext.define('isane.view.dl_fdl.fdlListC',{
 	'所属单位:',	      
 	{
 		xtype: 'textfield',
-		name: 'plantCode',
+		name: 'organCode',
+		id: 'dl_fdl-fdlListC-organCode',
 		emptyText: '所属单位..',
-		value: 'GZFGS',
 		readOnly: true,
 		fieldStyle: 'color:gray'
-	},'-',
+	},'-',	
 	'日期:',
 	{
 		xtype:'numberfield',
@@ -56,17 +56,16 @@ Ext.define('isane.view.dl_fdl.fdlListC',{
 		editable: false,
 		emptyText: '--请选择--'
 	},'-',		
-//	'时间:',
-//	{
-//		xtype: 'datefield',
-//		name: 'storeDate',
-//		format: 'Y-m-d',
-//		id: 'dl_fdl-fdlListC-storeDate',
-//		value: new Date(),
-//        minValue: '2016/01/01',
-//        //disabledDays: [0, 6],		
-//		emptyText: '输入时间..'	
-//	},	
+	{
+		xtype:'numberfield',
+		name: 'storeD',
+		id: 'dl_fdl-fdlListC-storeD',
+		width: 70,
+		minValue: 1,
+		maxValue: 31,
+		hidden: true,
+		value: '1'
+	},	
 	{
 		text: '搜索',
 	    id: 'dl_fdl-fdlListC-searchButton',
@@ -77,6 +76,7 @@ Ext.define('isane.view.dl_fdl.fdlListC',{
 		text: '保存',
 		tooltip:'保存修改的数据',
 		iconCls: 'ok1',
+		disabled: true,
 		id: 'dl_fdl-fdlListC-saveButton'
 	},'-',
 	{
@@ -89,6 +89,8 @@ Ext.define('isane.view.dl_fdl.fdlListC',{
 		text: '刷新',
 		tooltip:'刷新数据',
 		iconCls: 'refresh',
+		disabled: true,
+		id: 'dl_fdl-fdlListC-refresh',
 		handler: function(btn){
 			btn.up('grid').getStore().reload();
 		}		
