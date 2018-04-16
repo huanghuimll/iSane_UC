@@ -5,6 +5,7 @@ Ext.define('isane.model.organtree', {
  		'id', 'organCode', 'organName', 'parentCode', 'leaf',
  		{name: 'text', type: 'string', mapping: 'organName'},
  		{name: 'parentId', type: 'String', mapping: 'parentCode'},
+ 		{name: 'organCode', type: 'String', mapping: 'organKey'},
  		'dispOrder', 'organDesc', 'organType'
  	]
 });

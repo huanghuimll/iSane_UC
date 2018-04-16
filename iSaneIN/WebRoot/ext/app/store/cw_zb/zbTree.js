@@ -4,11 +4,12 @@ Ext.define('isane.store.cw_zb.zbTree',{
 	autoLoad: false,
     proxy: {
         type: 'ajax',
-        url: 'ext/test/cwTree.json',
+        //url: 'ext/test/cwTree.json',
+        url: 'api/DimOrganization/selectCTE',
         reader:'json'
     },
     root: {  
-        text: '广东分工公司',
+        text: '根目录',
         expanded: false
     }  
 });

@@ -7,11 +7,11 @@ private static final long serialVersionUID = 1L;
 	private String organKey; //
 	private String organName; //
 	private String organDesc; //
-	private int organParentId; //
+	private String organParentId; //
 	private String areakey;
 	private String installType;
 	private String areaType;
-	private String type;
+	private int organType;
 	
 	public void setId (long id) {
 		this.id = id;
@@ -37,11 +37,11 @@ private static final long serialVersionUID = 1L;
 	public String getOrganDesc () {
 		return organDesc;
 	}
-	public void setOrganParentId (int organParentId) {
-		this.organParentId = organParentId;
-	}
-	public int getOrganParentId () {
+	public String getOrganParentId() {
 		return organParentId;
+	}
+	public void setOrganParentId(String organParentId) {
+		this.organParentId = organParentId;
 	}
 	public String getAreakey() {
 		return areakey;
@@ -61,11 +61,11 @@ private static final long serialVersionUID = 1L;
 	public void setAreaType(String areaType) {
 		this.areaType = areaType;
 	}
-	public String getType() {
-		return type;
+	public int getOrganType() {
+		return organType;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public void setOrganType(int organType) {
+		this.organType = organType;
 	}
 	
 @Override
@@ -82,9 +82,7 @@ private static final long serialVersionUID = 1L;
 		if(null != organDesc && !"".equals(organDesc)) {
 			return false;
 		}
-		if(organParentId != 0) {
-			return false;
-		}
+		
 		return true;
 	}
 
@@ -95,7 +93,7 @@ private static final long serialVersionUID = 1L;
 
 	@Override
 	public String toString() {
-		return super.toString()+String.format(" id:%s ,  organKey:%s ,  organName:%s ,  organDesc:%s ,  organParentId:%s  ", 
-				 id ,  organKey ,  organName ,  organDesc ,  organParentId  );
+		return super.toString()+String.format(" id:%s ,  organKey:%s ,  organName:%s ,  organType:%s ,  organParentId:%s  ", 
+				 id ,  organKey ,  organName ,  organType ,  organParentId  );
 	}
 }

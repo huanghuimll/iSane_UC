@@ -13,7 +13,7 @@
 			<if test="organDesc != null and organDesc != ''">
 				and organDesc like '%${ organDesc }%'
 			</if>
-			<if test="organParentId != 0">
+			<if test="organParentId != null and organParentId != ''">
 				and organParentId = #{organParentId}
 			</if>
 		</where>
@@ -57,8 +57,11 @@
 			<if test="organDesc != null and organDesc != ''">
 				organDesc = #{organDesc},
 			</if>
-			<if test="organParentId != 0">
+			<if test="organParentId != null and organParentId != ''">
 				organParentId = #{organParentId}
+			</if>
+			<if test="organType != 0">
+				and organType = #{organType}
 			</if>
 		</set>
 		where id = #{id}
@@ -77,5 +80,21 @@
 		delete from Dim_Organization
 	</delete>
 
+	<select id="selectCTE" parameterType="DimOrganization" resultType="DimOrganization">
+		WITH  cte AS (
+			SELECT a.* FROM Dim_Organization a WHERE a.organKey = #{organKey}
+			UNION ALL
+			SELECT b.* FROM Dim_Organization b 
+			INNER JOIN cte ON cte.organKey = b.organParentId
+		)
+		SELECT * FROM cte 
+		<where>
+			<if test="organType != 0"> 
+			<![CDATA[
+				and cte.organType <= #{organType}
+			]]>	
+			</if>
+		</where>
+	</select>
 
 </mapper>
