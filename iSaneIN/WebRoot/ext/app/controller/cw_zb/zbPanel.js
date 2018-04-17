@@ -57,8 +57,8 @@ Ext.define('isane.controller.cw_zb.zbPanel', {
 	
     itemclick_dt: function(own, record, item, index, e, eOpts){
     	this.record = record; 
-    	console.log(record.data);
-		if(!record.data.id == 'root'){
+    	//console.log(record.data);
+		if(record.data.id == 'root'){
 			return;
 		}
 		//console.log(record.data);

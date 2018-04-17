@@ -27,7 +27,10 @@ Ext.define('isane.controller.aq_rb_rl.rbPanel', {
 	onBeforeRender: function(item){
 		var own = Ext.getCmp('aq_rb_rl-rbWest-id');
 		var storeTre = own.getStore();
-		Ext.apply(storeTre.proxy.extraParams, {uid:0});
+		Ext.apply(storeTre.proxy.extraParams, {
+			organKey: QJ_PlantCode,
+			organType: 1
+		});
 		storeTre.load();
 		storeTre.getRootNode().set('expanded', true);
 	},

@@ -30,14 +30,18 @@ Ext.define('isane.controller.aq_yb_lr_xzb.xzbPanel', {
 	onBeforeRender: function(item){
 		var own = Ext.getCmp('aq_yb_lr_xzb-xzbWest-id');
 		var storeTre = own.getStore();
-		Ext.apply(storeTre.proxy.extraParams, {uid:0});
+		Ext.apply(storeTre.proxy.extraParams, {
+			organKey: QJ_PlantCode,
+			organType: 3
+		});
 		storeTre.load();
 		storeTre.getRootNode().set('expanded', true);
 	},
 	
     itemclick_dt: function(own, record, item, index, e, eOpts){
     	this.record = record; 
-		if(!record.data.leaf){
+    	
+		if(record.data.id == 'root'){
 			return;
 		}
 		

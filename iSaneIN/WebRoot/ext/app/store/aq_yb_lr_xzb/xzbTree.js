@@ -4,11 +4,11 @@ Ext.define('isane.store.aq_yb_lr_xzb.xzbTree',{
 	autoLoad: false,
     proxy: {
         type: 'ajax',
-        url: 'ext/test/xzbTree.json',
+        url: 'api/DimOrganization/selectCTE',
         reader:'json'
     },
     root: {  
-        text: '广东分工公司',
+    	text: '==ROOT==',
         expanded: false
     }  
 });

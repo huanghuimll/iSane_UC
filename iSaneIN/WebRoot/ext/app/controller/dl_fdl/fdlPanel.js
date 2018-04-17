@@ -47,14 +47,18 @@ Ext.define('isane.controller.dl_fdl.fdlPanel', {
 	onBeforeRender: function(item){
 		var own = Ext.getCmp('dl_fdl-fdlWest-id');
 		var storeTre = own.getStore();
-		Ext.apply(storeTre.proxy.extraParams, {uid:0});
+		Ext.apply(storeTre.proxy.extraParams, {
+			organKey: QJ_PlantCode,
+			organType: 3
+		});
 		storeTre.load();
 		storeTre.getRootNode().set('expanded', true);
 	},
 	
     itemclick_dt: function(own, record, item, index, e, eOpts){
     	this.record = record; 
-		if(!record.data.leaf){
+    	
+		if(record.data.id == 'root'){
 			return;
 		}
 		//console.log(record.data);

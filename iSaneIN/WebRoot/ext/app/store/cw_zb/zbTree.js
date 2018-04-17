@@ -9,7 +9,7 @@ Ext.define('isane.store.cw_zb.zbTree',{
         reader:'json'
     },
     root: {  
-        text: '根目录',
+        text: '==ROOT==',
         expanded: false
     }  
 });

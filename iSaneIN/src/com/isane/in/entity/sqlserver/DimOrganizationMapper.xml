@@ -16,6 +16,9 @@
 			<if test="organParentId != null and organParentId != ''">
 				and organParentId = #{organParentId}
 			</if>
+			<if test="organType != 0"> 
+				and organType = #{organType}
+			</if>			
 		</where>
 	</sql>
 	<select id="select" parameterType="DimOrganization" resultType="DimOrganization">

@@ -1,7 +1,7 @@
 Ext.define('isane.controller.user.UserPanel', {
 	extend : 'Ext.app.Controller',
-	stores : ['user.User'],
-	models : ['User'],
+	stores : ['user.User', 'user.organTree'],
+	models : ['User', 'organtree'],
 	views : ['user.UserPanel', 'user.UserList', 'user.UserForm'],
 	init: function() {
 		this.control({	

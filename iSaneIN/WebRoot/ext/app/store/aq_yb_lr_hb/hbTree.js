@@ -4,11 +4,12 @@ Ext.define('isane.store.aq_yb_lr_hb.hbTree',{
 	autoLoad: false,
     proxy: {
         type: 'ajax',
-        url: 'ext/test/hbTree.json',
+        //url: 'ext/test/hbTree.json',
+        url: 'api/DimOrganization/selectCTE',
         reader:'json'
     },
     root: {  
-        text: '广东分工公司',
+    	text: '==ROOT==',
         expanded: false
     }  
 });

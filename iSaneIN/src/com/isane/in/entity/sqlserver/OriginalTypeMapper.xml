@@ -22,6 +22,12 @@
 	</select>
 
 	<select id="selectByCode" parameterType="OriginalType" resultType="OriginalType">
+		WITH cte as(
+			SELECT a.* FROM Dim_Organization a WHERE  a.organKey = #{plantCode}
+			UNION ALL
+			SELECT b.* FROM Dim_Organization b 
+			INNER JOIN cte ON cte.organKey = b.organParentId
+		)	
 		SELECT
 		sot.*,so.originalName,do.organKey AS plantCode, do.organName plantName,sod.originalValue, #{storeDate} AS storeDate,sod.inputDate,so.dateType, so.originalDesc,sod.originalDataVersion,sod.id dataId
 		FROM SYS_ORIGINAL_TYPE sot
@@ -29,7 +35,7 @@
 		LEFT JOIN Dim_Organization do ON so.plantCode=do.organKey
 		LEFT JOIN SYS_ORIGINAL_DATA sod ON sod.originalCode=sot.originalCode AND
 		CONVERT(VARCHAR,sod.storeDate,120) LIKE '${storeDate}%'
-		WHERE so.plantCode=#{plantCode} AND sot.dataType=#{dataType} 
+		WHERE sot.organKey IN (SELECT cte.organKey FROM cte) AND sot.dataType=#{dataType} 
 		<if test="dateType != null and dateType != ''">
 			AND so.dateType = #{dateType} 
 		</if>

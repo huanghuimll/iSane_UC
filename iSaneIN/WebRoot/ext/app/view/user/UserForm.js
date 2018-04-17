@@ -25,16 +25,50 @@
 			value: 0,
 			hidden: true
 		},
+/*		{
+	    	xtype:'treepicker',
+    		fieldLabel:'<span style="color:red">*</span>单位',
+    		store: Ext.create('isane.store.user.organTree'),
+       	    name:'plantCode',
+       		displayField : 'organName',
+       		//valueField : 'organKey',
+       		//value: 'GZFGS',
+       		editable: false,
+       		minPickerHeight: 250,
+       		autoScroll: false,
+       		listeners: {
+       			beforerender: function(){
+       				var storeTre = this.getStore();
+       				Ext.apply(storeTre.proxy.extraParams, {
+       					organKey: 'GZFGS',
+       					organType: 1
+       				});
+       				storeTre.load();
+       				storeTre.getRootNode().set('expanded', true);    				
+       			}
+       		}       		
+	    }*/		
 		{
 	    	xtype:'combobox',
     		fieldLabel:'<span style="color:red">*</span>单位',
-     		store : 'util.Plant',
+     		//store : 'util.Plant',
+    		store: Ext.create('isane.store.util.Plant'),
        	    name:'plantCode',
        		displayField : 'organName',
        		valueField : 'organKey',
-       		value: 'GZFGS',
-       		editable: false
-	    }			
+       		//value: 'GZFGS',
+       		editable: false,
+       		emptyText: '==请选择==',
+       		listeners: {
+       			beforerender: function(){
+       				var storeTre = this.getStore();
+       				Ext.apply(storeTre.proxy.extraParams, {
+       					organType: 1
+       				});
+       				storeTre.load();     				
+       			}
+       		}
+	    }		
 		]
     },
     {
