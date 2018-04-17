@@ -1,10 +1,10 @@
 Ext.define('isane.controller.role.rolePanel', {
 	extend : 'Ext.app.Controller',
-	stores: ['role.Role', 'role.RoleUserL', 'role.RoleUserR', 'role.RoleMenuTree'],
-	models: ['Role', 'RoleUser', 'RoleMenuTree'],
+	stores: ['role.Role', 'role.RoleUserL', 'role.RoleUserR', 'role.RoleMenuTree', 'role.RoleNavTree'],
+	models: ['Role', 'RoleUser', 'RoleMenuTree', 'RoleNavTree'],
 	views: ['role.rolePanel', 'role.roleList', 'role.roleForm', 
 	        'role.RoleUserRelation', 'role.RoleUserListL','role.RoleUserListR',
-	        'role.RoleMenuTree'
+	        'role.RoleMenuTree','role.RoleNavTree'
 	        ],
 	utilWin: null,			 
 	init: function() {
@@ -28,11 +28,11 @@ Ext.define('isane.controller.role.rolePanel', {
 				click : this.update
 			},
 			//角色与用户
-			'role-RoleUserListL #RoleUserListL-SelectAll-id': {
-				click: this.SelectAllL
+			'role-RoleUserListL #RoleUserListL-selectTreeAll-id': {
+				click: this.SelectGidAll
 			},
-			'role-RoleUserListR #RoleUserListR-SelectAll-id': {
-                click: this.SelectAllR
+			'role-RoleUserListR #RoleUserListR-selectTreeAll-id': {
+                click: this.SelectGidAll
             },
             'role-RoleUserListL': {
             	viewdrop: this.roleDropL
@@ -51,17 +51,33 @@ Ext.define('isane.controller.role.rolePanel', {
 				click: this.openAndClose
 			},
 			'role-RoleMenuTree button[text=选取所有]':{
-				click: this.selectAll
+				click: this.selectTreeAll
 			},
 			'role-RoleMenuTree button[text=取消所有]':{
 				click: this.removeAll
 			},
 			'role-RoleMenuTree button[text=权限保存]':{
-				click: this.menuSave
+				click: this.saveRoleMenu
 			},
 			'role-RoleMenuTree':{
 				checkchange: this.checkchange
-			}
+			},
+			//角色与前台菜单
+			'role-RoleNavTree #role-RoleNavTree-ZS':{
+				click: this.openAndClose
+			},
+			'role-RoleNavTree button[text=选取所有]':{
+				click: this.selectTreeAll
+			},
+			'role-RoleNavTree button[text=取消所有]':{
+				click: this.removeAll
+			},
+			'role-RoleNavTree button[text=权限保存]':{
+				click: this.saveRoleNav
+			},
+			'role-RoleNavTree':{
+				checkchange: this.checkchange
+			}			
 		});
 	},
 
@@ -77,17 +93,18 @@ Ext.define('isane.controller.role.rolePanel', {
 		Ext.getCmp('role-roleList-removeButton').setDisabled(false);
 		//控制权限按钮
 		Ext.getCmp('role-RoleMenuTree-saveQX').setDisabled(false);
+		Ext.getCmp('role-RoleNavTree-saveQX').setDisabled(false);
 		
 		var roleCode = record.data.roleCode;	
 		Ext.getCmp("role-RoleUserListL-roleCode").setValue(roleCode);
 		Ext.getCmp("role-RoleUserListR-roleCode").setValue(roleCode);
-		
+		//RoleUser
 		var btnL = Ext.getCmp('role-RoleUserListL-btn')
 		this.RoleUserSearchL(btnL);
 		
 		var btnR = Ext.getCmp('role-RoleUserListR-btn')
 		this.RoleUserSearchR(btnR);
-		
+		//RoleMenu
 		var mr = {
 			roleCode: roleCode,
 			menuTypeId: 1
@@ -97,6 +114,17 @@ Ext.define('isane.controller.role.rolePanel', {
 		Ext.apply(rmtStore.proxy.extraParams, mr);
 		rmtStore.reload();
 		rmtStore.getRootNode().set('expanded', true);
+		//RoleNav
+		var mr = {
+			roleCode: roleCode,
+			menuTypeId: 2
+		}
+		var rmt = Ext.getCmp('role-RoleNavTree-id');
+		var rmtStore = rmt.getStore();
+		Ext.apply(rmtStore.proxy.extraParams, mr);
+		rmtStore.reload();
+		rmtStore.getRootNode().set('expanded', true);		
+		
 	},	
 	
 	// 弹出增加窗口
@@ -289,11 +317,9 @@ Ext.define('isane.controller.role.rolePanel', {
     showOrHideroleList: function(button) {
         Ext.getCmp('role-RoleUserRelation-west').toggleCollapse();
     },
-	SelectAllR: function(){
-		Ext.getCmp('role-RoleUserListR-id').getSelectionModel().selectAll();		
-	},
-	SelectAllL: function(){
-		Ext.getCmp('role-RoleUserListL-id').getSelectionModel().selectAll();		
+    
+    SelectGidAll: function(btn){
+		btn.up('grid').getSelectionModel().selectTreeAll();
 	},
 	
     roleDropR: function(node, data, dropRec, dropPosition) {
@@ -467,8 +493,8 @@ Ext.define('isane.controller.role.rolePanel', {
 		childNode(node);
 	},
 	
-	selectAll:function(){
-	   var tree = Ext.getCmp('role-RoleMenuTree-id');
+	selectTreeAll:function(btn){
+	   var tree = btn.up('treepanel');
 	   var rootnode = tree.getStore().getRootNode();
 	   rootnode.set('checked',true);
 	   var treechecktrue=function(node){
@@ -482,8 +508,8 @@ Ext.define('isane.controller.role.rolePanel', {
 	   treechecktrue(rootnode);		
 	},
 	
-	removeAll:function(){
-		   var tree = Ext.getCmp('role-RoleMenuTree-id');
+	removeAll:function(btn){
+		  var tree = btn.up('treepanel');
 		   var rootnode = tree.getStore().getRootNode();
 		   rootnode.set('checked', false);
 //		   rootnode.checked = false;
@@ -499,7 +525,7 @@ Ext.define('isane.controller.role.rolePanel', {
 		   treechecktrue(rootnode);		
 	},	
 
-	menuSave:function(){
+	saveRoleMenu:function(btn){
 	   //1、获取所选角色编码
 	   var roleGrid = Ext.getCmp('role-roleList-id');
 	   var models = roleGrid.getSelectionModel().getSelection();
@@ -526,8 +552,7 @@ Ext.define('isane.controller.role.rolePanel', {
 			})
 	    	values.push(record.data);
        };
-       console.log(values);
-       console.log(Ext.encode(values));
+       //console.log(Ext.encode(values));
        //return;
 	   Ext.Ajax.request({
 	       	scope: this,
@@ -549,6 +574,56 @@ Ext.define('isane.controller.role.rolePanel', {
     	    }
     	});		
 	},
+	
+	saveRoleNav:function(btn){
+		   //1、获取所选角色编码
+		   var roleGrid = Ext.getCmp('role-roleList-id');
+		   var models = roleGrid.getSelectionModel().getSelection();
+		   var roleCode = models[0].data.roleCode;
+		   //2、获取已经勾选的节点，并放到数组中
+		   var menuTree = Ext.getCmp('role-RoleNavTree-id');
+		   var store = menuTree.getStore();
+		   var records = menuTree.getChecked();
+		   var values = [];
+		   for(var i = 0;i < records.length; i++){  
+				if(records[i].data.id=='root'){
+					continue;
+				}
+				var navCode = records[i].data.navCode;
+				var record =  Ext.create('isane.model.RolePermission',{
+					childCode: navCode,
+					roleCode: roleCode,
+					typeId: 2,
+					isAdd: 1,
+					isDelete: 1,
+					isModify: 1,
+					isQuery: 1,
+					isSpecial: 1
+				})
+		    	values.push(record.data);
+	       };
+	       //console.log(Ext.encode(values));
+	       //return;
+		   Ext.Ajax.request({
+		       	scope: this,
+		        timeout: 5000,
+		        url: 'api/RolePermission/addAndRemove',
+		        jsonData: Ext.encode(values),
+	    	    success: function(response){		       		                    	    	
+	    	    	var obj = Ext.decode(response.responseText);
+	                if(!obj.success) { 
+	                	Ext.example.msg("系统提示！",obj.message);
+	                }
+	                else {
+	                	Ext.example.msg("系统提示！",obj.message);
+	                	store.reload();
+	                }
+	    	    },
+	    	    failure: function(){
+	    	    	Ext.example.msg("系统提示！","保存失败！");
+	    	    }
+	    	});		
+		},	
 	//角色与设备图
    
     deleteFromUserRolesFailure: function(storeRole, storeRelation, records) {

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.DimNavMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="navCode != null and navCode != ''">
+				and navCode like '%${ navCode }%'
+			</if>
+			<if test="navName != null and navName != ''">
+				and navName like '%${ navName }%'
+			</if>
+			<if test="navUrl != null and navUrl != ''">
+				and navUrl like '%${ navUrl }%'
+			</if>
+			<if test="parentCode != null and parentCode != ''">
+				and parentCode like '%${ parentCode }%'
+			</if>
+			<if test="isHome != null">
+				and isHome = #{isHome}
+			</if>
+			<if test="disOrder != 0">
+				and disOrder = #{disOrder}
+			</if>
+		</where>
+	</sql>
+	<select id="select" parameterType="DimNav" resultType="DimNav">
+		select * from UC_Navigation
+		<include refid="criteriaSql" />
+		order by id
+	</select>
+
+	<select id="count" parameterType="DimNav" resultType="int">
+		select count(id) from UC_Navigation
+		<include refid="criteriaSql" />
+	</select>
+
+	<select id="find" parameterType="DimNav" resultType="DimNav">
+		select * from UC_Navigation
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="DimNav" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into UC_Navigation (
+		navCode , navName , navUrl , parentCode , isHome , disOrder )values (
+		#{navCode} , #{navName} , #{navUrl} , #{parentCode} , #{isHome} ,
+		#{disOrder} )
+	</insert>
+
+	<update id="update" parameterType="DimNav">
+		update UC_Navigation
+		<set>
+			<if test="navCode != null and navCode != ''">
+				navCode = #{navCode}
+				,
+			</if>
+			<if test="navName != null and navName != ''">
+				navName = #{navName}
+				,
+			</if>
+			<if test="navUrl != null and navUrl != ''">
+				navUrl = #{navUrl}
+				,
+			</if>
+			<if test="parentCode != null and parentCode != ''">
+				parentCode = #{parentCode}
+				,
+			</if>
+			<if test="disOrder != 0">
+				disOrder = #{disOrder}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="DimNav">
+		delete from UC_Navigation
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from UC_Navigation
+	</delete>
+	
+	<!--Nav and role -->
+	<select id="navByRole" parameterType="DimNav" resultType="DimNav">
+		select DISTINCT * from UC_Navigation
+		where navCode in
+		(
+			select childCode from SYS_ROLEPERMISSION where roleCode = #{roleCode} and typeId = #{menuTypeId}
+		)
+		order by disOrder
+	</select>
+
+</mapper>

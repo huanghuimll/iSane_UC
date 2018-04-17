@@ -30,7 +30,7 @@ Ext.define('isane.view.role.rolePanel',{
 		},
     	{
     		title: '配置前台菜单',
-    		//xtype: 'role-RoleNewsTypeRelation'
+    		xtype: 'role-RoleNavTree'
 		}		
 		]
 	}
