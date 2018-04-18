@@ -16,7 +16,7 @@
 			<if test="parentCode != null and parentCode != ''">
 				and parentCode like '%${ parentCode }%'
 			</if>
-			<if test="isHome != null">
+			<if test="isHome != 0">
 				and isHome = #{isHome}
 			</if>
 			<if test="disOrder != 0">

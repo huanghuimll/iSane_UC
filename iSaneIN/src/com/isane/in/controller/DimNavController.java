@@ -52,6 +52,7 @@ public class DimNavController extends RagdollControllerImpl<DimNav> {
 		
 		//1.查询出所有后台菜单
 		List<DimNav> allList = service.list(new DimNav(), DaoConst.PAGE_DEFAULT_START, DaoConst.PAGE_DEFAULT_LIMIT);
+		System.out.println(allList);
 		//2.查询出角色与后台菜单绑定的数据
 		DimNav m = new DimNav();
 		m.setRoleCode(role.getRoleCode());
