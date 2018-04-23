@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.ZJRLMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="contentCode != null and contentCode != ''">
+				and contentCode = #{contentCode}
+			</if>
+			<if test="zjrlValue != 0">
+				and zjrlValue = #{zjrlValue}
+			</if>
+			<if test="zjrlType != null and zjrlType != ''">
+				and zjrlType = #{ zjrlType } 
+			</if>
+			<if test="dataTime != null">
+				and dataTime = #{dataTime}
+			</if>
+			<if test="inputTime != null">
+				and inputTime = #{inputTime}
+			</if>
+			<if test="unit != null and unit != ''">
+				and unit like '%${ unit }%'
+			</if>
+		</where>
+	</sql>
+	<select id="select" parameterType="ZJRL" resultType="ZJRL">
+		select * from UC_ZJRL
+		<include refid="criteriaSql" />
+		order by id
+	</select>
+
+	<select id="count" parameterType="ZJRL" resultType="int">
+		select count(id) from UC_ZJRL
+		<include refid="criteriaSql" />
+	</select>
+
+	<select id="find" parameterType="ZJRL" resultType="ZJRL">
+		select * from UC_ZJRL
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="ZJRL" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into UC_ZJRL (
+		contentCode , zjrlValue , zjrlType , dataTime , inputTime , unit )values (
+		#{contentCode} , #{zjrlValue} , #{zjrlType} , #{dataTime} ,
+		#{inputTime} , #{unit} )
+	</insert>
+
+	<update id="update" parameterType="ZJRL">
+		update UC_ZJRL
+		<set>
+			<if test="contentCode != null and contentCode != ''">
+				contentCode = #{contentCode}
+				,
+			</if>
+			<if test="zjrlValue != 0">
+				zjrlValue = #{zjrlValue}
+				,
+			</if>
+			<if test="zjrlType != null and zjrlType != ''">
+				zjrlType = #{zjrlType}
+				,
+			</if>
+			<if test="dataTime != null">
+				dataTime = #{dataTime}
+				,
+			</if>
+			<if test="inputTime != null">
+				inputTime = #{inputTime}
+				,
+			</if>
+			<if test="unit != null and unit != ''">
+				unit = #{unit}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="ZJRL">
+		delete from UC_ZJRL
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from UC_ZJRL
+	</delete>
+
+
+</mapper>

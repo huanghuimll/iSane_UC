@@ -68,12 +68,12 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/iSaneIndex"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/servlet"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jstl-1.1.2">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/iSaneIndex"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>

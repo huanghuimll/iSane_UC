@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.DimAreaContentMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="contentCode != null and contentCode != ''">
+				and contentCode like '%${ contentCode }%'
+			</if>
+			<if test="contentName != null and contentName != ''">
+				and contentName like '%${ contentName }%'
+			</if>
+			<if test="contentDesc != null and contentDesc != ''">
+				and contentDesc like '%${ contentDesc }%'
+			</if>
+			<if test="disOrder != 0">
+				and disOrder = #{disOrder}
+			</if>
+			<if test="areaCode != null and areaCode != ''">
+				and areaCode like '%${ areaCode }%'
+			</if>
+			<if test="contentType != 0">
+				and contentType = #{contentType}
+			</if>
+		</where>
+	</sql>
+	<select id="select" parameterType="DimAreaContent" resultType="DimAreaContent">
+		select * from Dim_Area_Content
+		<include refid="criteriaSql" />
+		order by id
+	</select>
+
+	<select id="count" parameterType="DimAreaContent" resultType="int">
+		select count(id) from Dim_Area_Content
+		<include refid="criteriaSql" />
+	</select>
+
+	<select id="find" parameterType="DimAreaContent" resultType="DimAreaContent">
+		select * from Dim_Area_Content
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="DimAreaContent"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into Dim_Area_Content (
+		contentCode , contentName , contentDesc , disOrder , areaCode ,
+		contentType )values ( #{contentCode} , #{contentName} , #{contentDesc}
+		, #{disOrder} , #{areaCode} , #{contentType} )
+	</insert>
+
+	<update id="update" parameterType="DimAreaContent">
+		update Dim_Area_Content
+		<set>
+			<if test="contentCode != null and contentCode != ''">
+				contentCode = #{contentCode}
+				,
+			</if>
+			<if test="contentName != null and contentName != ''">
+				contentName = #{contentName}
+				,
+			</if>
+			<if test="contentDesc != null and contentDesc != ''">
+				contentDesc = #{contentDesc}
+				,
+			</if>
+			<if test="disOrder != 0">
+				disOrder = #{disOrder}
+				,
+			</if>
+			<if test="areaCode != null and areaCode != ''">
+				areaCode = #{areaCode}
+				,
+			</if>
+			<if test="contentType != 0">
+				contentType = #{contentType}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="DimAreaContent">
+		delete from Dim_Area_Content
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from Dim_Area_Content
+	</delete>
+
+
+</mapper>

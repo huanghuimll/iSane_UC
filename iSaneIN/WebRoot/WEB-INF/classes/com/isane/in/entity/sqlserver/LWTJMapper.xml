@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.LWTJMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="lwName != null and lwName != ''">
+				and lwName like '%${ lwName }%'
+			</if>
+			<if test="lwContent != null and lwContent != ''">
+				and lwContent like '%${ lwContent }%'
+			</if>
+			<if test="lwAuthor != null and lwAuthor != ''">
+				and lwAuthor like '%${ lwAuthor }%'
+			</if>
+			<if test="lwUnit != null and lwUnit != ''">
+				and lwUnit like '%${ lwUnit }%'
+			</if>
+			<if test="lwFKW != null and lwFKW != ''">
+				and lwFKW like '%${ lwFKW }%'
+			</if>
+			<if test="lwSL != null and lwSL != ''">
+				and lwSL like '%${ lwSL }%'
+			</if>
+			<if test="dataTime != null">
+				and year(dataTime) = YEAR(#{dataTime}) AND MONTH(dataTime) = MONTH(#{dataTime}) 
+			</if>	
+			<if test="inputTime != null">
+				and inputTime = #{inputTime}
+			</if>
+		</where>
+	</sql>
+	
+	<select id="selectLWTJ" parameterType="LWTJ" resultType="LWTJ">
+		SELECT * from UC_AQ_KJGL_LWTJ
+		<where>
+			<if test="dataTime != null">
+				and year(dataTime) = YEAR(#{dataTime}) AND MONTH(dataTime) = MONTH(#{dataTime}) 
+			</if>	
+		</where> 
+	</select>
+	
+	<select id="select" parameterType="LWTJ" resultType="LWTJ">
+		select * from UC_AQ_KJGL_LWTJ
+		<include refid="criteriaSql" />
+		order by id
+	</select>
+
+	<select id="count" parameterType="LWTJ" resultType="int">
+		select count(id) from UC_AQ_KJGL_LWTJ
+		<include refid="criteriaSql" />
+	</select>
+
+	<select id="find" parameterType="LWTJ" resultType="LWTJ">
+		select * from UC_AQ_KJGL_LWTJ
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="LWTJ" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into UC_AQ_KJGL_LWTJ (
+		lwName , lwContent , lwAuthor , lwUnit , lwFKW , lwSL , dataTime , inputTime
+		)values ( #{lwName} , #{lwContent} , #{lwAuthor} , #{lwUnit} ,
+		#{lwFKW} , #{lwSL} , #{dataTime} , #{inputTime} )
+	</insert>
+
+	<update id="update" parameterType="LWTJ">
+		update UC_AQ_KJGL_LWTJ
+		<set>
+			<if test="lwName != null and lwName != ''">
+				lwName = #{lwName}
+				,
+			</if>
+			<if test="lwContent != null and lwContent != ''">
+				lwContent = #{lwContent}
+				,
+			</if>
+			<if test="lwAuthor != null and lwAuthor != ''">
+				lwAuthor = #{lwAuthor}
+				,
+			</if>
+			<if test="lwUnit != null and lwUnit != ''">
+				lwUnit = #{lwUnit}
+				,
+			</if>
+			<if test="lwFKW != null and lwFKW != ''">
+				lwFKW = #{lwFKW}
+				,
+			</if>
+			<if test="lwSL != null and lwSL != ''">
+				lwSL = #{lwSL}
+				,
+			</if>
+			<if test="dataTime != null">
+				dataTime = #{dataTime}
+				,
+			</if>
+			<if test="inputTime != null">
+				inputTime = #{inputTime}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="LWTJ">
+		delete from UC_AQ_KJGL_LWTJ
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from UC_AQ_KJGL_LWTJ
+	</delete>
+
+
+</mapper>

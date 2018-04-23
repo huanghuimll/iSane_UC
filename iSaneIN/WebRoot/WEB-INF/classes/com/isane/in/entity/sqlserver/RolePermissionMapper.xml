@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.RolePermissionMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="roleCode != null">
+				and roleCode = #{roleCode}
+			</if>
+			<if test="childCode != null">
+				and childCode = #{childCode}
+			</if>
+			<if test="typeId != 0">
+				and typeId = #{typeId}
+			</if>
+			<if test="isAdd != 0">
+				and isAdd = #{isAdd}
+			</if>
+			<if test="isDelete != 0">
+				and isDelete = #{isDelete}
+			</if>
+			<if test="isModify != 0">
+				and isModify = #{isModify}
+			</if>
+			<if test="isQuery != 0">
+				and isQuery = #{isQuery}
+			</if>
+			<if test="isSpecial != 0">
+				and isSpecial = #{isSpecial}
+			</if>
+		</where>
+	</sql>
+	<select id="select" parameterType="RolePermission" resultType="RolePermission">
+		select * from SYS_ROLEPERMISSION
+		<include refid="criteriaSql" />
+		order by id
+	</select>
+
+	<select id="count" parameterType="RolePermission" resultType="int">
+		select count(id) from SYS_ROLEPERMISSION
+		<include refid="criteriaSql" />
+	</select>
+
+	<select id="find" parameterType="RolePermission" resultType="RolePermission">
+		select * from SYS_ROLEPERMISSION
+		<where>
+			<if test="id != null">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="RolePermission"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into SYS_ROLEPERMISSION (
+		roleCode , childCode , typeId , isAdd , isDelete , isModify , isQuery ,
+		isSpecial )values ( #{roleCode} , #{childCode} , #{typeId} , #{isAdd} ,
+		#{isDelete} , #{isModify} , #{isQuery} , #{isSpecial} )
+	</insert>
+
+	<update id="update" parameterType="RolePermission">
+		update SYS_ROLEPERMISSION
+		<set>
+			<if test="roleCode != null">
+				roleCode = #{roleCode}
+				,
+			</if>
+			<if test="childCode != null">
+				childCode = #{childCode}
+				,
+			</if>
+			<if test="typeId != 0">
+				typeId = #{typeId}
+				,
+			</if>
+			<if test="isAdd != 0">
+				isAdd = #{isAdd}
+				,
+			</if>
+			<if test="isDelete != 0">
+				isDelete = #{isDelete}
+				,
+			</if>
+			<if test="isModify != 0">
+				isModify = #{isModify}
+				,
+			</if>
+			<if test="isQuery != 0">
+				isQuery = #{isQuery}
+				,
+			</if>
+			<if test="isSpecial != 0">
+				isSpecial = #{isSpecial}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="RolePermission">
+		delete from SYS_ROLEPERMISSION
+		<where>
+			<if test="id != null">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from SYS_ROLEPERMISSION
+	</delete>
+
+
+</mapper>

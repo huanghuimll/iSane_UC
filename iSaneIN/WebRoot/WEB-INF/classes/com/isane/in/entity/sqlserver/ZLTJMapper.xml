@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.ZLTJMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="zlName != null and zlName != ''">
+				and zlName like '%${ zlName }%'
+			</if>
+			<if test="zlContent != null and zlContent != ''">
+				and zlContent like '%${ zlContent }%'
+			</if>
+			<if test="zlType != null and zlType != ''">
+				and zlType like '%${ zlType }%'
+			</if>
+			<if test="zlProposer != null and zlProposer != ''">
+				and zlProposer like '%${ zlProposer }%'
+			</if>
+			<if test="zlInvent != null and zlInvent != ''">
+				and zlInvent like '%${ zlInvent }%'
+			</if>
+			<if test="zlStatus != null and zlStatus != ''">
+				and zlStatus like '%${ zlStatus }%'
+			</if>
+			<if test="zlApplyNum != null and zlApplyNum != ''">
+				and zlApplyNum like '%${ zlApplyNum }%'
+			</if>
+			<if test="zlApplyTime != null">
+				and YEAR(zlApplyTime) = YEAR(#{zlApplyTime}) AND MONTH(zlApplyTime) = MONTH(#{zlApplyTime}) 
+			</if>			
+			<if test="zlSQGH != null and zlSQGH != ''">
+				and zlSQGH like '%${ zlSQGH }%'
+			</if>
+			<if test="zlSQGGR != null">
+				and zlSQGGR = #{zlSQGGR}
+			</if>
+			<if test="zlIs != 0">
+				and zlIs = #{zlIs}
+			</if>
+			<if test="inputTime != null">
+				and inputTime = #{inputTime}
+			</if>
+			<if test="dataTime != null">
+				and dataTime = #{dataTime}
+			</if>
+		</where>
+	</sql>
+	<select id="selectZLTJ" parameterType="ZLTJ" resultType="ZLTJ">
+		SELECT * from UC_AQ_KJGL_ZLTJ
+		<where>
+			<if test="dataTime != null">
+				and year(dataTime) = YEAR(#{dataTime}) AND MONTH(dataTime) = MONTH(#{dataTime}) 
+			</if>	
+		</where> 
+	</select>
+	<select id="select" parameterType="ZLTJ" resultType="ZLTJ">
+		select * from UC_AQ_KJGL_ZLTJ
+		<include refid="criteriaSql" />
+		order by id
+	</select>
+
+	<select id="count" parameterType="ZLTJ" resultType="int">
+		select count(id) from UC_AQ_KJGL_ZLTJ
+		<include refid="criteriaSql" />
+	</select>
+
+	<select id="find" parameterType="ZLTJ" resultType="ZLTJ">
+		select * from UC_AQ_KJGL_ZLTJ
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="ZLTJ" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into UC_AQ_KJGL_ZLTJ (
+		zlName , zlContent , zlType , zlProposer , zlInvent , zlStatus , zlApplyNum
+		, zlApplyTime , zlSQGH , zlSQGGR , zlIs , inputTime , dataTime )values
+		( #{zlName} , #{zlContent} , #{zlType} , #{zlProposer} , #{zlInvent} ,
+		#{zlStatus} , #{zlApplyNum} , #{zlApplyTime} , #{zlSQGH} , #{zlSQGGR}
+		, #{zlIs} , #{inputTime} , #{dataTime} )
+	</insert>
+
+	<update id="update" parameterType="ZLTJ">
+		update UC_AQ_KJGL_ZLTJ
+		<set>
+			<if test="zlName != null and zlName != ''">
+				zlName = #{zlName}
+				,
+			</if>
+			<if test="zlContent != null and zlContent != ''">
+				zlContent = #{zlContent}
+				,
+			</if>
+			<if test="zlType != null and zlType != ''">
+				zlType = #{zlType}
+				,
+			</if>
+			<if test="zlProposer != null and zlProposer != ''">
+				zlProposer = #{zlProposer}
+				,
+			</if>
+			<if test="zlInvent != null and zlInvent != ''">
+				zlInvent = #{zlInvent}
+				,
+			</if>
+			<if test="zlStatus != null and zlStatus != ''">
+				zlStatus = #{zlStatus}
+				,
+			</if>
+			<if test="zlApplyNum != null and zlApplyNum != ''">
+				zlApplyNum = #{zlApplyNum}
+				,
+			</if>
+			<if test="zlApplyTime != null">
+				zlApplyTime = #{zlApplyTime}
+				,
+			</if>
+			<if test="zlSQGH != null and zlSQGH != ''">
+				zlSQGH = #{zlSQGH}
+				,
+			</if>
+			<if test="zlSQGGR != null">
+				zlSQGGR = #{zlSQGGR}
+				,
+			</if>
+			<if test="zlIs != 0">
+				zlIs = #{zlIs}
+				,
+			</if>
+			<if test="inputTime != null">
+				inputTime = #{inputTime}
+				,
+			</if>
+			<if test="dataTime != null">
+				dataTime = #{dataTime}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="ZLTJ">
+		delete from UC_AQ_KJGL_ZLTJ
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from UC_AQ_KJGL_ZLTJ
+	</delete>
+
+
+</mapper>

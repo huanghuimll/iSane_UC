@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.ImportMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="originalCode != null and originalCode != ''">
+				and originalCode = #{originalCode}
+			</if>
+			<if test="sheet != 0">
+				and sheet = #{sheet}
+			</if>
+			<if test="row != 0">
+				and row = #{row}
+			</if>
+			<if test="col != 0">
+				and col = #{col}
+			</if>
+			<if test="importType != null and importType != ''">
+				and importType like '%${ importType }%'
+			</if>
+		</where>
+	</sql>
+	<select id="select" parameterType="Import" resultType="Import">
+		select * from SYS_ORIGINAL_IMPORT
+		<include refid="criteriaSql" />
+		order by id
+	</select>
+	
+	<select id="selectByType" parameterType="Import" resultType="Import">
+	SELECT si.*,so.plantCode,so.dateType FROM SYS_ORIGINAL_IMPORT si INNER JOIN SYS_ORIGINAL so
+	ON si.originalCode=so.originalCode WHERE importType=#{importType} AND
+	so.plantCode=#{plantCode} order by si.id
+	</select>
+
+	<select id="count" parameterType="Import" resultType="int">
+		select count(id) from SYS_ORIGINAL_IMPORT
+		<include refid="criteriaSql" />
+	</select>
+
+	<select id="find" parameterType="Import" resultType="Import">
+		select * from SYS_ORIGINAL_IMPORT
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="Import" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into SYS_ORIGINAL_IMPORT (
+		originalCode , sheet , row , col ,
+		importType )values ( #{originalCode} , #{sheet}
+		, #{row} , #{col} ,
+		#{importType} )
+	</insert>
+
+	<update id="update" parameterType="Import">
+		update SYS_ORIGINAL_IMPORT
+		<set>
+			<if test="originalCode != null and originalCode != ''">
+				originalCode = #{originalCode}
+				,
+			</if>
+			<if test="sheet != 0">
+				sheet = #{sheet}
+				,
+			</if>
+			<if test="row != 0">
+				row = #{row}
+				,
+			</if>
+			<if test="col != 0">
+				col = #{col}
+				,
+			</if>
+			<if test="importType != null and importType != ''">
+				importType = #{importType}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="Import">
+		delete from SYS_ORIGINAL_IMPORT
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from SYS_ORIGINAL_IMPORT
+	</delete>
+
+
+	<select id="selectByData" parameterType="Import" resultType="Import">
+		SELECT si.originalCode,sod.originalValue,sod.id,sod.originalDataVersion FROM SYS_ORIGINAL_IMPORT si 
+		INNER JOIN SYS_ORIGINAL so ON si.originalCode=so.originalCode AND so.plantCode=#{plantCode}
+		INNER JOIN SYS_ORIGINAL_DATA sod ON si.originalCode=sod.originalCode 
+		WHERE si.importType = #{importType} AND sod.dateType=#{dateType} AND CONVERT(VARCHAR,sod.storeDate,120) LIKE '${storeDate}%'
+	</select>
+
+
+</mapper>

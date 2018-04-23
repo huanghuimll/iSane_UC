@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.RoleUserMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="userCode != null">
+				and userCode = #{userCode}
+			</if>
+			<if test="roleCode != null">
+				and roleCode = #{roleCode}
+			</if>
+		</where>
+	</sql>
+	<select id="select" parameterType="RoleUser" resultType="RoleUser">
+		select * from SYS_ROLEUSER
+		<include refid="criteriaSql" />
+		order by id
+	</select>
+
+	<select id="count" parameterType="RoleUser" resultType="int">
+		select count(id) from SYS_ROLEUSER
+		<include refid="criteriaSql" />
+	</select>
+
+	<select id="find" parameterType="RoleUser" resultType="RoleUser">
+		select * from SYS_ROLEUSER
+		<where>
+			<if test="id != null">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="RoleUser" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into SYS_ROLEUSER (
+		userCode , roleCode )values ( #{userCode} , #{roleCode} )
+	</insert>
+
+	<update id="update" parameterType="RoleUser">
+		update SYS_ROLEUSER
+		<set>
+			<if test="userCode != null">
+				userCode = #{userCode}
+				,
+			</if>
+			<if test="roleCode != null">
+				roleCode = #{roleCode}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="RoleUser">
+		delete from SYS_ROLEUSER
+		<where>
+			<!-- <if test="id != null">
+				and id = #{id}
+			</if> -->
+			<if test="userCode != null">
+				and userCode = #{userCode}
+			</if>
+			<if test="roleCode != null">
+				and roleCode = #{roleCode}
+			</if>			
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from SYS_ROLEUSER
+	</delete>
+
+	<!-- 查询所有没有关联到角色下的用户 -->
+	<select id="queryUsersNotIn" parameterType="RoleUser" resultType="RoleUser">
+		SELECT a.id, a.userCode, a.userName, a.currentStatus as userStatus, #{roleCode} as roleCode FROM SYS_USER a 
+		<where>
+			a.userCode  NOT IN 
+			( 
+				SELECT b.userCode FROM SYS_ROLEUSER b WHERE b.roleCode = #{roleCode}
+			)
+			<if test="userName != null and userName != ''">
+				and a.userName like '%${userName}%'
+			</if>
+		</where>
+		order by a.id 
+	</select>
+
+	<!-- 查询所有没有关联到角色下的用户总记录数 -->
+	<select id="queryUsersNotInCount" parameterType="RoleUser" resultType="int">
+		SELECT COUNT(*) FROM SYS_USER a 
+		<where>
+			a.userCode  NOT IN 
+			( 
+				SELECT b.userCode FROM SYS_ROLEUSER b WHERE b.roleCode = #{roleCode}
+			)
+			<if test="userName != null and userName != ''">
+				and a.userName like '%${userName}%'
+			</if>
+		</where>
+	</select>
+
+	<!-- 查询所有关联到角色下的用户 -->
+	<select id="queryUsersIn" parameterType="RoleUser" resultType="RoleUser">
+		SELECT a.id, a.userCode, a.userName, a.currentStatus as userStatus, #{roleCode} as roleCode FROM SYS_USER a 
+		<where>
+			a.userCode IN 
+			( 
+				SELECT b.userCode FROM SYS_ROLEUSER b WHERE b.roleCode = #{roleCode}
+			)
+			<if test="userName != null and userName != ''">
+				and a.userName like '%${userName}%'
+			</if>
+		</where>
+		order by a.id 
+	</select>
+
+	<!-- 查询所有关联到角色下的用户总记录数 -->
+	<select id="queryUsersInCount" parameterType="RoleUser" resultType="int">
+		SELECT COUNT(*) FROM SYS_USER a 
+		<where>
+			a.userCode IN 
+			( 
+				SELECT b.userCode FROM SYS_ROLEUSER b WHERE b.roleCode = #{roleCode}
+			)
+			<if test="userName != null and userName != ''">
+				and a.userName like '%${userName}%'
+			</if>
+		</where>
+	</select>
+	
+</mapper>
