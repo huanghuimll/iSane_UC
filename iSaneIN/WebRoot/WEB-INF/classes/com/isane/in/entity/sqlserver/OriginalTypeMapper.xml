@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.OriginalTypeMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="originalCode != null and originalCode != ''">
+				and originalCode = #{originalCode}
+			</if>
+			<if test="dataType != null and dataType != ''">
+				and dataType = #{dataType}
+			</if>
+			<if test="dataOrder != 0">
+				and dataOrder = #{dataOrder}
+			</if>
+		</where>
+	</sql>
+	<select id="select" parameterType="OriginalType" resultType="OriginalType">
+		select * from SYS_ORIGINAL_TYPE
+		<include refid="criteriaSql" />
+		order by id
+	</select>
+
+	<select id="selectByCode" parameterType="OriginalType" resultType="OriginalType">
+		WITH cte as(
+			SELECT a.* FROM Dim_Organization a WHERE  a.organKey = #{plantCode}
+			UNION ALL
+			SELECT b.* FROM Dim_Organization b 
+			INNER JOIN cte ON cte.organKey = b.organParentId
+		)	
+		SELECT
+		sot.*,so.originalName,do.organKey AS plantCode, do.organName plantName,sod.originalValue, #{storeDate} AS storeDate,sod.inputDate,so.dateType, so.originalDesc,sod.originalDataVersion,sod.id dataId
+		FROM SYS_ORIGINAL_TYPE sot
+		LEFT JOIN SYS_ORIGINAL so ON sot.originalCode=so.originalCode
+		LEFT JOIN Dim_Organization do ON so.plantCode=do.organKey
+		LEFT JOIN SYS_ORIGINAL_DATA sod ON sod.originalCode=sot.originalCode AND
+		CONVERT(VARCHAR,sod.storeDate,120) LIKE '${storeDate}%'
+		WHERE sot.organKey IN (SELECT cte.organKey FROM cte) AND sot.dataType=#{dataType} 
+		<if test="dateType != null and dateType != ''">
+			AND so.dateType = #{dateType} 
+		</if>
+	</select>
+
+	<select id="count" parameterType="OriginalType" resultType="int">
+		select count(id) from SYS_ORIGINAL_TYPE
+		<include refid="criteriaSql" />
+	</select>
+
+	<select id="find" parameterType="OriginalType" resultType="OriginalType">
+		select * from SYS_ORIGINAL_TYPE
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="OriginalType"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into SYS_ORIGINAL_TYPE (
+		originalCode , dataType , dataOrder , )values ( #{originalCode} ,
+		#{dataType} , #{dataOrder} )
+	</insert>
+
+	<update id="update" parameterType="OriginalType">
+		update SYS_ORIGINAL_TYPE
+		<set>
+			<if test="originalCode != null and originalCode != ''">
+				originalCode = #{originalCode}
+				,
+			</if>
+			<if test="dataType != null and dataType != ''">
+				dataType = #{dataType}
+				,
+			</if>
+			<if test="dataOrder != 0">
+				dataOrder = #{dataOrder}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="OriginalType">
+		delete from SYS_ORIGINAL_TYPE
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from SYS_ORIGINAL_TYPE
+	</delete>
+
+
+</mapper>

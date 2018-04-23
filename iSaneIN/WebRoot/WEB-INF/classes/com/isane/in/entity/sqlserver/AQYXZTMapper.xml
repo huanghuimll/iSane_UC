@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.AQYXZTMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="organCode != null and organCode != ''">
+				and organCode like '%${ organCode }%'
+			</if>
+			<if test="jzKey != null and jzKey != ''">
+				and jzKey like '%${ jzKey }%'
+			</if>
+			<if test="startTime != null">
+				and YEAR(startTime) = YEAR(#{startTime})
+			</if>
+			<if test="endTime != null">
+				and endTime = #{endTime}
+			</if>
+			<if test="inputTime != null">
+				and inputTime = #{inputTime}
+			</if>
+			<if test="yxType != null">
+				and yxType = #{yxType }
+			</if>
+			<if test="gzType != null">
+				and gzType = #{gzType}
+			</if>
+			<if test="dayCount != 0">
+				and dayCount = #{dayCount}
+			</if>
+			<if test="yxDesc != null and yxDesc != ''">
+				and yxDesc like '%${ yxDesc }%'
+			</if>
+		</where>
+	</sql>
+	<select id="select" parameterType="AQYXZT" resultType="AQYXZT">
+		select * from UC_AQ_KKX_YXZT
+		<include refid="criteriaSql" />
+		order by startTime desc
+	</select>
+	
+	<select id="selectByDesc" parameterType="AQYXZT" resultType="AQYXZT">
+		select * from UC_AQ_KKX_YXZT
+		<where>
+			<if test="organCode != null and organCode != ''">
+				and organCode like '%${ organCode }%'
+			</if>
+			<if test="jzKey != null and jzKey != ''">
+				and jzKey like '%${ jzKey }%'
+			</if>
+		</where>						
+		order by startTime desc
+	</select>
+
+	<select id="count" parameterType="AQYXZT" resultType="int">
+		select count(id) from UC_AQ_KKX_YXZT
+		<include refid="criteriaSql" />
+	</select>
+
+	<select id="find" parameterType="AQYXZT" resultType="AQYXZT">
+		select * from UC_AQ_KKX_YXZT
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="AQYXZT" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into UC_AQ_KKX_YXZT (
+		organCode , jzKey , startTime , endTime , inputTime , yxType , gzType ,
+		dayCount , yxDesc )values ( #{organCode} , #{jzKey} , #{startTime} ,
+		#{endTime} , #{inputTime} , #{yxType} , #{gzType} , #{dayCount} ,
+		#{yxDesc} )
+	</insert>
+
+	<update id="update" parameterType="AQYXZT">
+		update UC_AQ_KKX_YXZT
+		<set>
+			<if test="organCode != null and organCode != ''">
+				organCode = #{organCode}
+				,
+			</if>
+			<if test="jzKey != null and jzKey != ''">
+				jzKey = #{jzKey}
+				,
+			</if>
+			<if test="startTime != null">
+				startTime = #{startTime}
+				,
+			</if>
+			<if test="endTime != null">
+				endTime = #{endTime}
+				,
+			</if>
+			<if test="inputTime != null">
+				inputTime = #{inputTime}
+				,
+			</if>
+			<if test="yxType != null">
+				yxType = #{yxType }
+				,
+			</if>
+			<if test="gzType != null">
+				gzType = #{gzType}
+				,
+			</if>
+			<if test="dayCount != 0">
+				dayCount = #{dayCount}
+				,
+			</if>
+			<if test="yxDesc != null and yxDesc != ''">
+				yxDesc = #{yxDesc}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="AQYXZT">
+		delete from UC_AQ_KKX_YXZT
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from UC_AQ_KKX_YXZT
+	</delete>
+
+
+</mapper>

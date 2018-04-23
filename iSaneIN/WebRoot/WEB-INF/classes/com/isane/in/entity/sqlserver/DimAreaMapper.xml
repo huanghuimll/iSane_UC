@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.DimAreaMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="areaCode != null and areaCode != ''">
+				and areaCode like '%${ areaCode }%'
+			</if>
+			<if test="areaName != null and areaName != ''">
+				and areaName like '%${ areaName }%'
+			</if>
+			<if test="areaDesc != null and areaDesc != ''">
+				and areaDesc like '%${ areaDesc }%'
+			</if>
+		</where>
+	</sql>
+	<select id="select" parameterType="DimArea" resultType="DimArea">
+		select * from Dim_Area
+		<include refid="criteriaSql" />
+		order by id
+	</select>
+
+	<select id="count" parameterType="DimArea" resultType="int">
+		select count(id) from Dim_Area
+		<include refid="criteriaSql" />
+	</select>
+
+	<select id="find" parameterType="DimArea" resultType="DimArea">
+		select * from Dim_Area
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="DimArea" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into Dim_Area (
+		areaCode , areaName , areaDesc )values ( #{areaCode} , #{areaName} ,
+		#{areaDesc} )
+	</insert>
+
+	<update id="update" parameterType="DimArea">
+		update Dim_Area
+		<set>
+			<if test="areaCode != null and areaCode != ''">
+				areaCode = #{areaCode}
+				,
+			</if>
+			<if test="areaName != null and areaName != ''">
+				areaName = #{areaName}
+				,
+			</if>
+			<if test="areaDesc != null and areaDesc != ''">
+				areaDesc = #{areaDesc}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="DimArea">
+		delete from Dim_Area
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from Dim_Area
+	</delete>
+
+
+</mapper>

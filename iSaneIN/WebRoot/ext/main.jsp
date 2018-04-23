@@ -25,7 +25,7 @@
 </head>
 <body>
 
-<div id="top_div_id">
+<div id="top_div_id" style="display: none">
 	<input id = "top_div_userCode" width="300" value="${sessionScope.USER.userCode}"/> 
 	<input id = "top_div_userName" width="300" value="${sessionScope.USER.userName}"/> 
 	<input id = "top_div_plantCode" width="300" value="${sessionScope.USER.plantCode}"/> 

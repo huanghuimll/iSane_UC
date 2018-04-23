@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.AQLPMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="plantCode != null and plantCode != ''">
+				and plantCode = #{plantCode}
+			</if>		
+			<if test="hgps != 0">
+				and hgps = #{hgps}
+			</if>
+			<if test="zps != 0">
+				and zps = #{zps}
+			</if>
+			<if test="psDesc != null and psDesc != ''">
+				and psDesc like '%${ psDesc }%'
+			</if>
+			<if test="disOrder != 0">
+				and disOrder = #{disOrder}
+			</if>
+			<if test="dataType != null and dataType != ''">
+				and dataType like '%${ dataType }%'
+			</if>
+			<if test="dataTypeValue != null and dataTypeValue != ''">
+				and dataTypeValue like '%${ dataTypeValue }%'
+			</if>
+			<if test="dataTime != null">
+				and year(dataTime) = YEAR(#{dataTime}) AND MONTH(dataTime) = MONTH(#{dataTime}) 
+			</if>
+			<if test="inputTime != null">
+				and inputTime = #{inputTime}
+			</if>
+		</where>
+	</sql>
+	<select id="select" parameterType="AQLP" resultType="AQLP">
+		select * from UC_AQ_YXGL_LP
+		<include refid="criteriaSql" />
+		order by id
+	</select>
+
+	<select id="count" parameterType="AQLP" resultType="int">
+		select count(id) from UC_AQ_YXGL_LP
+		<include refid="criteriaSql" />
+	</select>
+
+	<select id="find" parameterType="AQLP" resultType="AQLP">
+		select * from UC_AQ_YXGL_LP
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="AQLP"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into UC_AQ_YXGL_LP (plantCode, hgps ,zps ,psDesc ,disOrder ,dataType ,dataTypeValue ,dataTime ,inputTime)
+		values (#{plantCode}, #{hgps} ,#{zps} ,#{psDesc} ,#{disOrder} ,#{dataType} ,#{dataTypeValue} ,#{dataTime} ,#{inputTime})
+	</insert>
+
+	<update id="update" parameterType="AQLP">
+		update UC_AQ_YXGL_LP
+		<set>
+			<if test="plantCode != null and plantCode != ''">
+				plantCode = #{plantCode} ,
+			</if>		
+			<if test="hgps != 0">
+				hgps = #{hgps} ,			
+			</if>
+			<if test="zps != 0">
+				zps = #{zps} ,			
+			</if>
+			<if test="psDesc != null and psDesc != ''">
+				psDesc = #{psDesc} ,			
+			</if>
+			<if test="disOrder != 0">
+				disOrder = #{disOrder} ,			
+			</if>
+			<if test="dataType != null and dataType != ''">
+				dataType = #{dataType} ,			
+			</if>
+			<if test="dataTypeValue != null and dataTypeValue != ''">
+				dataTypeValue = #{dataTypeValue} ,			
+			</if>
+			<if test="dataTime != null">
+				dataTime = #{dataTime} ,			
+			</if>
+			<if test="inputTime != null">
+				inputTime = #{inputTime}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="AQLP">
+		delete from UC_AQ_YXGL_LP
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from UC_AQ_YXGL_LP
+	</delete>
+
+</mapper>

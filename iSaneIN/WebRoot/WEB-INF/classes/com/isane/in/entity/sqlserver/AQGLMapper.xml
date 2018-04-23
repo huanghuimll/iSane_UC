@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.AQGLMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="plantCode != null and plantCode != ''">
+				and plantCode = #{plantCode}
+			</if>
+			<if test="dataType != null and dataType != ''">
+				and dataType = #{dataType}
+			</if>
+			<if test="dataTypeValue != null and dataTypeValue != ''">
+				and dataTypeValue like '%${ dataTypeValue }%'
+			</if>
+			<if test="dataValue != 0">
+				and dataValue = #{dataValue}
+			</if>
+			<if test="dataTime != null">
+				and year(dataTime) = YEAR(#{dataTime}) AND MONTH(dataTime) = MONTH(#{dataTime})
+			</if>
+			<if test="disOrder != 0">
+				and disOrder = #{disOrder}
+			</if>
+			<if test="inputTime != null">
+				and inputTime = #{inputTime}
+			</if>
+		</where>
+	</sql>
+	
+	<select id="select" parameterType="AQGL" resultType="AQGL">
+		select * from UC_AQGL
+		<include refid="criteriaSql" />
+		order by id
+	</select>
+
+	<select id="count" parameterType="AQGL" resultType="int">
+		select count(id) from UC_AQGL
+		<include refid="criteriaSql" />
+	</select>
+
+	<select id="find" parameterType="AQGL" resultType="AQGL">
+		select * from UC_AQGL
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="AQGL" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into UC_AQGL (
+		plantCode , dataType , dataTypeValue , dataValue , dataTime , disOrder ,
+		inputTime )values ( #{plantCode} , #{dataType} , #{dataTypeValue} ,
+		#{dataValue} , #{dataTime} , #{disOrder} , #{inputTime} )
+	</insert>
+
+	<update id="update" parameterType="AQGL">
+		update UC_AQGL
+		<set>
+			<if test="plantCode != null and plantCode != ''">
+				plantCode = #{plantCode}
+				,
+			</if>
+			<if test="dataType != null and dataType != ''">
+				dataType = #{dataType}
+				,
+			</if>
+			<if test="dataTypeValue != null and dataTypeValue != ''">
+				dataTypeValue = #{dataTypeValue}
+				,
+			</if>
+			<if test="dataValue != 0">
+				dataValue = #{dataValue}
+				,
+			</if>
+			<if test="dataTime != null">
+				dataTime = #{dataTime}
+				,
+			</if>
+			<if test="disOrder != 0">
+				disOrder = #{disOrder}
+				,
+			</if>
+			<if test="inputTime != null">
+				inputTime = #{inputTime}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="AQGL">
+		delete from UC_AQGL
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from UC_AQGL
+	</delete>
+
+</mapper>

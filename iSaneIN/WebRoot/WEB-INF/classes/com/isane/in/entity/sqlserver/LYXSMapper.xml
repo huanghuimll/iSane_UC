@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.LYXSMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="lyxsValue != 0">
+				and lyxsValue = #{lyxsValue}
+			</if>
+			<if test="dataTime != null">
+				and YEAR(dataTime) = YEAR(#{dataTime}) AND MONTH(dataTime) = MONTH(#{dataTime}) 
+			</if>
+			<if test="inputTime != null">
+				and inputTime = #{inputTime}
+			</if>
+			<if test="unit != null and unit != ''">
+				and unit like '%${ unit }%'
+			</if>
+			<if test="contentCode != null and contentCode != ''">
+				and contentCode = #{contentCode}
+			</if>
+		</where>
+	</sql>
+	<select id="select" parameterType="LYXS" resultType="LYXS">
+		select * from UC_LYXS
+		<include refid="criteriaSql" />
+		order by id
+	</select>
+
+	<select id="count" parameterType="LYXS" resultType="int">
+		select count(id) from UC_LYXS
+		<include refid="criteriaSql" />
+	</select>
+
+	<select id="find" parameterType="LYXS" resultType="LYXS">
+		select * from UC_LYXS
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="LYXS" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into UC_LYXS (
+		lyxsValue , dataTime , inputTime , unit , contentCode )values ( #{lyxsValue} ,
+		#{dataTime} , #{inputTime} , #{unit} , #{contentCode} )
+	</insert>
+
+	<update id="update" parameterType="LYXS">
+		update UC_LYXS
+		<set>
+			<if test="lyxsValue != 0">
+				lyxsValue = #{lyxsValue}
+				,
+			</if>
+			<if test="dataTime != null">
+				dataTime = #{dataTime}
+				,
+			</if>
+			<if test="inputTime != null">
+				inputTime = #{inputTime}
+				,
+			</if>
+			<if test="unit != null and unit != ''">
+				unit = #{unit}
+				,
+			</if>
+			<if test="contentCode != null and contentCode != ''">
+				contentCode = #{contentCode}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="LYXS">
+		delete from UC_LYXS
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from UC_LYXS
+	</delete>
+
+
+</mapper>

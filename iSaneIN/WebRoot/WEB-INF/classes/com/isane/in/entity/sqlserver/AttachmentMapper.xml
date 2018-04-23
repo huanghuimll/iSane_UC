@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.AttachmentMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="plantCode != null and plantCode != ''">
+				and plantCode like '%${ plantCode }%'
+			</if>
+			<if test="ownTypeCfg != null and ownTypeCfg != ''">
+				and ownTypeCfg like '%${ ownTypeCfg }%'
+			</if>
+			<if test="ownCode != null and ownCode != ''">
+				and ownCode like '%${ ownCode }%'
+			</if>
+			<if test="attachmentName != null and attachmentName != ''">
+				and attachmentName like '%${ attachmentName }%'
+			</if>
+			<if test="attachmentUrl != null and attachmentUrl != ''">
+				and attachmentUrl like '%${ attachmentUrl }%'
+			</if>
+			<if test="smallUrl != null and smallUrl != ''">
+				and smallUrl like '%${ smallUrl }%'
+			</if>
+			<if test="startTime != null">
+			<![CDATA[
+				and inputTime >= #{startTime, jdbcType=DATE}  
+				]]>				
+			</if>
+			<if test="endTime != null">
+			<![CDATA[
+				and  inputTime <= #{endTime, jdbcType=DATE} 
+				]]>
+			</if> 				
+			<if test="attachmentTypeCfg != null and attachmentTypeCfg != ''">
+				and attachmentTypeCfg like '%${ attachmentTypeCfg }%'
+			</if>
+			<if test="serverPath != null and serverPath != ''">
+				and serverPath like '%${ serverPath }%'
+			</if>
+			<if test="encodeUrl != null and encodeUrl != ''">
+				and encodeUrl like '%${ encodeUrl }%'
+			</if>
+		</where>
+	</sql>
+	<select id="select" parameterType="Attachment" resultType="Attachment">
+		select * from UC_ATTACHMENT
+		<include refid="criteriaSql" />
+		order by id
+	</select>
+
+	<select id="count" parameterType="Attachment" resultType="int">
+		select count(id) from UC_ATTACHMENT
+		<include refid="criteriaSql" />
+	</select>
+
+	<select id="find" parameterType="Attachment" resultType="Attachment">
+		select * from UC_ATTACHMENT
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="Attachment" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into UC_ATTACHMENT (
+		plantCode , ownTypeCfg , ownCode , attachmentName , attachmentUrl , smallUrl ,
+		inputTime , attachmentTypeCfg , serverPath , encodeUrl )values (
+		#{plantCode} , #{ownTypeCfg} , #{ownCode} , #{attachmentName} ,
+		#{attachmentUrl} , #{smallUrl} , #{inputTime} , #{attachmentTypeCfg} ,
+		#{serverPath} , #{encodeUrl} )
+	</insert>
+
+	<update id="update" parameterType="Attachment">
+		update UC_ATTACHMENT
+		<set>
+			<if test="plantCode != null and plantCode != ''">
+				plantCode = #{plantCode}
+				,
+			</if>
+			<if test="ownTypeCfg != null and ownTypeCfg != ''">
+				ownTypeCfg = #{ownTypeCfg}
+				,
+			</if>
+			<if test="ownCode != null and ownCode != ''">
+				ownCode = #{ownCode}
+				,
+			</if>
+			<if test="attachmentName != null and attachmentName != ''">
+				attachmentName = #{attachmentName}
+				,
+			</if>
+			<if test="attachmentUrl != null and attachmentUrl != ''">
+				attachmentUrl = #{attachmentUrl}
+				,
+			</if>
+			<if test="smallUrl != null and smallUrl != ''">
+				smallUrl = #{smallUrl}
+				,
+			</if>
+			<if test="inputTime != null">
+				inputTime = #{inputTime}
+				,
+			</if>
+			<if test="attachmentTypeCfg != null and attachmentTypeCfg != ''">
+				attachmentTypeCfg = #{attachmentTypeCfg}
+				,
+			</if>
+			<if test="serverPath != null and serverPath != ''">
+				serverPath = #{serverPath}
+				,
+			</if>
+			<if test="encodeUrl != null and encodeUrl != ''">
+				encodeUrl = #{encodeUrl}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="Attachment">
+		delete from UC_ATTACHMENT
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from UC_ATTACHMENT
+	</delete>
+
+
+</mapper>

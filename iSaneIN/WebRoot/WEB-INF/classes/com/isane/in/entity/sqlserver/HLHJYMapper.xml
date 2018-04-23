@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.HLHJYMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="unit != null and unit != ''">
+				and unit like '%${ unit }%'
+			</if>
+			<if test="projectName != null and projectName != ''">
+				and projectName like '%${ projectName }%'
+			</if>
+			<if test="person != null and person != ''">
+				and person like '%${ person }%'
+			</if>
+			<if test="projectBriefing != null and projectBriefing != ''">
+				and projectBriefing like '%${ projectBriefing }%'
+			</if>
+			<if test="status != null and status != ''">
+				and status like '%${ status }%'
+			</if>
+			<if test="dataTime != null">
+				and year(dataTime) = YEAR(#{dataTime}) AND MONTH(dataTime) = MONTH(#{dataTime}) 
+			</if>	
+			<if test="result != null and result != ''">
+				and result like '%${ result }%'
+			</if>
+		</where>
+	</sql>
+	
+	<select id="selectHLHJY" parameterType="HLHJY" resultType="HLHJY">
+		SELECT * from UC_AQ_KJGL_HLHJY
+		<where>
+			<if test="dataTime != null">
+				and year(dataTime) = YEAR(#{dataTime}) AND MONTH(dataTime) = MONTH(#{dataTime}) 
+			</if>	
+		</where> 
+	</select>
+	
+	
+	<select id="select" parameterType="HLHJY" resultType="HLHJY">
+		select * from UC_AQ_KJGL_HLHJY
+		<include refid="criteriaSql" />
+		order by id
+	</select>
+
+	<select id="count" parameterType="HLHJY" resultType="int">
+		select count(id) from UC_AQ_KJGL_HLHJY
+		<include refid="criteriaSql" />
+	</select>
+
+	<select id="find" parameterType="HLHJY" resultType="HLHJY">
+		select * from UC_AQ_KJGL_HLHJY
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="HLHJY" useGeneratedKeys="true"
+		keyProperty="id">
+		insert into UC_AQ_KJGL_HLHJY (
+		unit , projectName , person , projectBriefing , status , dataTime , result
+		)values ( #{unit} , #{projectName} , #{person} , #{projectBriefing} ,
+		#{status} , #{dataTime} , #{result} )
+	</insert>
+
+	<update id="update" parameterType="HLHJY">
+		update UC_AQ_KJGL_HLHJY
+		<set>
+			<if test="unit != null and unit != ''">
+				unit = #{unit}
+				,
+			</if>
+			<if test="projectName != null and projectName != ''">
+				projectName = #{projectName}
+				,
+			</if>
+			<if test="person != null and person != ''">
+				person = #{person}
+				,
+			</if>
+			<if test="projectBriefing != null and projectBriefing != ''">
+				projectBriefing = #{projectBriefing}
+				,
+			</if>
+			<if test="status != null and status != ''">
+				status = #{status}
+				,
+			</if>
+			<if test="dataTime != null">
+				dataTime = #{dataTime}
+				,
+			</if>
+			<if test="result != null and result != ''">
+				result = #{result}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="HLHJY">
+		delete from UC_AQ_KJGL_HLHJY
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from UC_AQ_KJGL_HLHJY
+	</delete>
+
+
+</mapper>

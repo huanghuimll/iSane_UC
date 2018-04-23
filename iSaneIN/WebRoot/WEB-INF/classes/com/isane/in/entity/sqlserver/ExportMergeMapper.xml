@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.isane.in.entity.ExportMergeMapper">
+
+	<sql id="criteriaSql">
+		<where>
+			<if test="exportId != 0">
+				and exportId = #{exportId}
+			</if>
+			<if test="sheetNubmer != 0">
+				and sheetNubmer = #{sheetNubmer}
+			</if>
+			<if test="mergeRow1 != 0">
+				and mergeRow1 = #{mergeRow1}
+			</if>
+			<if test="mergeCol1 != 0">
+				and mergeCol1 = #{mergeCol1}
+			</if>
+			<if test="mergeRow2 != 0">
+				and mergeRow2 = #{mergeRow2}
+			</if>
+			<if test="mergeCol2 != 0">
+				and mergeCol2 = #{mergeCol2}
+			</if>
+		</where>
+	</sql>
+	<select id="select" parameterType="ExportMerge" resultType="ExportMerge">
+		select * from IN_EXPORT_MERGE
+		<include refid="criteriaSql" />
+		order by id
+	</select>
+
+	<select id="count" parameterType="ExportMerge" resultType="int">
+		select count(id) from IN_EXPORT_MERGE
+		<include refid="criteriaSql" />
+	</select>
+
+	<select id="find" parameterType="ExportMerge" resultType="ExportMerge">
+		select * from IN_EXPORT_MERGE
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insert" parameterType="ExportMerge"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into IN_EXPORT_MERGE (
+		exportId , sheetNubmer , mergeRow1 , mergeCol1 , mergeRow2 , mergeCol2
+		)values ( #{exportId} , #{sheetNubmer} , #{mergeRow1} , #{mergeCol1} ,
+		#{mergeRow2} , #{mergeCol2} )
+	</insert>
+
+	<update id="update" parameterType="ExportMerge">
+		update IN_EXPORT_MERGE
+		<set>
+			<if test="exportId != 0">
+				exportId = #{exportId}
+				,
+			</if>
+			<if test="sheetNubmer != 0">
+				sheetNubmer = #{sheetNubmer}
+				,
+			</if>
+			<if test="mergeRow1 != 0">
+				mergeRow1 = #{mergeRow1}
+				,
+			</if>
+			<if test="mergeCol1 != 0">
+				mergeCol1 = #{mergeCol1}
+				,
+			</if>
+			<if test="mergeRow2 != 0">
+				mergeRow2 = #{mergeRow2}
+				,
+			</if>
+			<if test="mergeCol2 != 0">
+				mergeCol2 = #{mergeCol2}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="delete" parameterType="ExportMerge">
+		delete from IN_EXPORT_MERGE
+		<where>
+			<if test="id != 0">
+				and id = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<delete id="clear">
+		delete from IN_EXPORT_MERGE
+	</delete>
+
+
+</mapper>
