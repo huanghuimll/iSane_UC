@@ -97,8 +97,8 @@ Ext.define('isane.view.aq_yb_lr_zh.zhListC',{
          {header:'选择',dataIndex:'id',width:50},
          {header:'所属单位',dataIndex:'plantName',flex:2},
          {header:'指标编码',dataIndex:'originalCode',flex:3},
-         {header:'指标项',dataIndex:'originalName',flex:4},
-         {header:'指标值',dataIndex:'originalValue',flex:2, editor: 'textfield', 
+         {header:'指标项',dataIndex:'originalName',flex:5},
+         {header:'指标值',dataIndex:'originalValue',flex:3, editor: 'textfield', 
         	 renderer: function(val, metadata){
         		 metadata.tdAttr = 'data-qtip="<span style=color:red>双击编辑!</span>"';
         		 return Ext.util.Format.number(val, '0.000');

@@ -16,26 +16,51 @@
     		labelAlign: 'right'
     	},
     	items: [
-    	{
+    	/*{
     		xtype: 'textfield',
     		name: 'plantCode',
     		id: 'cw_zb-importForm-plantCode',
     		fieldLabel: '所属单位',
     		//value: 'GZFGS',
-    	},    	        
+    	},*/ 
+		{
+	    	xtype:'combobox',
+    		fieldLabel:'<span style="color:red">*</span>单位',
+     		//store : 'util.Plant',
+    		store: Ext.create('isane.store.util.OrganCTE'),
+       	    name:'plantCode',
+       		displayField : 'organName',
+       		valueField : 'organKey',
+       		value: QJ_PlantCode,
+       		fieldLabel: '所属单位',
+       		editable: false,
+       		emptyText: '==请选择==',
+       		listeners: {
+       			beforerender: function(){
+       				var storeCTE = this.getStore();
+       				Ext.apply(storeCTE.proxy.extraParams, {
+       					organKey: QJ_PlantCode,
+       					organType: 1
+       				});
+       				storeCTE.load();     				
+       			}
+       		}
+	    },	    	
     	{
     		xtype: 'textfield',
     		name: 'importType',
     		id: 'cw_zb-importForm-importType',
     		fieldLabel: 'EXCEL类型',
-    		value: 'CW-XLS',
+    		value: 'YB-CW',
+    		hidden: true
     	},    	        
     	{
     		xtype: 'textfield',
     		name: 'dateType',
     		id: 'cw_zb-importForm-dateType',
     		fieldLabel: '类型',
-    		value: 'M'
+    		value: 'M',
+    		hidden: true
     	},    	         	        
     	{
     		xtype: 'monthfield',

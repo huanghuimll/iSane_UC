@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,7 +52,24 @@ public class DimOrganizationController extends RagdollControllerImpl<DimOrganiza
 	
 	@RequestMapping(value = "selectCTE", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public List<DimOrganNode> listByRoleC(DimOrganization organ) {
+	public List<DimOrganization> selectCTE(DimOrganization organ) {
+		
+				
+		RagdollService<DimOrganization> service = getService();
+		
+		List<DimOrganization> list = service.listCustom(organ, DaoConst.PAGE_DEFAULT_START, DaoConst.PAGE_DEFAULT_LIMIT, "selectCTE");
+		
+		if(list == null || list.size() == 0){
+			return null;
+		}
+		//logger.debug("====>数据量:"+list.size());
+		return list;
+	}	
+	
+	
+	@RequestMapping(value = "selectTree", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public List<DimOrganNode> selectTree(DimOrganization organ) {
 		
 		List<DimOrganNode> nodeList = new ArrayList<DimOrganNode>();
 				

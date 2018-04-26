@@ -760,7 +760,7 @@ public class ReportExportImpl implements ReportExport {
 	
 	private Date getForYear(Calendar c, Date date, int yearFix) {
 		c.setTime(date);
-		c.set(Calendar.MONTH, 0);
+		//c.set(Calendar.MONTH, 0);
 		c.set(Calendar.DAY_OF_MONTH, 1);
 		c.set(Calendar.HOUR_OF_DAY, 0);
 		c.set(Calendar.MINUTE, 0);

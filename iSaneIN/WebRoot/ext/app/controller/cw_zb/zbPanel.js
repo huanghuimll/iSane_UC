@@ -77,7 +77,7 @@ Ext.define('isane.controller.cw_zb.zbPanel', {
 		var grid = Ext.getCmp('cw_zb-zbListN-id');
 		var obt = {
 				plantCode: organCode,
-				dataType: 'CW-XLS',
+				dataType: 'CW-PAGE',
 				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
 				dateType: dateType
 		};			
@@ -94,7 +94,7 @@ Ext.define('isane.controller.cw_zb.zbPanel', {
 		var grid = Ext.getCmp('cw_zb-zbListC-id');
 		var obt = {
 				plantCode: organCode,
-				dataType: 'CW-PAGE',
+				dataType: 'CW-XLS',
 				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
 				dateType: dateType
 		};	
@@ -116,7 +116,7 @@ Ext.define('isane.controller.cw_zb.zbPanel', {
 		var dateType = Ext.getCmp('cw_zb-zbListN-dateType').getValue();
 		var obt = {
 				plantCode: organCode,
-				dataType: 'CW-XLS',
+				dataType: 'CW-PAGE',
 				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
 				dateType: dateType
 		};			
@@ -132,7 +132,7 @@ Ext.define('isane.controller.cw_zb.zbPanel', {
 		var dateType = Ext.getCmp('cw_zb-zbListC-dateType').getValue();
 		var obt = {
 				plantCode: organCode,
-				dataType: 'CW-PAGE',
+				dataType: 'CW-XLS',
 				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
 				dateType: dateType
 		};			
@@ -223,8 +223,8 @@ Ext.define('isane.controller.cw_zb.zbPanel', {
 			buttonAlign: 'right'
 		});
 		
-		var plantCode = Ext.getCmp('cw_zb-zbListC-organCode').getValue();
-		Ext.getCmp('cw_zb-importForm-plantCode').setValue(plantCode);
+		//var plantCode = Ext.getCmp('cw_zb-zbListC-organCode').getValue();
+		//Ext.getCmp('cw_zb-importForm-plantCode').setValue(plantCode);
 		
 		var storeY = Ext.getCmp('cw_zb-zbListC-storeY').getValue();
 		var storeM = Ext.getCmp('cw_zb-zbListC-storeM').getValue();
@@ -239,24 +239,27 @@ Ext.define('isane.controller.cw_zb.zbPanel', {
 	importSave: function(btn){
     	var win = btn.up('window');
     	var form = win.down('form').getForm();
-    	var grid = Ext.getCmp('cw_zb-zbListC-id');
-    	var store = grid.getStore();
-    	alert('111');
-    	return;
+    	/*var grid = Ext.getCmp('aq_yb_lr_hb-hbList-id');
+    	var store = grid.getStore();*/
+    	//var url = store.proxy.api.upload;
+    	var url = 'api/Import/in';
+    	//alert('111');
+    	//return;
         if(form.isValid()){
             form.submit({
             	scope: this,
-                url: "api/User/import",
+                url: url,
                 waitMsg: 'Uploading...',
     			success: function(response){
     				win.close();
     				Ext.example.msg('系统提示！', "导入成功！");
-    				store.load();
+    				//store.load();
     			},
     			failure: function(response){
     				QJ_UtilEntity.failWin(response);
     			}
             });
         }		
-	}	
+	}
+	
 });

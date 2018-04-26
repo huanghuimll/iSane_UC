@@ -51,7 +51,7 @@ Ext.define('isane.view.cw_zb.zbListC',{
 		maxValue: 31,
 		hidden: true,
 		value: '1'
-	},'-',		
+	},		
 	'年/月:',
 	{
 		xtype: 'combobox',
@@ -101,15 +101,15 @@ Ext.define('isane.view.cw_zb.zbListC',{
          {header:'选择',dataIndex:'id',width:50},
          {header:'所属单位',dataIndex:'plantName',flex:2},
          {header:'指标编码',dataIndex:'originalCode',flex:4},
-         {header:'指标项',dataIndex:'originalName',flex:4},
-         {header:'指标值',dataIndex:'originalValue',flex:4, editor: 'textfield', 
+         {header:'指标项',dataIndex:'originalName',flex:5},
+         {header:'指标值',dataIndex:'originalValue',flex:3, editor: 'textfield', 
         	 renderer: function(val, metadata){
         		 metadata.tdAttr = 'data-qtip="<span style=color:red>双击编辑!</span>"';
         		 return Ext.util.Format.number(val, '0.00');
         	 }
          },
-         {header:'日期',dataIndex:'storeDate',xtype: 'datecolumn', format:'Y-m', flex:4},
-         {header:'录入时间',dataIndex:'inputDate', xtype: 'datecolumn', flex:4, 
+         {header:'日期',dataIndex:'storeDate',xtype: 'datecolumn', format:'Y-m', flex:3},
+         {header:'录入时间',dataIndex:'inputDate', xtype: 'datecolumn', flex:3, 
         	 renderer: function(val, metadata){
         		 metadata.tdAttr = 'data-qtip="<span style=color:red>双击编辑!</span>"';
         		 if(val == null){

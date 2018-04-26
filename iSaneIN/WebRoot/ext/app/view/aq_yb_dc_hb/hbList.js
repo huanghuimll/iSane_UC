@@ -1,8 +1,8 @@
-Ext.define('isane.view.dl_fdl.fdlListC',{
+Ext.define('isane.view.aq_yb_dc_hb.hbList',{
 	extend:'Ext.grid.Panel',
-	alias:'widget.dl_fdl-fdlListC',
-	id: 'dl_fdl-fdlListC-id',
-	store: Ext.create('isane.store.original.original',{storeId: 'dl_fdl-fdlListC-storeId'}),
+	alias:'widget.aq_yb_dc_hb-hbList',
+	id: 'aq_yb_dc_hb-hbList-id',
+	//store: Ext.create('isane.store.original.original',{storeId: 'aq_yb_dc_hb-hbList-storeId'}),
 	plugins: [
 	    Ext.create('Ext.grid.plugin.CellEditing', {
 	    	clicksToEdit: 2
@@ -11,20 +11,24 @@ Ext.define('isane.view.dl_fdl.fdlListC',{
     selModel: { selType: 'cellmodel' },	
 	border: 0,
 	tbar:[      
-	'所属单位:',	      
+  	'所属单位:',
 	{
-		xtype: 'textfield',
-		name: 'organCode',
-		id: 'dl_fdl-fdlListC-organCode',
-		emptyText: '所属单位..',
-		readOnly: true,
-		fieldStyle: 'color:gray'
-	},'-',	
+		xtype:'combobox',
+		store :  new Ext.data.ArrayStore({fields: ['id', 'name'],data: [['GZFGS', '广州分公司']]}),
+		name:'organCode',
+		id: 'aq_yb_dc_hb-hbList-organCode',
+		displayField : 'name',
+		valueField : 'id',
+		editable: false,
+		allowBlank: true,
+		value: 'GZFGS',
+		emptyText: '--请选择--'		
+	},'-',		
 	'日期:',
 	{
 		xtype:'numberfield',
 		name: 'storeY',
-		id: 'dl_fdl-fdlListC-storeY',
+		id: 'aq_yb_dc_hb-hbList-storeY',
 		width: 70,
 		minValue: 2016,
 		value: Ext.Date.format(new Date(), 'Y')
@@ -36,85 +40,72 @@ Ext.define('isane.view.dl_fdl.fdlListC',{
 	{
 		xtype:'numberfield',
 		name: 'storeM',
-		id: 'dl_fdl-fdlListC-storeM',
+		id: 'aq_yb_dc_hb-hbList-storeM',
 		width: 70,
 		minValue: 1,
 		maxValue: 12,
 		value: Ext.Date.format(new Date(), 'm')
-	},
-	'年/月:',
-	{
-		xtype: 'combobox',
-		store: new Ext.data.ArrayStore({fields: ['id', 'name'],data: [['', '=空='],['M', '  -月-'], ['Y', '  -年-']]}),
-		name:'dateType',
-		id: 'dl_fdl-fdlListC-dateType',
-		displayField: 'name',
-		valueField: 'id',
-		value: 'M',
-		width: 70,
-		//readOnly: true,
-		editable: false,
-		emptyText: '--请选择--'
-	},'-',		
+	},			
 	{
 		xtype:'numberfield',
 		name: 'storeD',
-		id: 'dl_fdl-fdlListC-storeD',
+		id: 'aq_yb_dc_hb-hbList-storeD',
 		width: 70,
 		minValue: 1,
 		maxValue: 31,
-		hidden: true,
-		value: '1'
-	},	
+		value: 1,
+		hidden: true
+		//value: Ext.Date.format(new Date(), 'd'),
+		/*listeners: {
+			change: function(own){
+				var y = Ext.getCmp('aq_yb_dc_hb-hbList-storeY').getValue(); 
+				var m = Ext.getCmp('aq_yb_dc_hb-hbList-storeM').getValue(); 
+				var date = new Date(y, m, 0);
+				var dayCount = date.getDate();
+				own.maxValue = dayCount;
+			}
+		}*/		
+	},'-',	
 	{
+		text: '导出',
+		tooltip:'导出报表',
+		iconCls: 'list_export',
+		id: 'aq_yb_dc_hb-hbList-exportButton'
+	},'-'//,		
+	/*{
 		text: '搜索',
-	    id: 'dl_fdl-fdlListC-searchButton',
+	    id: 'aq_yb_dc_hb-hbList-searchButton',
 	    tooltip:'搜索数据',
         iconCls: 'search'		
 	},'-',
 	{
 		text: '保存',
-		tooltip:'保存修改的数据',
+		tooltip: "<span style='color:red'>多条数据保存！</span>",
 		iconCls: 'ok1',
-		disabled: true,
-		id: 'dl_fdl-fdlListC-saveButton'
-	},'-',
-	{
-		text: '导入',
-		tooltip:'导入数据',
-		iconCls: 'list_import',
-		id: 'dl_fdl-fdlListC-importButton'
+		id: 'aq_yb_dc_hb-hbList-saveButton'
 	},'-',
 	{
 		text: '刷新',
 		tooltip:'刷新数据',
 		iconCls: 'refresh',
-		disabled: true,
-		id: 'dl_fdl-fdlListC-refresh',
 		handler: function(btn){
 			btn.up('grid').getStore().reload();
 		}		
-	},'->','-',
-	{
-		text: '模板',
-		tooltip:'导出模板',
-		iconCls: 'list_export',
-		id: 'dl_fdl-fdlListC-templeteButton'
-	},'-'	
+	}	*/
     ],
 	columns:[
          {header:'选择',dataIndex:'id',width:50},
          {header:'所属单位',dataIndex:'plantName',flex:2},
          {header:'指标编码',dataIndex:'originalCode',flex:4},
-         {header:'指标项',dataIndex:'originalName',flex:5},
-         {header:'指标值',dataIndex:'originalValue',flex:3, editor: 'textfield', 
+         {header:'指标项',dataIndex:'originalName',flex:4},
+         {header:'指标值',dataIndex:'originalValue',flex:4, editor: 'textfield', 
         	 renderer: function(val, metadata){
         		 metadata.tdAttr = 'data-qtip="<span style=color:red>双击编辑!</span>"';
-        		 return Ext.util.Format.number(val, '0.00');
+        		 return Ext.util.Format.number(val, '0.000');
         	 }
          },
-         {header:'日期',dataIndex:'storeDate',xtype: 'datecolumn', format:'Y-m', flex:3},
-         {header:'录入时间',dataIndex:'inputDate', xtype: 'datecolumn', flex:3, 
+         {header:'日期',dataIndex:'storeDate',xtype: 'datecolumn', format:'Y-m-d', flex:4},
+         {header:'录入时间',dataIndex:'inputDate', xtype: 'datecolumn', flex:4, 
         	 renderer: function(val, metadata){
         		 metadata.tdAttr = 'data-qtip="<span style=color:red>双击编辑!</span>"';
         		 if(val == null){
@@ -139,15 +130,6 @@ Ext.define('isane.view.dl_fdl.fdlListC',{
         	 flex: 2,
         	 items:[
     		 {
-    			 /*
-                getClass: function(v, meta, rec) {     
-                	var workNumber = Ext.get('workNumber').getValue();
-                    if (rec.get('registStatus') == 0 && rec.get('registPerson') == workNumber) {
-                        return 'up';
-                    }else{
-                    	return 'x-hide-visibility';
-                    }
-                },*/
     			iconCls: 'list_save',
                 tooltip: "<span style='color:red'>单条数据保存！</span>",
                 handler: function(grid, rowIndex, colIndex) {
@@ -164,16 +146,7 @@ Ext.define('isane.view.dl_fdl.fdlListC',{
             }    	        
             ] 
     	 }          
-    ],
-/*	bbar:
-	{
-		xtype:'pagingtoolbar',
-		store: 'dl_fdl-fdlListC-storeId',
-		width: 500,
-		loadMask: true,
-		displayInfo: true,
-		id: 'dl_fdl-fdlListC-pageId'
-	},*/	
+    ],	
 	initComponent:function(){
 		this.callParent(arguments);
 	}	       

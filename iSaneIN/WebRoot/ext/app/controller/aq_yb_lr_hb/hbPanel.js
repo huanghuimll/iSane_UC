@@ -21,7 +21,7 @@ Ext.define('isane.controller.aq_yb_lr_hb.hbPanel', {
 			'aq_yb_lr_hb-hbList actioncolumn':{
 				saveSingle: this.singleSave
 			}, 
-			'aq_yb_lr_hb-hbList button[text=上传]':{
+			'aq_yb_lr_hb-hbList button[text=导入]':{
 				click: this.importBtn
 			}    			
 		});
@@ -169,7 +169,7 @@ Ext.define('isane.controller.aq_yb_lr_hb.hbPanel', {
 			}
 		});			
 	},
-	//检修文档上传
+	//检修文档导入
 	importBtn: function(btn){
 		//alert('importBtn');
 		var win = Ext.create('Ext.window.Window',{
@@ -181,8 +181,8 @@ Ext.define('isane.controller.aq_yb_lr_hb.hbPanel', {
 			buttonAlign: 'right'
 		});
 		
-		var plantCode = Ext.getCmp('aq_yb_lr_hb-hbList-organCode').getValue();
-		Ext.getCmp('aq_yb_lr_hb-importForm-plantCode').setValue(plantCode);
+		//var plantCode = Ext.getCmp('aq_yb_lr_hb-hbList-organCode').getValue();
+		//Ext.getCmp('aq_yb_lr_hb-importForm-plantCode').setValue(plantCode);
 		
 		var storeY = Ext.getCmp('aq_yb_lr_hb-hbList-storeY').getValue();
 		var storeM = Ext.getCmp('aq_yb_lr_hb-hbList-storeM').getValue();

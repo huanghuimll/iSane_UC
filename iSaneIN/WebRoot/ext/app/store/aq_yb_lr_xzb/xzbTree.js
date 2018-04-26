@@ -4,7 +4,7 @@ Ext.define('isane.store.aq_yb_lr_xzb.xzbTree',{
 	autoLoad: false,
     proxy: {
         type: 'ajax',
-        url: 'api/DimOrganization/selectCTE',
+        url: 'api/DimOrganization/selectTree',
         reader:'json'
     },
     root: {  

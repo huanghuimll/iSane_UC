@@ -5,7 +5,7 @@ Ext.define('isane.store.aq_yb_lr_hb.hbTree',{
     proxy: {
         type: 'ajax',
         //url: 'ext/test/hbTree.json',
-        url: 'api/DimOrganization/selectCTE',
+        url: 'api/DimOrganization/selectTree',
         reader:'json'
     },
     root: {  

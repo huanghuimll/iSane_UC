@@ -40,7 +40,10 @@ Ext.define('isane.controller.dl_fdl.fdlPanel', {
 			},	
 			'dl_fdl-fdlListC button[text=导入]':{
 				click: this.importBtn
-			}
+			},
+			'dl_fdl-fdlListC button[text=模板]':{
+				click: this.templeteBtn
+			}				
 		});
 	},
 	
@@ -218,30 +221,44 @@ Ext.define('isane.controller.dl_fdl.fdlPanel', {
 			buttons: [{scope: this,text: '确定', iconCls:'ok1', handler: this.importSave},{text: '取消', iconCls:'delete1',  handler: function(btn){btn.ownerCt.ownerCt.close();}}],
 			buttonAlign: 'right'
 		});
+		var storeY = Ext.getCmp('dl_fdl-fdlListC-storeY').getValue();
+		var storeM = Ext.getCmp('dl_fdl-fdlListC-storeM').getValue();
+        if(storeY == null || storeY == '' || storeM == null || storeM == ''){
+        	return;
+        }
+		var storeDate = storeY + '-' + QJ_UtilEntity.month(storeM);  
+		Ext.getCmp('dl_fdl-fdlImportForm-storeDate').setValue(storeDate);
+		
 		win.show();		
 	},
 	
 	importSave: function(btn){
     	var win = btn.up('window');
     	var form = win.down('form').getForm();
-    	var grid = Ext.getCmp('dl_fdl-fdlListC-id');
-    	var store = grid.getStore();
-    	alert('111');
-    	return;
+    	/*var grid = Ext.getCmp('aq_yb_lr_hb-hbList-id');
+    	var store = grid.getStore();*/
+    	//var url = store.proxy.api.upload;
+    	var url = 'api/Import/in';
+    	//alert('111');
+    	//return;
         if(form.isValid()){
             form.submit({
             	scope: this,
-                url: "api/User/import",
+                url: url,
                 waitMsg: 'Uploading...',
     			success: function(response){
     				win.close();
     				Ext.example.msg('系统提示！', "导入成功！");
-    				store.load();
+    				//store.load();
     			},
     			failure: function(response){
     				QJ_UtilEntity.failWin(response);
     			}
             });
         }		
+	},
+	//模板导出
+	templeteBtn: function(){
+		 window.location.href = 'api/OriginalType/exportTemplate?fileName=电力市场模板&fileCode=GZFGS_DR_DL.xlsx';
 	}	
 });

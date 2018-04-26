@@ -16,13 +16,35 @@
     		labelAlign: 'right'
     	},
     	items: [
-    	{
+    	/*{
     		xtype: 'textfield',
     		name: 'plantCode',
     		id: 'aq_yb_lr_xzb-importForm-plantCode',
     		fieldLabel: '所属单位',
     		hidden: true
-    	},    	        
+    	},*/  
+		{
+	    	xtype:'combobox',
+    		fieldLabel:'<span style="color:red">*</span>单位',
+    		store: Ext.create('isane.store.util.OrganCTE'),
+       	    name:'plantCode',
+       		displayField : 'organName',
+       		valueField : 'organKey',
+       		value: QJ_PlantCode,
+       		fieldLabel: '所属单位',
+       		editable: false,
+       		emptyText: '==请选择==',
+       		listeners: {
+       			beforerender: function(){
+       				var storeCTE = this.getStore();
+       				Ext.apply(storeCTE.proxy.extraParams, {
+       					organKey: QJ_PlantCode,
+       					organType: 1
+       				});
+       				storeCTE.load();     				
+       			}
+       		}
+	    },    	
     	{
     		xtype: 'textfield',
     		name: 'importType',

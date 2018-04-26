@@ -1,10 +1,21 @@
 package com.isane.in.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.isane.ragdoll.persistent.type.DaoConst;
+import com.isane.ragdoll.utils.upload.PropertiesUtil;
 import com.isane.ragdoll.web.RagdollControllerImpl;
 import com.isane.in.entity.OriginalType;
 import com.isane.index.compute.core.IndexCompute;
@@ -45,7 +57,6 @@ public class OriginalTypeController extends RagdollControllerImpl<OriginalType> 
 	public List<OriginalType> queryAll(OriginalType originalType) {
 		List<OriginalType> list = getService().listCustom(originalType, DaoConst.PAGE_DEFAULT_START,
 				DaoConst.PAGE_DEFAULT_LIMIT, "selectByCode");
-		//System.out.println(list.get(0));
 		
 		return list;
 	}
@@ -98,6 +109,7 @@ public class OriginalTypeController extends RagdollControllerImpl<OriginalType> 
 				updateList.add(od);
 			}
 		}
+		
 		if (insertList.size() != 0) {
 			originalDataServer.createMulti(OriginalData.class, insertList);
 		}
@@ -108,4 +120,53 @@ public class OriginalTypeController extends RagdollControllerImpl<OriginalType> 
 		indexCompute.refreshIndexData(true, true, false, true, computeDate, pageList.get(0).getPlantCode(), "", "admin", false);
 		return null;
 	}
+	
+	@RequestMapping("/exportTemplate")
+	public void exportTemplate(HttpServletResponse response, HttpServletRequest request, @RequestParam String fileName, @RequestParam String fileCode) {
+		OutputStream out = null;
+		InputStream  in = null;
+		try {
+			
+			if(fileCode == null || fileCode.equals("")){
+				throw new RuntimeException("没有找到模板.");
+			}
+			
+			String url = PropertiesUtil.readAsString(PropertiesUtil.UPLOAD_PATH)+ "/template/"+fileCode;
+			//System.out.println("====>"+url);
+			String userAgent = request.getHeader("USER-AGENT");
+			fileName = fileName + ".xlsx";
+			if (StringUtils.contains(userAgent, "Mozilla")) {// 火狐浏览器
+				response.setHeader("Content-disposition",
+						"attachment; filename = " + new String(fileName.getBytes(), "ISO8859-1"));
+			} else {// 其他浏览器
+				response.setHeader("Content-disposition",
+						"attachment; filename = " + URLEncoder.encode(fileName, "UTF-8"));
+			}
+			
+			response.setContentType("application/octet-streem");	
+			
+			out = response.getOutputStream();
+			
+			in = new FileInputStream(new File(url));
+			
+		    byte[] b = new byte[1024];
+		    int len = 0;
+		    while((len = in.read(b)) != -1){
+		      out.write(b, 0, len);
+		    }
+			
+		} catch (Exception e) {
+			throw new RuntimeException("下载模板失败。");
+		}finally{
+			try {
+				in.close();
+				out.flush();
+				//out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+	}
+	
 }

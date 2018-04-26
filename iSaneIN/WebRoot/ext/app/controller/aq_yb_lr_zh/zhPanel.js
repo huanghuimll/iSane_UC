@@ -22,7 +22,7 @@ Ext.define('isane.controller.aq_yb_lr_zh.zhPanel', {
 			'aq_yb_lr_zh-zhList actioncolumn':{
 				saveSingle: this.singleSave
 			}, 
-			'aq_yb_lr_zh-zhList button[text=上传]':{
+			'aq_yb_lr_zh-zhList button[text=导入]':{
 				click: this.importBtn
 			},
 			//zh-center
@@ -215,11 +215,11 @@ Ext.define('isane.controller.aq_yb_lr_zh.zhPanel', {
 			}
 		});			
 	},
-	//检修文档上传
+	//检修文档导入
 	importBtn: function(btn){
 		//alert('importBtn');
 		var win = Ext.create('Ext.window.Window',{
-			title: '环保指标上传',
+			title: '环保指标导入',
 			modal: true,
 			border: 0,
 			items: [{xtype: 'aq_yb_lr_zh-importForm'}],
@@ -227,8 +227,8 @@ Ext.define('isane.controller.aq_yb_lr_zh.zhPanel', {
 			buttonAlign: 'right'
 		});
 		
-		var plantCode = Ext.getCmp('aq_yb_lr_zh-zhList-organCode').getValue();
-		Ext.getCmp('aq_yb_lr_zh-importForm-plantCode').setValue(plantCode);
+		//var plantCode = Ext.getCmp('aq_yb_lr_zh-zhList-organCode').getValue();
+		//Ext.getCmp('aq_yb_lr_zh-importForm-plantCode').setValue(plantCode);
 		
 		var storeY = Ext.getCmp('aq_yb_lr_zh-zhList-storeY').getValue();
 		var storeM = Ext.getCmp('aq_yb_lr_zh-zhList-storeM').getValue();

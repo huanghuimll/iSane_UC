@@ -5,7 +5,7 @@ Ext.define('isane.store.aq_rb_rl.rbTree',{
     proxy: {
         type: 'ajax',
         //url: 'ext/test/rbTree.json',
-        url: 'api/DimOrganization/selectCTE',
+        url: 'api/DimOrganization/selectTree',
         reader:'json'
     },
     root: {  

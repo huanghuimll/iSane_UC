@@ -1,7 +1,7 @@
-Ext.define('isane.view.aq_yb_dc_zh.zhPanel',{
+Ext.define('isane.view.aq_yb_dc_hb.hbPanel',{
 	extend:'Ext.panel.Panel',
-	alias:'widget.aq_yb_dc_zh-zhPanel',
-	title:'综合报表统计',
+	alias:'widget.aq_yb_dc_hb-hbPanel',
+	title:'环保报表统计',
 	closable:true,
 	layout:'border',
 	border: 0,
@@ -14,7 +14,7 @@ Ext.define('isane.view.aq_yb_dc_zh.zhPanel',{
 		{
 			region: 'center',
 			border: 0,
-			xtype: 'aq_yb_dc_zh-zhList'
+			xtype: 'aq_yb_dc_hb-hbList'
 		}
 		]
 	}	

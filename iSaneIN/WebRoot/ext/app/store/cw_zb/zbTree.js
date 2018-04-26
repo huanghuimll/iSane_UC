@@ -5,7 +5,7 @@ Ext.define('isane.store.cw_zb.zbTree',{
     proxy: {
         type: 'ajax',
         //url: 'ext/test/cwTree.json',
-        url: 'api/DimOrganization/selectCTE',
+        url: 'api/DimOrganization/selectTree',
         reader:'json'
     },
     root: {  

@@ -1,43 +1,43 @@
-Ext.define('isane.controller.aq_yb_dc_zh.zhPanel', {
+Ext.define('isane.controller.aq_yb_dc_hb.hbPanel', {
 	extend : 'Ext.app.Controller',
-	//stores : ['aq_yb_dc_zh.rbTree'],
+	//stores : ['aq_yb_dc_hb.rbTree'],
 	//models : ['organtree'],	
-	views : ['aq_yb_dc_zh.zhPanel', 'aq_yb_dc_zh.zhList'],
+	views : ['aq_yb_dc_hb.hbPanel', 'aq_yb_dc_hb.hbList'],
 	init: function() {
 		this.control({
-			//zh月报导出
-			'aq_yb_dc_zh-zhList button[text=导出]':{
+			//hb月报导出
+			'aq_yb_dc_hb-hbList button[text=导出]':{
 				click: this.exportBtn
 			},
-			/*'aq_yb_dc_zh-zhPanel':{
+			/*'aq_yb_dc_hb-hbPanel':{
 				beforerender: this.onBeforeRender
 			},				
-			'aq_yb_dc_zh-rbWest':{
+			'aq_yb_dc_hb-rbWest':{
     			itemclick: this.itemclick_dt
     		},
-    		'aq_yb_dc_zh-zhList button[text=搜索]':{
+    		'aq_yb_dc_hb-hbList button[text=搜索]':{
 				click:this.click_search
 			},			
-			'aq_yb_dc_zh-zhList button[text=保存]':{
+			'aq_yb_dc_hb-hbList button[text=保存]':{
 				click: this.saveAll
 			},				
-			'aq_yb_dc_zh-zhList actioncolumn':{
+			'aq_yb_dc_hb-hbList actioncolumn':{
 				saveSingle: this.singleSave
 			}*/    		
 		});
 	},
 	
 	exportBtn: function(btn){
-		var organCode = Ext.getCmp('aq_yb_dc_zh-zhList-organCode').getValue();
-		var storeY = Ext.getCmp('aq_yb_dc_zh-zhList-storeY').getValue();
-		var storeM = Ext.getCmp('aq_yb_dc_zh-zhList-storeM').getValue();
-		var storeD = Ext.getCmp('aq_yb_dc_zh-zhList-storeD').getValue();
+		var organCode = Ext.getCmp('aq_yb_dc_hb-hbList-organCode').getValue();
+		var storeY = Ext.getCmp('aq_yb_dc_hb-hbList-storeY').getValue();
+		var storeM = Ext.getCmp('aq_yb_dc_hb-hbList-storeM').getValue();
+		var storeD = Ext.getCmp('aq_yb_dc_hb-hbList-storeD').getValue();
 		var storeDate = storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD);
 		var tempName = null;
 		var fileName = null;
 		if(organCode = 'GZFGS'){
-			tempName = 'GZFGS_Y_ZH_REPORT';
-			fileName = '广州分公司_综合月报统计';
+			tempName = 'GZFGS_Y_HB_REPORT';
+			fileName = '广州分公司_环保月报统计';
 		}
 		
 		var url = "api/IndexDat/DAndY/export?";
@@ -56,7 +56,7 @@ Ext.define('isane.controller.aq_yb_dc_zh.zhPanel', {
 	},
 	
 	onBeforeRender: function(item){
-		var own = Ext.getCmp('aq_yb_dc_zh-rbWest-id');
+		var own = Ext.getCmp('aq_yb_dc_hb-rbWest-id');
 		var storeTre = own.getStore();
 		Ext.apply(storeTre.proxy.extraParams, {uid:0});
 		storeTre.load();
@@ -70,21 +70,21 @@ Ext.define('isane.controller.aq_yb_dc_zh.zhPanel', {
 		}
 		//console.log(record.data);
 		var organCode = record.data.organCode;
-		Ext.getCmp('aq_yb_dc_zh-zhList-organCode').setValue(organCode);
+		Ext.getCmp('aq_yb_dc_hb-hbList-organCode').setValue(organCode);
 		
-		var grid = Ext.getCmp('aq_yb_dc_zh-zhList-id');
+		var grid = Ext.getCmp('aq_yb_dc_hb-hbList-id');
 		this.afterrender(grid);
     	
     }, 	
  
 	afterrender: function(panel){
-		var storeY = Ext.getCmp('aq_yb_dc_zh-zhList-storeY').getValue();
-		var storeM = Ext.getCmp('aq_yb_dc_zh-zhList-storeM').getValue();
-		var storeD = Ext.getCmp('aq_yb_dc_zh-zhList-storeD').getValue();
-		var organCode = Ext.getCmp('aq_yb_dc_zh-zhList-organCode').getValue();
+		var storeY = Ext.getCmp('aq_yb_dc_hb-hbList-storeY').getValue();
+		var storeM = Ext.getCmp('aq_yb_dc_hb-hbList-storeM').getValue();
+		var storeD = Ext.getCmp('aq_yb_dc_hb-hbList-storeD').getValue();
+		var organCode = Ext.getCmp('aq_yb_dc_hb-hbList-organCode').getValue();
 		
 		var obt = {
-				plantCode: Ext.getCmp('aq_yb_dc_zh-zhList-organCode').getValue(),
+				plantCode: Ext.getCmp('aq_yb_dc_hb-hbList-organCode').getValue(),
 				dataType: 'RB_PT',
 				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
 		};	
@@ -172,7 +172,7 @@ Ext.define('isane.controller.aq_yb_dc_zh.zhPanel', {
 	
 	singleDelete_but: function(record){
 		//alert('singleDelete');
-		var grid = Ext.getCmp('aq_yb_dc_zh-zhList-id');
+		var grid = Ext.getCmp('aq_yb_dc_hb-hbList-id');
 		var store = grid.getStore();
 		var url = store.proxy.api.publicUrl;
 		//console.log(record.data);

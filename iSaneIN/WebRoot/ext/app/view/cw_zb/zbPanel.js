@@ -30,15 +30,14 @@ Ext.define('isane.view.cw_zb.zbPanel',{
             header: false,	
             title: '指标录入',
             border: 0,
-    		//xtype:'cw_zb-zbListN'
             layout: 'fit',
     		items:[ 
             {
     			xtype: 'tabpanel',
     			items:[
     			{
-    				title: '指标录入',
-    				xtype:'cw_zb-zbListN'
+    				title: '指标导入',
+    				xtype:'cw_zb-zbListC'    				
     			}
     			]
     		}
@@ -53,8 +52,8 @@ Ext.define('isane.view.cw_zb.zbPanel',{
     			xtype: 'tabpanel',
     			items:[
     			{
-    				title: '指标导入',
-    				xtype:'cw_zb-zbListC'
+    				title: '指标录入',
+    				xtype:'cw_zb-zbListN'
     			}
     			]
     		}

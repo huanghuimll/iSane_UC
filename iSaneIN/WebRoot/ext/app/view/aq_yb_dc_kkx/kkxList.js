@@ -1,8 +1,8 @@
-Ext.define('isane.view.aq_yb_dc_zh.zhList',{
+Ext.define('isane.view.aq_yb_dc_kkx.kkxList',{
 	extend:'Ext.grid.Panel',
-	alias:'widget.aq_yb_dc_zh-zhList',
-	id: 'aq_yb_dc_zh-zhList-id',
-	//store: Ext.create('isane.store.original.original',{storeId: 'aq_yb_dc_zh-zhList-storeId'}),
+	alias:'widget.aq_yb_dc_kkx-kkxList',
+	id: 'aq_yb_dc_kkx-kkxList-id',
+	//store: Ext.create('isane.store.original.original',{storeId: 'aq_yb_dc_kkx-kkxList-storeId'}),
 	plugins: [
 	    Ext.create('Ext.grid.plugin.CellEditing', {
 	    	clicksToEdit: 2
@@ -16,7 +16,7 @@ Ext.define('isane.view.aq_yb_dc_zh.zhList',{
 		xtype:'combobox',
 		store :  new Ext.data.ArrayStore({fields: ['id', 'name'],data: [['GZFGS', '广州分公司']]}),
 		name:'organCode',
-		id: 'aq_yb_dc_zh-zhList-organCode',
+		id: 'aq_yb_dc_kkx-kkxList-organCode',
 		displayField : 'name',
 		valueField : 'id',
 		editable: false,
@@ -28,7 +28,7 @@ Ext.define('isane.view.aq_yb_dc_zh.zhList',{
 	{
 		xtype:'numberfield',
 		name: 'storeY',
-		id: 'aq_yb_dc_zh-zhList-storeY',
+		id: 'aq_yb_dc_kkx-kkxList-storeY',
 		width: 70,
 		minValue: 2016,
 		value: Ext.Date.format(new Date(), 'Y')
@@ -40,7 +40,7 @@ Ext.define('isane.view.aq_yb_dc_zh.zhList',{
 	{
 		xtype:'numberfield',
 		name: 'storeM',
-		id: 'aq_yb_dc_zh-zhList-storeM',
+		id: 'aq_yb_dc_kkx-kkxList-storeM',
 		width: 70,
 		minValue: 1,
 		maxValue: 12,
@@ -49,7 +49,7 @@ Ext.define('isane.view.aq_yb_dc_zh.zhList',{
 	{
 		xtype:'numberfield',
 		name: 'storeD',
-		id: 'aq_yb_dc_zh-zhList-storeD',
+		id: 'aq_yb_dc_kkx-kkxList-storeD',
 		width: 70,
 		minValue: 1,
 		maxValue: 31,
@@ -58,8 +58,8 @@ Ext.define('isane.view.aq_yb_dc_zh.zhList',{
 		//value: Ext.Date.format(new Date(), 'd'),
 		/*listeners: {
 			change: function(own){
-				var y = Ext.getCmp('aq_yb_dc_zh-zhList-storeY').getValue(); 
-				var m = Ext.getCmp('aq_yb_dc_zh-zhList-storeM').getValue(); 
+				var y = Ext.getCmp('aq_yb_dc_kkx-kkxList-storeY').getValue(); 
+				var m = Ext.getCmp('aq_yb_dc_kkx-kkxList-storeM').getValue(); 
 				var date = new Date(y, m, 0);
 				var dayCount = date.getDate();
 				own.maxValue = dayCount;
@@ -70,11 +70,11 @@ Ext.define('isane.view.aq_yb_dc_zh.zhList',{
 		text: '导出',
 		tooltip:'导出报表',
 		iconCls: 'list_export',
-		id: 'aq_yb_dc_zh-zhList-exportButton'
+		id: 'aq_yb_dc_kkx-kkxList-exportButton'
 	},'-'//,		
 	/*{
 		text: '搜索',
-	    id: 'aq_yb_dc_zh-zhList-searchButton',
+	    id: 'aq_yb_dc_kkx-kkxList-searchButton',
 	    tooltip:'搜索数据',
         iconCls: 'search'		
 	},'-',
@@ -82,7 +82,7 @@ Ext.define('isane.view.aq_yb_dc_zh.zhList',{
 		text: '保存',
 		tooltip: "<span style='color:red'>多条数据保存！</span>",
 		iconCls: 'ok1',
-		id: 'aq_yb_dc_zh-zhList-saveButton'
+		id: 'aq_yb_dc_kkx-kkxList-saveButton'
 	},'-',
 	{
 		text: '刷新',

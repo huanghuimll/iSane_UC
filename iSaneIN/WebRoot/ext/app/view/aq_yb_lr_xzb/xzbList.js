@@ -60,14 +60,14 @@ Ext.define('isane.view.aq_yb_lr_xzb.xzbList',{
 				own.maxValue = dayCount;
 			}
 		}*/	
-	},'-',				
+	},				
 	{
 		text: '搜索',
 	    id: 'aq_yb_lr_xzb-xzbList-searcxzbutton',
 	    tooltip:'搜索数据',
 	    disabled: true,
         iconCls: 'search'		
-	},'-',
+	},
 	{
 		text: '保存',
 		tooltip: "<span style='color:red'>多条数据保存！</span>",
@@ -76,7 +76,7 @@ Ext.define('isane.view.aq_yb_lr_xzb.xzbList',{
 		id: 'aq_yb_lr_xzb-xzbList-saveButton'
 	},'-',
 	{
-		text: '上传',
+		text: '导入',
 		tooltip:'导入数据',
 		iconCls: 'list_import',
 		disabled: true,
@@ -97,8 +97,8 @@ Ext.define('isane.view.aq_yb_lr_xzb.xzbList',{
          {header:'选择',dataIndex:'id',width:50},
          {header:'所属单位',dataIndex:'plantName',flex:2},
          {header:'指标编码',dataIndex:'originalCode',flex:3},
-         {header:'指标项',dataIndex:'originalName',flex:4},
-         {header:'指标值',dataIndex:'originalValue',flex:2, editor: 'textfield', 
+         {header:'指标项',dataIndex:'originalName',flex:5},
+         {header:'指标值',dataIndex:'originalValue',flex:3, editor: 'textfield', 
         	 renderer: function(val, metadata){
         		 metadata.tdAttr = 'data-qtip="<span style=color:red>双击编辑!</span>"';
         		 return Ext.util.Format.number(val, '0.000');

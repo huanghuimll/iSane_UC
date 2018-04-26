@@ -24,7 +24,7 @@ Ext.define('isane.view.dl_fdl.fdlPanel',{
     	{
     		region: 'north',
             minHeight: 250,
-            height: '45%',	
+            height: '50%',	
             collapsible: true,
             split: true,
             header: false,	
@@ -36,8 +36,8 @@ Ext.define('isane.view.dl_fdl.fdlPanel',{
     			xtype: 'tabpanel',
     			items:[
     			{
-    				title: '电量录入',
-    				xtype:'dl_fdl-fdlListN'
+    				title: '电量导入',
+    				xtype:'dl_fdl-fdlListC'    				
     			}
     			]
     		}
@@ -52,8 +52,8 @@ Ext.define('isane.view.dl_fdl.fdlPanel',{
     			xtype: 'tabpanel',
     			items:[
     			{
-    				title: '电量导入',
-    				xtype:'dl_fdl-fdlListC'
+    				title: '电量录入',
+    				xtype:'dl_fdl-fdlListN'
     			}
     			]
     		}

@@ -1,71 +1,91 @@
-Ext.define('isane.controller.aq_yb_lr_xzb.xzbPanel', {
+Ext.define('isane.controller.aq_yb_dc_kkx.kkxPanel', {
 	extend : 'Ext.app.Controller',
-	stores : ['aq_yb_lr_xzb.xzbTree'],
-	models : ['organtree'],	
-	views : ['aq_yb_lr_xzb.xzbPanel', 'aq_yb_lr_xzb.xzbWest', 'aq_yb_lr_xzb.xzbList', 'aq_yb_lr_xzb.importForm'],
+	//stores : ['aq_yb_dc_kkx.rbTree'],
+	//models : ['organtree'],	
+	views : ['aq_yb_dc_kkx.kkxPanel', 'aq_yb_dc_kkx.kkxList'],
 	init: function() {
 		this.control({
-			//xzb
-			'aq_yb_lr_xzb-xzbPanel':{
+			//hb月报导出
+			'aq_yb_dc_kkx-kkxList button[text=导出]':{
+				click: this.exportBtn
+			},
+			/*'aq_yb_dc_kkx-kkxPanel':{
 				beforerender: this.onBeforeRender
 			},				
-			'aq_yb_lr_xzb-xzbWest':{
+			'aq_yb_dc_kkx-rbWest':{
     			itemclick: this.itemclick_dt
     		},
-    		'aq_yb_lr_xzb-xzbList button[text=搜索]':{
+    		'aq_yb_dc_kkx-kkxList button[text=搜索]':{
 				click:this.click_search
 			},			
-			'aq_yb_lr_xzb-xzbList button[text=保存]':{
+			'aq_yb_dc_kkx-kkxList button[text=保存]':{
 				click: this.saveAll
 			},				
-			'aq_yb_lr_xzb-xzbList actioncolumn':{
+			'aq_yb_dc_kkx-kkxList actioncolumn':{
 				saveSingle: this.singleSave
-			}, 
-			'aq_yb_lr_xzb-xzbList button[text=导入]':{
-				click: this.importBtn
-			}    			
+			}*/    		
 		});
 	},
 	
+	exportBtn: function(btn){
+		var organCode = Ext.getCmp('aq_yb_dc_kkx-kkxList-organCode').getValue();
+		var storeY = Ext.getCmp('aq_yb_dc_kkx-kkxList-storeY').getValue();
+		var storeM = Ext.getCmp('aq_yb_dc_kkx-kkxList-storeM').getValue();
+		var storeD = Ext.getCmp('aq_yb_dc_kkx-kkxList-storeD').getValue();
+		var storeDate = storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD);
+		var tempName = null;
+		var fileName = null;
+		if(organCode = 'GZFGS'){
+			tempName = 'GZFGS_Y_KKX_REPORT';
+			fileName = '广州分公司_可靠性月报统计';
+		}
+		
+		var url = "api/IndexDat/DAndY/export?";
+		
+		if(tempName != null){
+			url += "&tempName="+tempName;
+		}
+		if(fileName != null){
+			url += "&fileName="+fileName;
+		}
+		if(storeDate != null){
+			url += "&storeDate="+storeDate;
+		}
+		
+		window.location.href = url;
+	},
+	
 	onBeforeRender: function(item){
-		var own = Ext.getCmp('aq_yb_lr_xzb-xzbWest-id');
+		var own = Ext.getCmp('aq_yb_dc_kkx-rbWest-id');
 		var storeTre = own.getStore();
-		Ext.apply(storeTre.proxy.extraParams, {
-			organKey: QJ_PlantCode,
-			organType: 3
-		});
+		Ext.apply(storeTre.proxy.extraParams, {uid:0});
 		storeTre.load();
 		storeTre.getRootNode().set('expanded', true);
 	},
 	
     itemclick_dt: function(own, record, item, index, e, eOpts){
     	this.record = record; 
-    	
-		if(record.data.id == 'root'){
+		if(!record.data.leaf){
 			return;
 		}
-		
 		//console.log(record.data);
 		var organCode = record.data.organCode;
-		Ext.getCmp('aq_yb_lr_xzb-xzbList-organCode').setValue(organCode);
-		Ext.getCmp('aq_yb_lr_xzb-xzbList-searcxzbutton').setDisabled(false);
-		Ext.getCmp('aq_yb_lr_xzb-xzbList-saveButton').setDisabled(false);		
-		Ext.getCmp('aq_yb_lr_xzb-xzbList-importButton').setDisabled(false);		
-		Ext.getCmp('aq_yb_lr_xzb-xzbList-refresh').setDisabled(false);		
+		Ext.getCmp('aq_yb_dc_kkx-kkxList-organCode').setValue(organCode);
 		
-		var grid = Ext.getCmp('aq_yb_lr_xzb-xzbList-id');
+		var grid = Ext.getCmp('aq_yb_dc_kkx-kkxList-id');
 		this.afterrender(grid);
+    	
     }, 	
  
 	afterrender: function(panel){
-		var storeY = Ext.getCmp('aq_yb_lr_xzb-xzbList-storeY').getValue();
-		var storeM = Ext.getCmp('aq_yb_lr_xzb-xzbList-storeM').getValue();
-		var storeD = Ext.getCmp('aq_yb_lr_xzb-xzbList-storeD').getValue();
-		var organCode = Ext.getCmp('aq_yb_lr_xzb-xzbList-organCode').getValue();
+		var storeY = Ext.getCmp('aq_yb_dc_kkx-kkxList-storeY').getValue();
+		var storeM = Ext.getCmp('aq_yb_dc_kkx-kkxList-storeM').getValue();
+		var storeD = Ext.getCmp('aq_yb_dc_kkx-kkxList-storeD').getValue();
+		var organCode = Ext.getCmp('aq_yb_dc_kkx-kkxList-organCode').getValue();
 		
 		var obt = {
-				plantCode: Ext.getCmp('aq_yb_lr_xzb-xzbList-organCode').getValue(),
-				dataType: 'YB-XZB-XLS',
+				plantCode: Ext.getCmp('aq_yb_dc_kkx-kkxList-organCode').getValue(),
+				dataType: 'RB_PT',
 				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
 		};	
 		var store = panel.getStore();	
@@ -152,7 +172,7 @@ Ext.define('isane.controller.aq_yb_lr_xzb.xzbPanel', {
 	
 	singleDelete_but: function(record){
 		//alert('singleDelete');
-		var grid = Ext.getCmp('aq_yb_lr_xzb-xzbList-id');
+		var grid = Ext.getCmp('aq_yb_dc_kkx-kkxList-id');
 		var store = grid.getStore();
 		var url = store.proxy.api.publicUrl;
 		//console.log(record.data);
@@ -169,56 +189,6 @@ Ext.define('isane.controller.aq_yb_lr_xzb.xzbPanel', {
 				QJ_UtilEntity.failWin(response);
 			}
 		});			
-	},
-	//检修文档导入
-	importBtn: function(btn){
-		//alert('importBtn');
-		var win = Ext.create('Ext.window.Window',{
-			title: '机组小指标导入',
-			modal: true,
-			border: 0,
-			items: [{xtype: 'aq_yb_lr_xzb-importForm'}],
-			buttons: [{scope: this,text: '确定', iconCls:'ok1', handler: this.importSave},{text: '取消', iconCls:'delete1',  handler: function(btn){btn.ownerCt.ownerCt.close();}}],
-			buttonAlign: 'right'
-		});
-		
-		//var plantCode = Ext.getCmp('aq_yb_lr_xzb-xzbList-organCode').getValue();
-		//Ext.getCmp('aq_yb_lr_xzb-importForm-plantCode').setValue(plantCode);
-		
-		var storeY = Ext.getCmp('aq_yb_lr_xzb-xzbList-storeY').getValue();
-		var storeM = Ext.getCmp('aq_yb_lr_xzb-xzbList-storeM').getValue();
-        if(storeY == null || storeY == '' || storeM == null || storeM == ''){
-        	return;
-        }
-		var storeDate = storeY + '-' + QJ_UtilEntity.month(storeM);  
-		Ext.getCmp('aq_yb_lr_xzb-importForm-storeDate').setValue(storeDate);
-		win.show();		
-	},
-	
-	importSave: function(btn){
-    	var win = btn.up('window');
-    	var form = win.down('form').getForm();
-    	/*var grid = Ext.getCmp('aq_yb_lr_xzb-xzbList-id');
-    	var store = grid.getStore();*/
-    	//var url = store.proxy.api.upload;
-    	var url = 'api/Import/in';
-    	//alert('111');
-    	//return;
-        if(form.isValid()){
-            form.submit({
-            	scope: this,
-                url: url,
-                waitMsg: 'Uploading...',
-    			success: function(response){
-    				win.close();
-    				Ext.example.msg('系统提示！', "导入成功！");
-    				//store.load();
-    			},
-    			failure: function(response){
-    				QJ_UtilEntity.failWin(response);
-    			}
-            });
-        }		
-	}	
+	}
 	
 });
