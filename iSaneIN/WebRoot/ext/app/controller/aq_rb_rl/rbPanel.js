@@ -57,7 +57,7 @@ Ext.define('isane.controller.aq_rb_rl.rbPanel', {
 		
 		var obt = {
 				plantCode: Ext.getCmp('aq_rb_rl-rbList-organCode').getValue(),
-				dataType: 'RB-PT-PAGE',
+				dataType: 'HT-RB-PAGE',
 				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
 		};	
 		var store = panel.getStore();	
