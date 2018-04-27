@@ -77,7 +77,7 @@ Ext.define('isane.controller.cw_zb.zbPanel', {
 		var grid = Ext.getCmp('cw_zb-zbListN-id');
 		var obt = {
 				plantCode: organCode,
-				dataType: 'CW-PAGE',
+				dataType: 'HT-CW-PAGE',
 				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
 				dateType: dateType
 		};			
@@ -89,12 +89,15 @@ Ext.define('isane.controller.cw_zb.zbPanel', {
 		Ext.getCmp('cw_zb-zbListC-importButton').setDisabled(false);		
 		Ext.getCmp('cw_zb-zbListC-refresh').setDisabled(false);	
 		
+		var storeY = Ext.getCmp('cw_zb-zbListC-storeY').getValue();
+		var storeM = Ext.getCmp('cw_zb-zbListC-storeM').getValue();
+		var storeD = Ext.getCmp('cw_zb-zbListC-storeD').getValue();	
 		var dateType = Ext.getCmp('cw_zb-zbListC-dateType').getValue();
 		
 		var grid = Ext.getCmp('cw_zb-zbListC-id');
 		var obt = {
 				plantCode: organCode,
-				dataType: 'CW-XLS',
+				dataType: 'HT-CW-XLS',
 				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
 				dateType: dateType
 		};	

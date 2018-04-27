@@ -26,12 +26,24 @@
 		<include refid="criteriaSql" />
 		order by id
 	</select>
-	
+	<!-- 
 	<select id="selectByType" parameterType="Import" resultType="Import">
-	SELECT si.*,so.plantCode,so.dateType FROM SYS_ORIGINAL_IMPORT si INNER JOIN SYS_ORIGINAL so
-	ON si.originalCode=so.originalCode WHERE importType=#{importType} AND
-	so.plantCode=#{plantCode} order by si.id
+		SELECT si.*,so.plantCode,so.dateType FROM SYS_ORIGINAL_IMPORT si INNER JOIN SYS_ORIGINAL so
+		ON si.originalCode=so.originalCode WHERE importType=#{importType} AND
+		so.plantCode=#{plantCode} order by si.id
 	</select>
+	 -->
+	<!-- huangh 20180427 只能导入厂级数据  但是关联的海门一期二期无法导入; 递归解决-->
+	<select id="selectByType" parameterType="Import" resultType="Import">
+		WITH cte AS(
+			SELECT a.* FROM Dim_Organization a WHERE a.organKey = #{plantCode}
+			UNION ALL 
+			SELECT b.* FROM Dim_Organization b  INNER JOIN cte ON cte.organKey = b.organParentId 
+		)		
+		SELECT si.*,so.plantCode,so.dateType FROM SYS_ORIGINAL_IMPORT si INNER JOIN SYS_ORIGINAL so
+		ON si.originalCode=so.originalCode WHERE importType=#{importType} AND
+		so.plantCode IN(SELECT cte.organKey FROM cte) order by si.id
+	</select>	
 
 	<select id="count" parameterType="Import" resultType="int">
 		select count(id) from SYS_ORIGINAL_IMPORT

@@ -50,7 +50,7 @@
     		name: 'importType',
     		id: 'aq_yb_lr_zh-importForm-importType',
     		fieldLabel: 'EXCEL类型',
-    		value: 'YB-ZH',
+    		value: 'DR-ZH',
     		hidden: true
     	},    	        
     	{

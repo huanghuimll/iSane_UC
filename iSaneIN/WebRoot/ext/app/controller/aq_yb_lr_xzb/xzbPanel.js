@@ -65,7 +65,7 @@ Ext.define('isane.controller.aq_yb_lr_xzb.xzbPanel', {
 		
 		var obt = {
 				plantCode: Ext.getCmp('aq_yb_lr_xzb-xzbList-organCode').getValue(),
-				dataType: 'YB-XZB-XLS',
+				dataType: 'HT-XZB-XLS',
 				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
 		};	
 		var store = panel.getStore();	

@@ -51,7 +51,7 @@
     		name: 'importType',
     		id: 'cw_zb-importForm-importType',
     		fieldLabel: 'EXCEL类型',
-    		value: 'YB-CW',
+    		value: 'DR-CW',
     		hidden: true
     	},    	        
     	{

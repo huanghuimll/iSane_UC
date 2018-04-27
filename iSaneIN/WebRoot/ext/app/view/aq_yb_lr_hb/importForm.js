@@ -51,7 +51,7 @@
     		name: 'importType',
     		id: 'aq_yb_lr_hb-importForm-importType',
     		fieldLabel: 'EXCEL类型',
-    		value: 'YB-HB',
+    		value: 'DR-HB',
     		hidden: true
     	},    	        
     	{

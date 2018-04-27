@@ -71,7 +71,7 @@ Ext.define('isane.controller.aq_yb_lr_zh.zhPanel', {
 		var grid = Ext.getCmp('aq_yb_lr_zh-zhList-id');
 		var obt = {
 				plantCode: organCode,
-				dataType: 'YB-ZH-XLS',
+				dataType: 'HT-ZH-XLS',
 				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
 		};			
 		this.afterrender(grid, obt);
@@ -84,7 +84,7 @@ Ext.define('isane.controller.aq_yb_lr_zh.zhPanel', {
 		var grid = Ext.getCmp('aq_yb_lr_zh-zhListC-id');
 		var obt = {
 				plantCode: organCode,
-				dataType: 'YB-ZH-PAGE',
+				dataType: 'HT-ZH-PAGE',
 				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
 		};			
 		this.afterrender(grid, obt);
@@ -103,7 +103,7 @@ Ext.define('isane.controller.aq_yb_lr_zh.zhPanel', {
 		var organCode = Ext.getCmp('aq_yb_lr_zh-zhList-organCode').getValue();
 		var obt = {
 				plantCode: organCode,
-				dataType: 'YB-ZH-XLS',
+				dataType: 'HT-ZH-XLS',
 				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
 		};			
 		this.afterrender(btn.up('grid'), obt);
@@ -116,7 +116,7 @@ Ext.define('isane.controller.aq_yb_lr_zh.zhPanel', {
 		var organCode = Ext.getCmp('aq_yb_lr_zh-zhListC-organCode').getValue();
 		var obt = {
 				plantCode: organCode,
-				dataType: 'YB-ZH-PAGE',
+				dataType: 'HT-ZH-PAGE',
 				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
 		};			
 		this.afterrender(btn.up('grid'), obt);

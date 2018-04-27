@@ -52,7 +52,7 @@ Ext.define('isane.controller.dl_fdl.fdlPanel', {
 		var storeTre = own.getStore();
 		Ext.apply(storeTre.proxy.extraParams, {
 			organKey: QJ_PlantCode,
-			organType: 3
+			organType: 2
 		});
 		storeTre.load();
 		storeTre.getRootNode().set('expanded', true);
@@ -80,7 +80,7 @@ Ext.define('isane.controller.dl_fdl.fdlPanel', {
 		var grid = Ext.getCmp('dl_fdl-fdlListN-id');
 		var obt = {
 				plantCode: organCode,
-				dataType: 'DL-PAGE',
+				dataType: 'HT-DL-PAGE',
 				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
 				dateType: dateType
 		};			
@@ -92,12 +92,15 @@ Ext.define('isane.controller.dl_fdl.fdlPanel', {
 		Ext.getCmp('dl_fdl-fdlListC-importButton').setDisabled(false);		
 		Ext.getCmp('dl_fdl-fdlListC-refresh').setDisabled(false);	
 		
-		var dateType = Ext.getCmp('dl_fdl-fdlListC-dateType').getValue();
+		var storeY = Ext.getCmp('dl_fdl-fdlListC-storeY').getValue();
+		var storeM = Ext.getCmp('dl_fdl-fdlListC-storeM').getValue();
+		var storeD = Ext.getCmp('dl_fdl-fdlListC-storeD').getValue();	
+		var dateType = Ext.getCmp('dl_fdl-fdlListC-dateType').getValue();		
 		
 		var grid = Ext.getCmp('dl_fdl-fdlListC-id');
 		var obt = {
 				plantCode: organCode,
-				dataType: 'DL-XLS',
+				dataType: 'HT-DL-XLS',
 				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
 				dateType: dateType
 		};	
@@ -119,7 +122,7 @@ Ext.define('isane.controller.dl_fdl.fdlPanel', {
 		var dateType = Ext.getCmp('dl_fdl-fdlListN-dateType').getValue();
 		var obt = {
 				plantCode: organCode,
-				dataType: 'DL-PAGE',
+				dataType: 'HT-DL-PAGE',
 				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
 				dateType: dateType
 		};			
@@ -134,7 +137,7 @@ Ext.define('isane.controller.dl_fdl.fdlPanel', {
 		var dateType = Ext.getCmp('dl_fdl-fdlListC-dateType').getValue();
 		var obt = {
 				plantCode: organCode,
-				dataType: 'DL-XLS',
+				dataType: 'HT-DL-XLS',
 				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
 				dateType: dateType
 		};			

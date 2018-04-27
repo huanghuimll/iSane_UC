@@ -49,7 +49,7 @@
     		name: 'importType',
     		id: 'dl_fdl-fdlImportForm-importType',
     		fieldLabel: 'EXCEL类型',
-    		value: 'YB-DL',
+    		value: 'DR-DL',
     		hidden: true
     	},    	        
     	{
@@ -64,11 +64,10 @@
     		xtype: 'datefield',
     		name: 'storeDate',
     		fieldLabel: '日期',
-    		format: 'Y-m-d',
+    		format: 'Y-m',
     		value: new Date(),
             minValue: '2016/01/01',
             id: 'dl_fdl-fdlImportForm-storeDate',
-            //disabledDays: [0, 6],		
     		emptyText: '输入时间..'	
     	},	   	        
 	    {

@@ -64,7 +64,7 @@ Ext.define('isane.controller.aq_yb_lr_hb.hbPanel', {
 		
 		var obt = {
 				plantCode: Ext.getCmp('aq_yb_lr_hb-hbList-organCode').getValue(),
-				dataType: 'YB-HB-XLS',
+				dataType: 'HT-HB-XLS',
 				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
 		};	
 		var store = panel.getStore();	
