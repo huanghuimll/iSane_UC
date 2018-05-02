@@ -40,7 +40,11 @@ Ext.application({
 		QJ_UserCode = Ext.get('top_div_userCode').getValue();
 		QJ_UserName = Ext.get('top_div_userName').getValue();
 		QJ_PassWord = Ext.get('top_div_password').getValue();
-		QJ_UserId = Ext.get('top_div_userId').getValue();		
+		QJ_UserId = Ext.get('top_div_userId').getValue();
+		QJ_Mask = new Ext.LoadMask(Ext.getBody(), {
+	        msg : "正在查询,请稍后...",//你要写成Loading...也可以  
+	        msgCls : 'z-index:10000;'  
+	     }); 		
 		//加载公共Control
 		//application.getController('isane.controller.util.EmployePanel');
 		Ext.create('Ext.container.Viewport',{

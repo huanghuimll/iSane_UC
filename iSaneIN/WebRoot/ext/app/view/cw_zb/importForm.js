@@ -45,15 +45,28 @@
        				storeCTE.load();     				
        			}
        		}
-	    },	    	
-    	{
+	    },	
+		{
+			xtype:'combobox',
+			fieldLabel:'报表类型',
+			store :  new Ext.data.ArrayStore({fields: ['id', 'name'],data: [['DR-CW', '财务表'], ['DR-CW-YS', '预算表']]}),
+			name:'importType',
+			id: 'cw_zb-importForm-importType',
+			displayField : 'name',
+			valueField : 'id',
+			editable: false,
+			allowBlank:false,
+			value: 'DR-CW',
+			emptyText: '--请选择--'
+		},	    
+    	/*{
     		xtype: 'textfield',
     		name: 'importType',
     		id: 'cw_zb-importForm-importType',
     		fieldLabel: 'EXCEL类型',
     		value: 'DR-CW',
     		hidden: true
-    	},    	        
+    	},*/    	        
     	{
     		xtype: 'textfield',
     		name: 'dateType',

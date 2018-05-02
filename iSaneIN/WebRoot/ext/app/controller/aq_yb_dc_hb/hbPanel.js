@@ -1,37 +1,23 @@
 Ext.define('isane.controller.aq_yb_dc_hb.hbPanel', {
 	extend : 'Ext.app.Controller',
-	//stores : ['aq_yb_dc_hb.rbTree'],
-	//models : ['organtree'],	
-	views : ['aq_yb_dc_hb.hbPanel', 'aq_yb_dc_hb.hbList'],
+	views : ['aq_yb_dc_hb.hbPanel'],
 	init: function() {
 		this.control({
 			//hb月报导出
-			'aq_yb_dc_hb-hbList button[text=导出]':{
+			'aq_yb_dc_hb-hbPanel button[text=导出]':{
 				click: this.exportBtn
-			},
-			/*'aq_yb_dc_hb-hbPanel':{
-				beforerender: this.onBeforeRender
-			},				
-			'aq_yb_dc_hb-rbWest':{
-    			itemclick: this.itemclick_dt
-    		},
-    		'aq_yb_dc_hb-hbList button[text=搜索]':{
-				click:this.click_search
-			},			
-			'aq_yb_dc_hb-hbList button[text=保存]':{
-				click: this.saveAll
-			},				
-			'aq_yb_dc_hb-hbList actioncolumn':{
-				saveSingle: this.singleSave
-			}*/    		
+			}, 
+    		'aq_yb_dc_hb-hbPanel button[text=搜索]':{
+				click:this.click_openHtml
+			} 			
 		});
 	},
 	
 	exportBtn: function(btn){
-		var organCode = Ext.getCmp('aq_yb_dc_hb-hbList-organCode').getValue();
-		var storeY = Ext.getCmp('aq_yb_dc_hb-hbList-storeY').getValue();
-		var storeM = Ext.getCmp('aq_yb_dc_hb-hbList-storeM').getValue();
-		var storeD = Ext.getCmp('aq_yb_dc_hb-hbList-storeD').getValue();
+		var organCode = Ext.getCmp('aq_yb_dc_hb-hbPanel-organCode').getValue();
+		var storeY = Ext.getCmp('aq_yb_dc_hb-hbPanel-storeY').getValue();
+		var storeM = Ext.getCmp('aq_yb_dc_hb-hbPanel-storeM').getValue();
+		var storeD = Ext.getCmp('aq_yb_dc_hb-hbPanel-storeD').getValue();
 		var storeDate = storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD);
 		var tempName = null;
 		var fileName = null;
@@ -55,140 +41,48 @@ Ext.define('isane.controller.aq_yb_dc_hb.hbPanel', {
 		window.location.href = url;
 	},
 	
-	onBeforeRender: function(item){
-		var own = Ext.getCmp('aq_yb_dc_hb-rbWest-id');
-		var storeTre = own.getStore();
-		Ext.apply(storeTre.proxy.extraParams, {uid:0});
-		storeTre.load();
-		storeTre.getRootNode().set('expanded', true);
-	},
-	
-    itemclick_dt: function(own, record, item, index, e, eOpts){
-    	this.record = record; 
-		if(!record.data.leaf){
-			return;
+	click_openHtml: function(btn){
+		var organCode = Ext.getCmp('aq_yb_dc_hb-hbPanel-organCode').getValue();
+		var storeY = Ext.getCmp('aq_yb_dc_hb-hbPanel-storeY').getValue();
+		var storeM = Ext.getCmp('aq_yb_dc_hb-hbPanel-storeM').getValue();
+		var storeD = Ext.getCmp('aq_yb_dc_hb-hbPanel-storeD').getValue();
+		var storeDate = storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD);
+		var tempName = null;
+		var fileName = null;
+		if(organCode = 'GZFGS'){
+			tempName = 'GZFGS_Y_HB_REPORT';
+			fileName = '广州分公司_环保月报统计';
 		}
-		//console.log(record.data);
-		var organCode = record.data.organCode;
-		Ext.getCmp('aq_yb_dc_hb-hbList-organCode').setValue(organCode);
 		
-		var grid = Ext.getCmp('aq_yb_dc_hb-hbList-id');
-		this.afterrender(grid);
-    	
-    }, 	
- 
-	afterrender: function(panel){
-		var storeY = Ext.getCmp('aq_yb_dc_hb-hbList-storeY').getValue();
-		var storeM = Ext.getCmp('aq_yb_dc_hb-hbList-storeM').getValue();
-		var storeD = Ext.getCmp('aq_yb_dc_hb-hbList-storeD').getValue();
-		var organCode = Ext.getCmp('aq_yb_dc_hb-hbList-organCode').getValue();
+		var url = "api/IndexDat/DAndY/exportHtml01?";
 		
-		var obt = {
-				plantCode: Ext.getCmp('aq_yb_dc_hb-hbList-organCode').getValue(),
-				dataType: 'RB_PT',
-				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
-		};	
-		var store = panel.getStore();	
-		Ext.apply(store.proxy.extraParams, obt);
-		store.load();
-	},
-	
-	click_search: function(btn){
-		this.afterrender(btn.up('grid'));
-	},
-	
-	//保存单条数据
-	singleSave: function(records, store, grid){
-		//alert('singleSave');
-		var storeY = grid.ownerCt.down('numberfield[name=storeY]').getValue();
-		var storeM = grid.ownerCt.down('numberfield[name=storeM]').getValue();
-		var storeD = grid.ownerCt.down('numberfield[name=storeD]').getValue();
-        if(storeY == null || storeY == '' || storeM == null || storeM == ''){
-        	return;
-        }
-		var storeDate = storeY + '-' + QJ_UtilEntity.month(storeM) + '-' + QJ_UtilEntity.month(storeD);  		
-		this.saveAll_but(records, store, storeDate);
-	},	
-	//保存多条
-	saveAll: function(but){
-		var grid = but.up('grid');
-    	var store = grid.getStore();
-		var storeY = grid.down('numberfield[name=storeY]').getValue();
-		var storeM = grid.down('numberfield[name=storeM]').getValue();
-		var storeD = grid.down('numberfield[name=storeD]').getValue();
-        if(storeY == null || storeY == '' || storeM == null || storeM == ''){
-        	return;
-        }
-		var storeDate = storeY + '-' + QJ_UtilEntity.month(storeM) + '-' + QJ_UtilEntity.month(storeD);  	
-    	//获取修改后的数据
-    	var records = store.getModifiedRecords();
-		if(records.length > 0){
-			Ext.Msg.confirm('保存', '您确定保存所有数据吗?', function(button) {
-				if (button == 'yes') {
-					this.saveAll_but(records, store, storeDate);
-				}
-			}, this);		
-		}else{
-			Ext.example.msg('系统提示','数据为空！');
+		if(tempName != null){
+			url += "&tempName="+tempName;
 		}
-	},
-	
-	saveAll_but: function(records, store, storeDate){
-		//alert('saveAllAdd_but');
-        var arr = [];
-        for(var i = 0;i < records.length; i++){
-        	arr.push(records[i].data);
-        };	        
-        var url = store.proxy.api.add;   
-		//return;
+		
+		if(storeDate != null){
+			url += "&storeDate="+storeDate;
+		}
+		
+		var html = '/upload/excelTohtml/'+tempName+'.html';
+		QJ_Mask.show();
 		Ext.Ajax.request({
 			scope: this,
 			method: 'post',
-			url: url,
-			params:{
-				storeDate: storeDate
-			},			
-			jsonData: Ext.encode(arr),
+			url: url,		
 			success: function(response){
-				store.reload();
-				//store.commitChanges();	
-				Ext.example.msg('系统提示！', "保存成功！");
+				QJ_Mask.hide();
+				//console.log(response);
+				var html = Ext.decode(response.responseText);     
+				//console.log(html);
+				var htmlPanel = Ext.getCmp('aq_yb_dc_hb-hbPanel-html');
+				htmlPanel.body.update(html);
+				//htmlPanel.body.update('<iframe scrolling="auto" width="100%" height="100%" frameborder="0">'+html+'</iframe>')
+				//htmlPanel.body.update('<iframe scrolling="auto" src="'+html+'" width="100%" height="100%" frameborder="0"></iframe>')
 			},
 			failure: function(response){
 				QJ_UtilEntity.failWin(response);
 			}
-		});	   		
-	},
-	
-	singleDelete: function(record){
-		if(record){
-			Ext.Msg.confirm('删除', '您确定删除该数据吗?', function(button) {
-				if (button == 'yes') {
-					this.singleDelete_but(record);
-				}
-			}, this);		
-		}
-	},	
-	
-	singleDelete_but: function(record){
-		//alert('singleDelete');
-		var grid = Ext.getCmp('aq_yb_dc_hb-hbList-id');
-		var store = grid.getStore();
-		var url = store.proxy.api.publicUrl;
-		//console.log(record.data);
-		//return;
-		Ext.Ajax.request({
-			scope: this,
-			method: 'delete',
-			url: url+record.data.id,
-			success: function(response){
-				store.remove(record);
-				Ext.example.msg('系统提示！', "删除成功！");
-			},
-			failure: function(response){
-				QJ_UtilEntity.failWin(response);
-			}
-		});			
-	}
-	
+		});		
+	}	
 });
