@@ -63,16 +63,16 @@ Ext.define('isane.view.aq_yb_dc_fjhdl.fjhdlPanel',{
     		id: 'aq_yb_dc_fjhdl-fjhdlPanel-exportButton'
     	},'-'
       ],	
+    layout: 'fit',
   	items:[
      	{
   		//frame: true,
   		border: 0,
   		id: 'aq_yb_dc_fjhdl-fjhdlPanel-html',
-  		minHeight: 1000,
+  		//minHeight: 1000,
   		//height: '100%',
   		autoHeight: true,
-  		layout: 'fit',
-  		bodyStyle: 'padding:0px 20px 20px 20px; overflow-y:auto;overflow-x:auto',
+  		bodyStyle: 'padding:0px 20px 100px 20px; overflow-y:auto;overflow-x:auto',
   		autoScroll: true
   		//html: '<iframe src="/upload/excelTohtml/GZFGS_Y_XZB_REPORT.html" width="100%" height="100%" frameborder="0"></iframe>'
       }	       

@@ -81,16 +81,16 @@ Ext.define('isane.view.aq_rb_dc.rbPanel',{
     		id: 'aq_rb_dc-rbPanel-exportButton'
     	},'-'
       ],	
+    layout: 'fit',
   	items:[
      	{
   		//frame: true,
   		border: 0,
   		id: 'aq_rb_dc-rbPanel-html',
-  		minHeight: 800,
+  		//minHeight: 800,
   		//height: '100%',
   		autoHeight: true,
-  		layout: 'fit',
-  		bodyStyle: 'padding:0px 20px 20px 20px;overflow-y:auto;overflow-x:auto',
+  		bodyStyle: 'padding:0px 20px 100px 20px;overflow-y:auto;overflow-x:auto',
   		autoScroll: true
   		//html: '<iframe src="/upload/excelTohtml/GZFGS_Y_XZB_REPORT.html" width="100%" height="100%" frameborder="0"></iframe>'
       }	       
