@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.apache.log4j.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -25,7 +26,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
 import org.apache.poi.hssf.converter.ExcelToHtmlConverter;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -116,132 +116,7 @@ public class ReportExportImpl implements ReportExport {
 		processTemplateFile(out, templateFile, dateCellMap, formulaCellMap, indexCellMap, indexCellToFormulaMap, customizedMap, indexDataCache);
 		logger.info("保存到输出流，成功。");
 	}
-	
-	/**
-	 *huangh 20180502 excel转html
-	 */
-	@Override
-	public void exportReportHtml(Date date, String exportTemplateName, String outpath) {
-		logger.info("处理模版导出：" + exportTemplateName);
-		
-		// 得到模版信息
-		ExportTemplate template = getExportTemplate(exportTemplateName);
-		if (null == template) {
-			throw new RuntimeException( "未找到导出模版内容。" );
-		}
-		logger.debug("从数据库找模版，成功。");
 
-		// 判断文件是否存在
-		String xlsTemplateFile = template.getExportFile();
-		File templateFile = new File(xlsTemplateFile);
-		if (!templateFile.exists()) {
-			throw new RuntimeException("模版文件不存在。");
-		}
-		logger.debug("打开模版文件，成功。");
-
-		// 得到单元格信息（没有内容也行，相当于将模版文件不做处理，另存一份而已）
-		List<ExportCell> cellList = getCellList( template.getId() );
-		if (null == cellList || 0 == cellList.size()) {
-			logger.warn(String.format("模版%s：没有定义任何单元格信息。", template.getExportName()));
-		}
-		if (null == cellList) {
-			cellList = Collections.emptyList();
-		}
-
-		Map<String, IndexDataStore> indexDataCache = new HashMap<>();
-		
-		// 打开文件处理单元格
-		// 1. 处理所有日期
-		Map<Integer, String> dateCellMap = new HashMap<>();
-		processDateCell(dateCellMap, cellList, date);
-		logger.info("处理日期单元格，成功。");
-		
-		// 2. 处理所有指标
-		int decimalPlace = template.getDecimalPlace();
-		String reportType = template.getExportType();
-		Map<Integer, Index> indexCellMap = new HashMap<>();
-		Map<Integer, Index> indexCellToFormulaMap = new HashMap<>();
-		logger.debug("处理指标单元格，开始。");
-		processIndexCell(indexCellMap, indexCellToFormulaMap, cellList, date, reportType, decimalPlace, indexDataCache);
-		logger.debug("处理指标单元格，结束。");
-		
-		//3. 处理公式单元格
-		Map<Integer, String> formulaCellMap = new HashMap<>();
-		processFormulaCell(formulaCellMap, cellList);
-		
-		//4. 处理自定义单元格
-		Map<Integer, String> customizedMap = new HashMap<>();
-		processCustomizedCell(date, customizedMap, cellList);
-		
-		//5. 处理xls文件（打开、写入、保存到流）并转成html,输进outpath
-		processTemplateFileHtml(outpath, templateFile, dateCellMap, formulaCellMap, indexCellMap, indexCellToFormulaMap, customizedMap, indexDataCache);
-		logger.info("保存到输出流，成功。");		
-		
-	}
-
-	/**
-	 *huangh 20180502 excel转html
-	 */
-	@Override
-	public String exportReportHtml01(Date date, String exportTemplateName) {
-		logger.info("处理模版导出：" + exportTemplateName);
-		
-		// 得到模版信息
-		ExportTemplate template = getExportTemplate(exportTemplateName);
-		if (null == template) {
-			throw new RuntimeException( "未找到导出模版内容。" );
-		}
-		logger.debug("从数据库找模版，成功。");
-
-		// 判断文件是否存在
-		String xlsTemplateFile = template.getExportFile();
-		File templateFile = new File(xlsTemplateFile);
-		if (!templateFile.exists()) {
-			throw new RuntimeException("模版文件不存在。");
-		}
-		logger.debug("打开模版文件，成功。");
-
-		// 得到单元格信息（没有内容也行，相当于将模版文件不做处理，另存一份而已）
-		List<ExportCell> cellList = getCellList( template.getId() );
-		if (null == cellList || 0 == cellList.size()) {
-			logger.warn(String.format("模版%s：没有定义任何单元格信息。", template.getExportName()));
-		}
-		if (null == cellList) {
-			cellList = Collections.emptyList();
-		}
-
-		Map<String, IndexDataStore> indexDataCache = new HashMap<>();
-		
-		// 打开文件处理单元格
-		// 1. 处理所有日期
-		Map<Integer, String> dateCellMap = new HashMap<>();
-		processDateCell(dateCellMap, cellList, date);
-		logger.info("处理日期单元格，成功。");
-		
-		// 2. 处理所有指标
-		int decimalPlace = template.getDecimalPlace();
-		String reportType = template.getExportType();
-		Map<Integer, Index> indexCellMap = new HashMap<>();
-		Map<Integer, Index> indexCellToFormulaMap = new HashMap<>();
-		logger.debug("处理指标单元格，开始。");
-		processIndexCell(indexCellMap, indexCellToFormulaMap, cellList, date, reportType, decimalPlace, indexDataCache);
-		logger.debug("处理指标单元格，结束。");
-		
-		//3. 处理公式单元格
-		Map<Integer, String> formulaCellMap = new HashMap<>();
-		processFormulaCell(formulaCellMap, cellList);
-		
-		//4. 处理自定义单元格
-		Map<Integer, String> customizedMap = new HashMap<>();
-		processCustomizedCell(date, customizedMap, cellList);
-		
-		//5. 处理xls文件（打开、写入、保存到流）并转成html,输进outpath
-		String html = processTemplateFileHtml01(templateFile, dateCellMap, formulaCellMap, indexCellMap, indexCellToFormulaMap, customizedMap, indexDataCache);
-		logger.info("保存到输出流，成功。");
-		return html;
-		
-	}
-	
 	private void processCustomizedCell(Date date, Map<Integer, String> customizedMap, List<ExportCell> cellList) {
 		cellList.stream().filter(c -> ExportConst.CELL_TYPE_CUSTOMIZED.equals(c.getCellType())).forEach(c -> {
 			String content = c.getCellContent();
@@ -309,12 +184,26 @@ public class ReportExportImpl implements ReportExport {
 			case ExportConst.CUSTOMIZED_DAYCOUNTER_YT:
 				result = yt;
 				break;
+			case ExportConst.CUSTOMIZED_DAYCOUNTER_MY:
+				result = grtDayByYearMonth(date);
+				break;
 			default:
 				logger.warn("不支持的自定义单元格式(DayCounter)：" + processContent);
 				break;
 		}
 		
 		return String.format("%d", result);
+	}
+	
+	public int grtDayByYearMonth(Date date){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String[] d = sdf.format(date).split("-");
+		Calendar c = Calendar.getInstance();
+		c.set(Calendar.YEAR, Integer.valueOf(d[0]));
+		c.set(Calendar.MONTH, Integer.valueOf(d[1])-1);
+		c.set(Calendar.DATE, 1);
+		c.roll(Calendar.DATE, -1);
+		return c.get(Calendar.DAY_OF_YEAR);
 	}
 
 	private void processFormulaCell(Map<Integer, String> formulaCellMap, List<ExportCell> cellList) {
@@ -424,267 +313,6 @@ public class ReportExportImpl implements ReportExport {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	/**
-	 * 得到excel并转换为Html,并导出outpath
-	 * @param out
-	 * @param templateFile
-	 * @param dateCellMap
-	 * @param formulaCellMap
-	 * @param indexCellMap
-	 * @param indexCellToFormulaMap
-	 * @param customizedMap
-	 * @param indexDataCache
-	 */
-	private void processTemplateFileHtml(String outpath, File templateFile, 
-			Map<Integer, String> dateCellMap, Map<Integer, String> formulaCellMap,
-			Map<Integer, Index> indexCellMap, Map<Integer, Index> indexCellToFormulaMap,
-			Map<Integer, String> customizedMap,
-			Map<String, IndexDataStore> indexDataCache) {
-		FileInputStream fis = null;
-		ByteArrayOutputStream out = null;
-		HSSFWorkbook workbook = null;
-		try {
-			fis = new FileInputStream(templateFile);
-
-			workbook = new HSSFWorkbook(fis);
-			HSSFSheet sh = workbook.getSheetAt(0);
-
-			// 写入日期单元格（实际是字符串）
-			dateCellMap.entrySet().stream().forEach(es -> {
-				Integer rowAndCol = es.getKey();
-				int r = unZipRow(rowAndCol);
-				int c = unZipCol(rowAndCol);
-
-				HSSFRow row = sh.getRow(r);
-				HSSFCell cell = row.getCell(c);
-				cell.setCellType( Cell.CELL_TYPE_STRING );
-				cell.setCellValue( es.getValue() );
-			});
-			
-			// 写入公式单元格
-			formulaCellMap.entrySet().stream().forEach(es -> {
-				Integer rowAndCol = es.getKey();
-				int r = unZipRow(rowAndCol);
-				int c = unZipCol(rowAndCol);
-
-				HSSFRow row = sh.getRow(r);
-				HSSFCell cell = row.getCell(c);
-//				cell.setCellType( Cell.CELL_TYPE_FORMULA );
-				cell.setCellFormula( es.getValue() );
-			});
-
-			// 写入指标单元格
-			indexCellMap.entrySet().stream().forEach(es -> {
-				Integer rowAndCol = es.getKey();
-				int r = unZipRow(rowAndCol);
-				int c = unZipCol(rowAndCol);
-
-				HSSFRow row = sh.getRow(r);
-				HSSFCell cell = row.getCell(c);
-				
-				String indexCode = es.getValue().getIndexCode();
-				BigDecimal value = getValueFromStore(indexCode, es.getValue(), indexDataCache);
-				if( null != value ) {
-					cell.setCellValue( value.doubleValue() );
-				} else {
-					cell.setCellValue( "" );
-				}
-			});
-
-			// 写入指标单元格(有单位转换，变成公式单元格)
-			indexCellToFormulaMap.entrySet().stream().forEach(es -> {
-				Integer rowAndCol = es.getKey();
-				int r = unZipRow(rowAndCol);
-				int c = unZipCol(rowAndCol);
-
-				HSSFRow row = sh.getRow(r);
-				HSSFCell cell = row.getCell(c);
-				
-				String indexCode = es.getValue().getIndexCode();
-				BigDecimal value = getValueFromStore(indexCode, es.getValue(), indexDataCache);
-				if( null != value ) {
-					String el = es.getValue().getExtentContent();//单位转换表达式内容
-					el = el.replace("#value", "%s");
-					el = String.format(el, value.toString());
-					cell.setCellFormula(el);
-				} else {
-					cell.setCellValue( "" );
-				}
-			});
-			
-			//写入自定义单元格 
-			customizedMap.entrySet().stream().forEach(es -> {
-				Integer rowAndCol = es.getKey();
-				int r = unZipRow(rowAndCol);
-				int c = unZipCol(rowAndCol);
-
-				HSSFRow row = sh.getRow(r);
-				HSSFCell cell = row.getCell(c);
-				cell.setCellType( Cell.CELL_TYPE_STRING );
-				cell.setCellValue( es.getValue() );
-			});
-			 // 写入流
-			 //workbook.write(out);
-			 //*****excel转换成html******
-			 ExcelToHtmlConverter excelToHtmlConverter = new ExcelToHtmlConverter (DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument() );
-		     //去掉Excel头行
-		     excelToHtmlConverter.setOutputColumnHeaders(false);
-		     //去掉Excel行号
-		     excelToHtmlConverter.setOutputRowNumbers(false);	    
-		     excelToHtmlConverter.processWorkbook(workbook);	
-		     //DOTO省去对包含图片的处理
-		     Document htmlDocument =excelToHtmlConverter.getDocument();
-		     out = new ByteArrayOutputStream();
-		     DOMSource domSource = new DOMSource (htmlDocument);
-		     StreamResult streamResult = new StreamResult (out);
-		     TransformerFactory tf = TransformerFactory.newInstance();
-		     Transformer serializer = tf.newTransformer();
-		     serializer.setOutputProperty (OutputKeys.ENCODING, "gbk");
-		     serializer.setOutputProperty (OutputKeys.INDENT, "yes");
-		     serializer.setOutputProperty (OutputKeys.METHOD, "html");
-		     serializer.transform (domSource, streamResult);
-
-		     String content = new String (out.toByteArray());	
-		     FileUtils.writeStringToFile(new File(outpath), content, "gbk");	
-		     
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				workbook.close();
-				fis.close();
-				out.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	private String processTemplateFileHtml01(File templateFile, 
-			Map<Integer, String> dateCellMap, Map<Integer, String> formulaCellMap,
-			Map<Integer, Index> indexCellMap, Map<Integer, Index> indexCellToFormulaMap,
-			Map<Integer, String> customizedMap,
-			Map<String, IndexDataStore> indexDataCache) {
-		FileInputStream fis = null;
-		ByteArrayOutputStream out = null;
-		HSSFWorkbook workbook = null;
-		String content = null;
-		try {
-			fis = new FileInputStream(templateFile);
-
-			workbook = new HSSFWorkbook(fis);
-			HSSFSheet sh = workbook.getSheetAt(0);
-
-			// 写入日期单元格（实际是字符串）
-			dateCellMap.entrySet().stream().forEach(es -> {
-				Integer rowAndCol = es.getKey();
-				int r = unZipRow(rowAndCol);
-				int c = unZipCol(rowAndCol);
-
-				HSSFRow row = sh.getRow(r);
-				HSSFCell cell = row.getCell(c);
-				cell.setCellType( Cell.CELL_TYPE_STRING );
-				cell.setCellValue( es.getValue() );
-			});
-			
-			// 写入公式单元格
-			formulaCellMap.entrySet().stream().forEach(es -> {
-				Integer rowAndCol = es.getKey();
-				int r = unZipRow(rowAndCol);
-				int c = unZipCol(rowAndCol);
-
-				HSSFRow row = sh.getRow(r);
-				HSSFCell cell = row.getCell(c);
-//				cell.setCellType( Cell.CELL_TYPE_FORMULA );
-				cell.setCellFormula( es.getValue() );
-			});
-
-			// 写入指标单元格
-			indexCellMap.entrySet().stream().forEach(es -> {
-				Integer rowAndCol = es.getKey();
-				int r = unZipRow(rowAndCol);
-				int c = unZipCol(rowAndCol);
-
-				HSSFRow row = sh.getRow(r);
-				HSSFCell cell = row.getCell(c);
-				
-				String indexCode = es.getValue().getIndexCode();
-				BigDecimal value = getValueFromStore(indexCode, es.getValue(), indexDataCache);
-				if( null != value ) {
-					cell.setCellValue( value.doubleValue() );
-				} else {
-					cell.setCellValue( "" );
-				}
-			});
-
-			// 写入指标单元格(有单位转换，变成公式单元格)
-			indexCellToFormulaMap.entrySet().stream().forEach(es -> {
-				Integer rowAndCol = es.getKey();
-				int r = unZipRow(rowAndCol);
-				int c = unZipCol(rowAndCol);
-
-				HSSFRow row = sh.getRow(r);
-				HSSFCell cell = row.getCell(c);
-				
-				String indexCode = es.getValue().getIndexCode();
-				BigDecimal value = getValueFromStore(indexCode, es.getValue(), indexDataCache);
-				if( null != value ) {
-					String el = es.getValue().getExtentContent();//单位转换表达式内容
-					el = el.replace("#value", "%s");
-					el = String.format(el, value.toString());
-					cell.setCellFormula(el);
-				} else {
-					cell.setCellValue( "" );
-				}
-			});
-			
-			//写入自定义单元格 
-			customizedMap.entrySet().stream().forEach(es -> {
-				Integer rowAndCol = es.getKey();
-				int r = unZipRow(rowAndCol);
-				int c = unZipCol(rowAndCol);
-
-				HSSFRow row = sh.getRow(r);
-				HSSFCell cell = row.getCell(c);
-				cell.setCellType( Cell.CELL_TYPE_STRING );
-				cell.setCellValue( es.getValue() );
-			});
-			 // 写入流
-			 //workbook.write(out);
-			 //*****excel转换成html******
-			 ExcelToHtmlConverter excelToHtmlConverter = new ExcelToHtmlConverter (DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument() );
-		     //去掉Excel头行
-		     excelToHtmlConverter.setOutputColumnHeaders(false);
-		     //去掉Excel行号
-		     excelToHtmlConverter.setOutputRowNumbers(false);	    
-		     excelToHtmlConverter.processWorkbook(workbook);	
-		     //DOTO省去对包含图片的处理
-		     Document htmlDocument =excelToHtmlConverter.getDocument();
-		     out = new ByteArrayOutputStream();
-		     DOMSource domSource = new DOMSource (htmlDocument);
-		     StreamResult streamResult = new StreamResult (out);
-		     TransformerFactory tf = TransformerFactory.newInstance();
-		     Transformer serializer = tf.newTransformer();
-		     serializer.setOutputProperty (OutputKeys.ENCODING, "gbk");
-		     serializer.setOutputProperty (OutputKeys.INDENT, "yes");
-		     serializer.setOutputProperty (OutputKeys.METHOD, "html");
-		     serializer.transform (domSource, streamResult);
-		     content = new String (out.toByteArray());	
-		     //FileUtils.writeStringToFile(new File(outpath), content, "gbk");	
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				workbook.close();
-				fis.close();
-				out.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		 return content;
 	}
 	
 	private BigDecimal getValueFromStore(String indexCode, Index indexInformation, Map<String, IndexDataStore> indexDataCache) {
@@ -1157,7 +785,6 @@ public class ReportExportImpl implements ReportExport {
 	
 	private Date getForYear(Calendar c, Date date, int yearFix) {
 		c.setTime(date);
-		//c.set(Calendar.MONTH, 0);
 		c.set(Calendar.DAY_OF_MONTH, 1);
 		c.set(Calendar.HOUR_OF_DAY, 0);
 		c.set(Calendar.MINUTE, 0);
@@ -1262,5 +889,390 @@ public class ReportExportImpl implements ReportExport {
 	public void setIndexDataService(IndexDataService indexDataService) {
 		this.indexDataService = indexDataService;
 	}
+	
+	/**
+	 *huangh 20180502 excel转html
+	 */
+	@Override
+	public void exportReportHtml(Date date, String exportTemplateName, String outpath) {
+		logger.info("处理模版导出：" + exportTemplateName);
+		
+		// 得到模版信息
+		ExportTemplate template = getExportTemplate(exportTemplateName);
+		if (null == template) {
+			throw new RuntimeException( "未找到导出模版内容。" );
+		}
+		logger.debug("从数据库找模版，成功。");
 
+		// 判断文件是否存在
+		String xlsTemplateFile = template.getExportFile();
+		File templateFile = new File(xlsTemplateFile);
+		if (!templateFile.exists()) {
+			throw new RuntimeException("模版文件不存在。");
+		}
+		logger.debug("打开模版文件，成功。");
+
+		// 得到单元格信息（没有内容也行，相当于将模版文件不做处理，另存一份而已）
+		List<ExportCell> cellList = getCellList( template.getId() );
+		if (null == cellList || 0 == cellList.size()) {
+			logger.warn(String.format("模版%s：没有定义任何单元格信息。", template.getExportName()));
+		}
+		if (null == cellList) {
+			cellList = Collections.emptyList();
+		}
+
+		Map<String, IndexDataStore> indexDataCache = new HashMap<>();
+		
+		// 打开文件处理单元格
+		// 1. 处理所有日期
+		Map<Integer, String> dateCellMap = new HashMap<>();
+		processDateCell(dateCellMap, cellList, date);
+		logger.info("处理日期单元格，成功。");
+		
+		// 2. 处理所有指标
+		int decimalPlace = template.getDecimalPlace();
+		String reportType = template.getExportType();
+		Map<Integer, Index> indexCellMap = new HashMap<>();
+		Map<Integer, Index> indexCellToFormulaMap = new HashMap<>();
+		logger.debug("处理指标单元格，开始。");
+		processIndexCell(indexCellMap, indexCellToFormulaMap, cellList, date, reportType, decimalPlace, indexDataCache);
+		logger.debug("处理指标单元格，结束。");
+		
+		//3. 处理公式单元格
+		Map<Integer, String> formulaCellMap = new HashMap<>();
+		processFormulaCell(formulaCellMap, cellList);
+		
+		//4. 处理自定义单元格
+		Map<Integer, String> customizedMap = new HashMap<>();
+		processCustomizedCell(date, customizedMap, cellList);
+		
+		//5. 处理xls文件（打开、写入、保存到流）并转成html,输进outpath
+		processTemplateFileHtml(outpath, templateFile, dateCellMap, formulaCellMap, indexCellMap, indexCellToFormulaMap, customizedMap, indexDataCache);
+		logger.info("保存到输出流，成功。");		
+		
+	}
+
+	/**
+	 *huangh 20180502 excel转html
+	 */
+	@Override
+	public String exportReportHtml01(Date date, String exportTemplateName) {
+		logger.info("处理模版导出：" + exportTemplateName);
+		
+		// 得到模版信息
+		ExportTemplate template = getExportTemplate(exportTemplateName);
+		if (null == template) {
+			throw new RuntimeException( "未找到导出模版内容。" );
+		}
+		logger.debug("从数据库找模版，成功。");
+
+		// 判断文件是否存在
+		String xlsTemplateFile = template.getExportFile();
+		File templateFile = new File(xlsTemplateFile);
+		if (!templateFile.exists()) {
+			throw new RuntimeException("模版文件不存在。");
+		}
+		logger.debug("打开模版文件，成功。");
+
+		// 得到单元格信息（没有内容也行，相当于将模版文件不做处理，另存一份而已）
+		List<ExportCell> cellList = getCellList( template.getId() );
+		if (null == cellList || 0 == cellList.size()) {
+			logger.warn(String.format("模版%s：没有定义任何单元格信息。", template.getExportName()));
+		}
+		if (null == cellList) {
+			cellList = Collections.emptyList();
+		}
+
+		Map<String, IndexDataStore> indexDataCache = new HashMap<>();
+		
+		// 打开文件处理单元格
+		// 1. 处理所有日期
+		Map<Integer, String> dateCellMap = new HashMap<>();
+		processDateCell(dateCellMap, cellList, date);
+		logger.info("处理日期单元格，成功。");
+		
+		// 2. 处理所有指标
+		int decimalPlace = template.getDecimalPlace();
+		String reportType = template.getExportType();
+		Map<Integer, Index> indexCellMap = new HashMap<>();
+		Map<Integer, Index> indexCellToFormulaMap = new HashMap<>();
+		logger.debug("处理指标单元格，开始。");
+		processIndexCell(indexCellMap, indexCellToFormulaMap, cellList, date, reportType, decimalPlace, indexDataCache);
+		logger.debug("处理指标单元格，结束。");
+		
+		//3. 处理公式单元格
+		Map<Integer, String> formulaCellMap = new HashMap<>();
+		processFormulaCell(formulaCellMap, cellList);
+		
+		//4. 处理自定义单元格
+		Map<Integer, String> customizedMap = new HashMap<>();
+		processCustomizedCell(date, customizedMap, cellList);
+		
+		//5. 处理xls文件（打开、写入、保存到流）并转成html,输进outpath
+		String html = processTemplateFileHtml01(templateFile, dateCellMap, formulaCellMap, indexCellMap, indexCellToFormulaMap, customizedMap, indexDataCache);
+		logger.info("保存到输出流，成功。");
+		return html;
+		
+	}
+	
+	/**
+	 * 得到excel并转换为Html,并导出outpath huangh 20180502
+	 * @param out
+	 * @param templateFile
+	 * @param dateCellMap
+	 * @param formulaCellMap
+	 * @param indexCellMap
+	 * @param indexCellToFormulaMap
+	 * @param customizedMap
+	 * @param indexDataCache
+	 */
+	private void processTemplateFileHtml(String outpath, File templateFile, 
+			Map<Integer, String> dateCellMap, Map<Integer, String> formulaCellMap,
+			Map<Integer, Index> indexCellMap, Map<Integer, Index> indexCellToFormulaMap,
+			Map<Integer, String> customizedMap,
+			Map<String, IndexDataStore> indexDataCache) {
+		FileInputStream fis = null;
+		ByteArrayOutputStream out = null;
+		HSSFWorkbook workbook = null;
+		try {
+			fis = new FileInputStream(templateFile);
+
+			workbook = new HSSFWorkbook(fis);
+			HSSFSheet sh = workbook.getSheetAt(0);
+
+			// 写入日期单元格（实际是字符串）
+			dateCellMap.entrySet().stream().forEach(es -> {
+				Integer rowAndCol = es.getKey();
+				int r = unZipRow(rowAndCol);
+				int c = unZipCol(rowAndCol);
+
+				HSSFRow row = sh.getRow(r);
+				HSSFCell cell = row.getCell(c);
+				cell.setCellType( Cell.CELL_TYPE_STRING );
+				cell.setCellValue( es.getValue() );
+			});
+			
+			// 写入公式单元格
+			formulaCellMap.entrySet().stream().forEach(es -> {
+				Integer rowAndCol = es.getKey();
+				int r = unZipRow(rowAndCol);
+				int c = unZipCol(rowAndCol);
+
+				HSSFRow row = sh.getRow(r);
+				HSSFCell cell = row.getCell(c);
+//				cell.setCellType( Cell.CELL_TYPE_FORMULA );
+				cell.setCellFormula( es.getValue() );
+			});
+
+			// 写入指标单元格
+			indexCellMap.entrySet().stream().forEach(es -> {
+				Integer rowAndCol = es.getKey();
+				int r = unZipRow(rowAndCol);
+				int c = unZipCol(rowAndCol);
+
+				HSSFRow row = sh.getRow(r);
+				HSSFCell cell = row.getCell(c);
+				
+				String indexCode = es.getValue().getIndexCode();
+				BigDecimal value = getValueFromStore(indexCode, es.getValue(), indexDataCache);
+				if( null != value ) {
+					cell.setCellValue( value.doubleValue() );
+				} else {
+					cell.setCellValue( "" );
+				}
+			});
+
+			// 写入指标单元格(有单位转换，变成公式单元格)
+			indexCellToFormulaMap.entrySet().stream().forEach(es -> {
+				Integer rowAndCol = es.getKey();
+				int r = unZipRow(rowAndCol);
+				int c = unZipCol(rowAndCol);
+
+				HSSFRow row = sh.getRow(r);
+				HSSFCell cell = row.getCell(c);
+				
+				String indexCode = es.getValue().getIndexCode();
+				BigDecimal value = getValueFromStore(indexCode, es.getValue(), indexDataCache);
+				if( null != value ) {
+					String el = es.getValue().getExtentContent();//单位转换表达式内容
+					el = el.replace("#value", "%s");
+					el = String.format(el, value.toString());
+					cell.setCellFormula(el);
+				} else {
+					cell.setCellValue( "" );
+				}
+			});
+			
+			//写入自定义单元格 
+			customizedMap.entrySet().stream().forEach(es -> {
+				Integer rowAndCol = es.getKey();
+				int r = unZipRow(rowAndCol);
+				int c = unZipCol(rowAndCol);
+
+				HSSFRow row = sh.getRow(r);
+				HSSFCell cell = row.getCell(c);
+				cell.setCellType( Cell.CELL_TYPE_STRING );
+				cell.setCellValue( es.getValue() );
+			});
+			 // 写入流
+			 //workbook.write(out);
+			 //*****excel转换成html******
+			 ExcelToHtmlConverter excelToHtmlConverter = new ExcelToHtmlConverter (DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument() );
+		     //去掉Excel头行
+		     excelToHtmlConverter.setOutputColumnHeaders(false);
+		     //去掉Excel行号
+		     excelToHtmlConverter.setOutputRowNumbers(false);	    
+		     excelToHtmlConverter.processWorkbook(workbook);	
+		     //DOTO省去对包含图片的处理
+		     Document htmlDocument =excelToHtmlConverter.getDocument();
+		     out = new ByteArrayOutputStream();
+		     DOMSource domSource = new DOMSource (htmlDocument);
+		     StreamResult streamResult = new StreamResult (out);
+		     TransformerFactory tf = TransformerFactory.newInstance();
+		     Transformer serializer = tf.newTransformer();
+		     serializer.setOutputProperty (OutputKeys.ENCODING, "gbk");
+		     serializer.setOutputProperty (OutputKeys.INDENT, "yes");
+		     serializer.setOutputProperty (OutputKeys.METHOD, "html");
+		     serializer.transform (domSource, streamResult);
+
+		     String content = new String (out.toByteArray());	
+		     FileUtils.writeStringToFile(new File(outpath), content, "gbk");	
+		     
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				workbook.close();
+				fis.close();
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private String processTemplateFileHtml01(File templateFile, 
+			Map<Integer, String> dateCellMap, Map<Integer, String> formulaCellMap,
+			Map<Integer, Index> indexCellMap, Map<Integer, Index> indexCellToFormulaMap,
+			Map<Integer, String> customizedMap,
+			Map<String, IndexDataStore> indexDataCache) {
+		FileInputStream fis = null;
+		ByteArrayOutputStream out = null;
+		HSSFWorkbook workbook = null;
+		String content = null;
+		try {
+			fis = new FileInputStream(templateFile);
+
+			workbook = new HSSFWorkbook(fis);
+			HSSFSheet sh = workbook.getSheetAt(0);
+
+			// 写入日期单元格（实际是字符串）
+			dateCellMap.entrySet().stream().forEach(es -> {
+				Integer rowAndCol = es.getKey();
+				int r = unZipRow(rowAndCol);
+				int c = unZipCol(rowAndCol);
+
+				HSSFRow row = sh.getRow(r);
+				HSSFCell cell = row.getCell(c);
+				cell.setCellType( Cell.CELL_TYPE_STRING );
+				cell.setCellValue( es.getValue() );
+			});
+			
+			// 写入公式单元格
+			formulaCellMap.entrySet().stream().forEach(es -> {
+				Integer rowAndCol = es.getKey();
+				int r = unZipRow(rowAndCol);
+				int c = unZipCol(rowAndCol);
+
+				HSSFRow row = sh.getRow(r);
+				HSSFCell cell = row.getCell(c);
+//				cell.setCellType( Cell.CELL_TYPE_FORMULA );
+				cell.setCellFormula( es.getValue() );
+			});
+
+			// 写入指标单元格
+			indexCellMap.entrySet().stream().forEach(es -> {
+				Integer rowAndCol = es.getKey();
+				int r = unZipRow(rowAndCol);
+				int c = unZipCol(rowAndCol);
+
+				HSSFRow row = sh.getRow(r);
+				HSSFCell cell = row.getCell(c);
+				
+				String indexCode = es.getValue().getIndexCode();
+				BigDecimal value = getValueFromStore(indexCode, es.getValue(), indexDataCache);
+				if( null != value ) {
+					cell.setCellValue( value.doubleValue() );
+				} else {
+					cell.setCellValue( "" );
+				}
+			});
+
+			// 写入指标单元格(有单位转换，变成公式单元格)
+			indexCellToFormulaMap.entrySet().stream().forEach(es -> {
+				Integer rowAndCol = es.getKey();
+				int r = unZipRow(rowAndCol);
+				int c = unZipCol(rowAndCol);
+
+				HSSFRow row = sh.getRow(r);
+				HSSFCell cell = row.getCell(c);
+				
+				String indexCode = es.getValue().getIndexCode();
+				BigDecimal value = getValueFromStore(indexCode, es.getValue(), indexDataCache);
+				if( null != value ) {
+					String el = es.getValue().getExtentContent();//单位转换表达式内容
+					el = el.replace("#value", "%s");
+					el = String.format(el, value.toString());
+					cell.setCellFormula(el);
+				} else {
+					cell.setCellValue( "" );
+				}
+			});
+			
+			//写入自定义单元格 
+			customizedMap.entrySet().stream().forEach(es -> {
+				Integer rowAndCol = es.getKey();
+				int r = unZipRow(rowAndCol);
+				int c = unZipCol(rowAndCol);
+
+				HSSFRow row = sh.getRow(r);
+				HSSFCell cell = row.getCell(c);
+				cell.setCellType( Cell.CELL_TYPE_STRING );
+				cell.setCellValue( es.getValue() );
+			});
+			 // 写入流
+			 //workbook.write(out);
+			 //*****excel转换成html******
+			 ExcelToHtmlConverter excelToHtmlConverter = new ExcelToHtmlConverter (DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument() );
+		     //去掉Excel头行
+		     excelToHtmlConverter.setOutputColumnHeaders(false);
+		     //去掉Excel行号
+		     excelToHtmlConverter.setOutputRowNumbers(false);	    
+		     excelToHtmlConverter.processWorkbook(workbook);	
+		     //DOTO省去对包含图片的处理
+		     Document htmlDocument =excelToHtmlConverter.getDocument();
+		     out = new ByteArrayOutputStream();
+		     DOMSource domSource = new DOMSource (htmlDocument);
+		     StreamResult streamResult = new StreamResult (out);
+		     TransformerFactory tf = TransformerFactory.newInstance();
+		     Transformer serializer = tf.newTransformer();
+		     serializer.setOutputProperty (OutputKeys.ENCODING, "gbk");
+		     serializer.setOutputProperty (OutputKeys.INDENT, "yes");
+		     serializer.setOutputProperty (OutputKeys.METHOD, "html");
+		     serializer.transform (domSource, streamResult);
+		     content = new String (out.toByteArray());	
+		     //FileUtils.writeStringToFile(new File(outpath), content, "gbk");	
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				workbook.close();
+				fis.close();
+				out.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		 return content;
+	}
 }

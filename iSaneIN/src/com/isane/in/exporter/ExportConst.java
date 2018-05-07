@@ -26,16 +26,28 @@ public class ExportConst {
 	 * 模版中-单元格-非上述四中内容，导出系统不会处理；
 	 */
 	public static final String CELL_TYPE_IGNORE = "IGNORE";
-	
+	/**
+	 * MC当天在当月中是第几天
+	 * MB当天在当月前面有几天
+	 * MA当天在当月后面有几天
+	 * MT当月总天数是多少天
+	 * MY当月及前所有月份的总天数
+	 * YC当天在当年中是第几天
+	 * YA当天在当年后面有几天
+	 * YB当天在当年前面有几天
+	 * YT当年总天数是多少天
+	 */
 	public static final String CUSTOMIZED_DAYCOUNTER = "DayCounter";
 	public static final String CUSTOMIZED_DAYCOUNTER_MC = "MC";
 	public static final String CUSTOMIZED_DAYCOUNTER_MB = "MB";
 	public static final String CUSTOMIZED_DAYCOUNTER_MA = "MA";
 	public static final String CUSTOMIZED_DAYCOUNTER_MT = "MT";
+	public static final String CUSTOMIZED_DAYCOUNTER_MY = "MY";
 	public static final String CUSTOMIZED_DAYCOUNTER_YC = "YC";
 	public static final String CUSTOMIZED_DAYCOUNTER_YA = "YA";
 	public static final String CUSTOMIZED_DAYCOUNTER_YB = "YB";
 	public static final String CUSTOMIZED_DAYCOUNTER_YT = "YT";
+	
 	
 	
 	/**

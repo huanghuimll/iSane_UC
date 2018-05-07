@@ -1,4 +1,4 @@
-Ext.define('isane.view.aq_yb_lr_hb.rbWest',{
+Ext.define('isane.view.aq_yb_lr_hb.hbWest',{
 	extend:'Ext.tree.Panel',
 	alias:'widget.aq_yb_lr_hb-hbWest', 
 	id: 'aq_yb_lr_hb-hbWest-id',

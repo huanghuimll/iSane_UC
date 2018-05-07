@@ -4,8 +4,8 @@ Ext.define('isane.view.mainview.MainCenter',{
 	id:'mainview-MainCenter-id',
 	activeTab: 0,
 	border: 0,
-	plugins: 'tabclosemenu',
-	items:[
+	plugins: 'tabclosemenu'
+	/*items:[
 	{ 
 		border:0,
 //		html: '<span style="width:100%;height:100%;border:0"><img src="images/bg1.png"</img></span>',
@@ -15,5 +15,5 @@ Ext.define('isane.view.mainview.MainCenter',{
 		iconCls: 'menu_home',
 		closable:true
 	}	
-	]	
+	]*/	
 }); 

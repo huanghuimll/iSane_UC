@@ -74,9 +74,12 @@ Ext.define('isane.controller.aq_rb_dc.rbPanel', {
 				QJ_Mask.hide();
 				//console.log(response);
 				var html = Ext.decode(response.responseText);     
-				//console.log(html);
+				console.log(html);
 				var htmlPanel = Ext.getCmp('aq_rb_dc-rbPanel-html');
-				htmlPanel.body.update(html);
+				console.log(htmlPanel);
+				htmlPanel.body.dom.innerHTML= html;
+				//htmlPanel.body.clean(true);
+				//htmlPanel.body.update(html);
 				//htmlPanel.body.update('<iframe scrolling="auto" width="100%" height="100%" frameborder="0">'+html+'</iframe>')
 				//htmlPanel.body.update('<iframe scrolling="auto" src="'+html+'" width="100%" height="100%" frameborder="0"></iframe>')
 			},
