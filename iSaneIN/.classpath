@@ -60,7 +60,6 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/RagdollWeb"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/RagdollPersistent"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/RagdollService"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/RagdollUtils"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jodconverter">
@@ -75,5 +74,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/iSaneIndex"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/RagdollPersistent"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>

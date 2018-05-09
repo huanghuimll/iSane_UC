@@ -1,31 +1,31 @@
-Ext.define('isane.controller.aq_yb_lr_njh.njhPanel', {
+Ext.define('isane.controller.rl_zb_njh.njhPanel', {
 	extend : 'Ext.app.Controller',
-	stores : ['aq_yb_lr_njh.njhTree'],
+	stores : ['rl_zb_njh.njhTree'],
 	models : ['organtree'],	
-	views : ['aq_yb_lr_njh.njhPanel', 'aq_yb_lr_njh.njhWest', 'aq_yb_lr_njh.njhList'],
+	views : ['rl_zb_njh.njhPanel', 'rl_zb_njh.njhWest', 'rl_zb_njh.njhList'],
 	init: function() {
 		this.control({
 			//年计划值
-			'aq_yb_lr_njh-njhPanel':{
+			'rl_zb_njh-njhPanel':{
 				beforerender: this.onBeforeRender
 			},				
-			'aq_yb_lr_njh-njhWest':{
+			'rl_zb_njh-njhWest':{
     			itemclick: this.itemclick_dt
     		},
-    		'aq_yb_lr_njh-njhList button[text=搜索]':{
+    		'rl_zb_njh-njhList button[text=搜索]':{
 				click:this.click_search
 			},			
-			'aq_yb_lr_njh-njhList button[text=保存]':{
+			'rl_zb_njh-njhList button[text=保存]':{
 				click: this.saveAll
 			},				
-			'aq_yb_lr_njh-njhList actioncolumn':{
+			'rl_zb_njh-njhList actioncolumn':{
 				saveSingle: this.singleSave
-			} 			
+			}  			
 		});
 	},
 	
 	onBeforeRender: function(item){
-		var own = Ext.getCmp('aq_yb_lr_njh-njhWest-id');
+		var own = Ext.getCmp('rl_zb_njh-njhWest-id');
 		var storeTre = own.getStore();
 		Ext.apply(storeTre.proxy.extraParams, {
 			organKey: QJ_PlantCode,
@@ -43,24 +43,24 @@ Ext.define('isane.controller.aq_yb_lr_njh.njhPanel', {
 		
 		//console.log(record.data);
 		var organCode = record.data.organCode;
-		Ext.getCmp('aq_yb_lr_njh-njhList-organCode').setValue(organCode);
-		Ext.getCmp('aq_yb_lr_njh-njhList-searchButton').setDisabled(false);
-		Ext.getCmp('aq_yb_lr_njh-njhList-saveButton').setDisabled(false);		
-		Ext.getCmp('aq_yb_lr_njh-njhList-refresh').setDisabled(false);		
+		Ext.getCmp('rl_zb_njh-njhList-organCode').setValue(organCode);
+		Ext.getCmp('rl_zb_njh-njhList-searchButton').setDisabled(false);
+		Ext.getCmp('rl_zb_njh-njhList-saveButton').setDisabled(false);		
+		Ext.getCmp('rl_zb_njh-njhList-refresh').setDisabled(false);		
 		
-		var grid = Ext.getCmp('aq_yb_lr_njh-njhList-id');
+		var grid = Ext.getCmp('rl_zb_njh-njhList-id');
 		this.afterrender(grid);
     }, 	
  
 	afterrender: function(panel){
-		var storeY = Ext.getCmp('aq_yb_lr_njh-njhList-storeY').getValue();
-		var storeM = Ext.getCmp('aq_yb_lr_njh-njhList-storeM').getValue();
-		var storeD = Ext.getCmp('aq_yb_lr_njh-njhList-storeD').getValue();
-		var organCode = Ext.getCmp('aq_yb_lr_njh-njhList-organCode').getValue();
+		var storeY = Ext.getCmp('rl_zb_njh-njhList-storeY').getValue();
+		var storeM = Ext.getCmp('rl_zb_njh-njhList-storeM').getValue();
+		var storeD = Ext.getCmp('rl_zb_njh-njhList-storeD').getValue();
+		var organCode = Ext.getCmp('rl_zb_njh-njhList-organCode').getValue();
 		
 		var obt = {
-				plantCode: Ext.getCmp('aq_yb_lr_njh-njhList-organCode').getValue(),
-				dataType: 'HT-CW-NJH-PAGE',
+				plantCode: Ext.getCmp('rl_zb_njh-njhList-organCode').getValue(),
+				dataType: 'HT-RL-NJH-PAGE',
 				dateType: 'Y',
 				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
 		};	

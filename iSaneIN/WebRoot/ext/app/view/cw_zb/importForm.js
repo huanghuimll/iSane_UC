@@ -49,14 +49,14 @@
 		{
 			xtype:'combobox',
 			fieldLabel:'报表类型',
-			store :  new Ext.data.ArrayStore({fields: ['id', 'name'],data: [['DR-CW', '财务表'], ['DR-CW-YS', '预算表']]}),
+			store :  new Ext.data.ArrayStore({fields: ['id', 'name'],data: [['DR-CW-KB', '==快报表=='], ['DR-CW-SB', '==上报表=='], ['DR-CW-XD', '==下达表=='], ['DR-CW-YJ', '==预计表==']]}),
 			name:'importType',
 			id: 'cw_zb-importForm-importType',
 			displayField : 'name',
 			valueField : 'id',
 			editable: false,
 			allowBlank:false,
-			value: 'DR-CW',
+			value: 'DR-CW-KB',
 			emptyText: '--请选择--'
 		},	    
     	/*{
