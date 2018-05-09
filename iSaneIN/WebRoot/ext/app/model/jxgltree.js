@@ -5,6 +5,6 @@ Ext.define('isane.model.jxgltree', {
  		'id', 'organCode', 'organName', 'parentCode', 'leaf',
  		{name: 'text', type: 'string', mapping: 'organName'},
  		{name: 'parentId', type: 'String', mapping: 'parentCode'},
- 		'dispOrder', 'organDesc', 'organType'
+ 		'dispOrder', 'organDesc', 'organType','organLev'
  	]
 });

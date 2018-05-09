@@ -29,7 +29,8 @@ Ext.define('isane.controller.rl_zb_njh.njhPanel', {
 		var storeTre = own.getStore();
 		Ext.apply(storeTre.proxy.extraParams, {
 			organKey: QJ_PlantCode,
-			organType: 2
+			organLev: 2,
+			organType: 1
 		});
 		storeTre.load();
 		storeTre.getRootNode().set('expanded', true);

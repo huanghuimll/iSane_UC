@@ -18,7 +18,10 @@
 			</if>
 			<if test="organType != 0"> 
 				and organType = #{organType}
-			</if>			
+			</if>	
+			<if test="organLev != 0"> 
+				and organLev = #{organLev}
+			</if>					
 		</where>
 	</sql>
 	<select id="select" parameterType="DimOrganization" resultType="DimOrganization">
@@ -66,6 +69,9 @@
 			<if test="organType != 0">
 				and organType = #{organType}
 			</if>
+			<if test="organLev != 0">
+				and organLev = #{organLev}
+			</if>
 		</set>
 		where id = #{id}
 	</update>
@@ -92,12 +98,18 @@
 		)
 		SELECT * FROM cte 
 		<where>
+			<if test="organLev != 0"> 
+			<![CDATA[
+				and cte.organLev <= #{organLev}
+			]]>	
+			</if>
 			<if test="organType != 0"> 
 			<![CDATA[
 				and cte.organType <= #{organType}
 			]]>	
-			</if>
+			</if>			
 		</where>
+		order by cte.disOrder
 	</select>
 
 </mapper>

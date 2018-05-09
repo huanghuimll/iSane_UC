@@ -63,7 +63,8 @@
        			beforerender: function(){
        				var storeTre = this.getStore();
        				Ext.apply(storeTre.proxy.extraParams, {
-       					organType: 1
+       					organType: 1,
+       					organLev: 1
        				});
        				storeTre.load();     				
        			}

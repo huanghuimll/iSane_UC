@@ -11,7 +11,9 @@ private static final long serialVersionUID = 1L;
 	private String areakey;
 	private String installType;
 	private String areaType;
-	private int organType;
+	private int organType =1;//1常规类型2非常规类型(财务需要能销公司数据)
+	private int organLev;
+	private int disOrder;
 	
 	public void setId (long id) {
 		this.id = id;
@@ -67,7 +69,18 @@ private static final long serialVersionUID = 1L;
 	public void setOrganType(int organType) {
 		this.organType = organType;
 	}
-	
+	public int getOrganLev() {
+		return organLev;
+	}
+	public void setOrganLev(int organLev) {
+		this.organLev = organLev;
+	}
+	public int getDisOrder() {
+		return disOrder;
+	}
+	public void setDisOrder(int disOrder) {
+		this.disOrder = disOrder;
+	}
 @Override
 	public boolean isEmptyProperties() {
 		if(id != 0) {
