@@ -61,7 +61,7 @@ Ext.define('isane.controller.cw_zb_njh.njhPanel', {
 		
 		var obt = {
 				plantCode: Ext.getCmp('cw_zb_njh-njhList-organCode').getValue(),
-				dataType: 'HT-AQ-NJH-PAGE',
+				dataType: 'HT-CW-NJH-PAGE',
 				dateType: 'Y',
 				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
 		};	
