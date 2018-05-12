@@ -14,6 +14,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import com.isane.ragdoll.persistent.type.DaoConst;
 import com.isane.ragdoll.utils.upload.PropertiesUtil;
 import com.isane.ragdoll.web.RagdollControllerImpl;
 import com.isane.in.entity.OriginalType;
+import com.isane.in.entity.User;
 import com.isane.index.compute.core.IndexCompute;
 import com.isane.index.entity.OriginalData;
 import com.isane.index.service.OriginalDataService;
@@ -63,7 +65,12 @@ public class OriginalTypeController extends RagdollControllerImpl<OriginalType> 
 
 	@PostMapping("addAndUpdate")
 	@ResponseBody
-	public List<OriginalType> addAndUpdate(@RequestBody List<OriginalType> pageList, @RequestParam String storeDate ) {
+	public List<OriginalType> addAndUpdate(@RequestBody List<OriginalType> pageList, @RequestParam String storeDate , HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		
+		if(session == null){
+			throw new RuntimeException("====> session is null.");
+		}		
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String inputDate = sdf.format(date);
@@ -116,8 +123,25 @@ public class OriginalTypeController extends RagdollControllerImpl<OriginalType> 
 		if (updateList.size() != 0) {
 			originalDataServer.modifyMulti(OriginalData.class, updateList);
 		}
+		System.out.println("=====>"+pageList.size());
+		System.out.println("=====>"+pageList.get(0));
+		OriginalType od = pageList.get(0);
+		boolean m = true;
+		boolean d  = true;
+		if(od.getDateType().equalsIgnoreCase("M")){
+			m = true;
+			d = false;
+		}else if(od.getDateType().equalsIgnoreCase("D")){
+			d = true;
+			m = false;
+		}else if(od.getDateType().equalsIgnoreCase("Y")){
+			d = false;
+			m = true;
+		}
 		
-		indexCompute.refreshIndexData(true, true, false, true, computeDate, pageList.get(0).getPlantCode(), "", "admin", false);
+		User userSess = (User) session.getAttribute("USER");
+		
+		indexCompute.refreshIndexData(d, m, false, false, computeDate, pageList.get(0).getPlantCode(), "", userSess.getUserName(), false);
 		return null;
 	}
 	

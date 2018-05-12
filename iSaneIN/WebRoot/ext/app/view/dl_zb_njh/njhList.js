@@ -100,7 +100,7 @@ Ext.define('isane.view.dl_zb_njh.njhList',{
         		 return Ext.util.Format.number(val, '0.000');
         	 }
          },
-         {header:'日期',dataIndex:'storeDate',xtype: 'datecolumn', format:'Y-m', flex:3},
+         {header:'日期',dataIndex:'storeDate',xtype: 'datecolumn', format:'Y', flex:3},
          {header:'录入时间',dataIndex:'inputDate', xtype: 'datecolumn', flex:3, 
         	 renderer: function(val, metadata){
         		 metadata.tdAttr = 'data-qtip="<span style=color:red>双击编辑!</span>"';

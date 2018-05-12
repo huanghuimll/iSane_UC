@@ -135,6 +135,7 @@ Ext.define('isane.controller.aq_yb_lr_zh.zhPanel', {
 		var storeDate = storeY + '-' + QJ_UtilEntity.month(storeM) + '-' + QJ_UtilEntity.month(storeD);  		
 		this.saveAll_but(records, store, storeDate);
 	},	
+	
 	//保存多条
 	saveAll: function(but){
 		var grid = but.up('grid');
@@ -216,6 +217,7 @@ Ext.define('isane.controller.aq_yb_lr_zh.zhPanel', {
 			}
 		});			
 	},
+	
 	//检修文档导入
 	importBtn: function(btn){
 		//alert('importBtn');

@@ -53,8 +53,8 @@ public class IndexDatController extends RagdollControllerImpl<IndexDat> {
 		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
 		String fileName = item.getFileName() +"_"+ df.format(new Date(storeDate.getTime())) + ".xls";
 		String tempName = item.getTempName();
-		System.out.println("====fileName:"+fileName);
-		System.out.println("====tempName:"+tempName);
+		//System.out.println("====fileName:"+fileName);
+		//System.out.println("====tempName:"+tempName);
 		OutputStream os = null;
 		try {
 			os = response.getOutputStream();
