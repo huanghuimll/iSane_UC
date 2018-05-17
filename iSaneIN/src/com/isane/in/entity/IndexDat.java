@@ -24,6 +24,7 @@ private static final long serialVersionUID = 1L;
 	private String originalDataVersions; //$item.comment
 	private long id; //$item.comment
 	private int monthOfYear; //$item.comment
+	private String valueUnit;
 	
 	public String getTempName() {
 		return tempName;
@@ -100,7 +101,13 @@ private static final long serialVersionUID = 1L;
 		return monthOfYear;
 	}
 
-@Override
+	public String getValueUnit() {
+		return valueUnit;
+	}
+	public void setValueUnit(String valueUnit) {
+		this.valueUnit = valueUnit;
+	}
+	@Override
 	public boolean isEmptyProperties() {
 		if(null != indexCode && !"".equals(indexCode)) {
 			return false;

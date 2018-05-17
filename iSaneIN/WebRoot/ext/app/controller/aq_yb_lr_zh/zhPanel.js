@@ -257,14 +257,29 @@ Ext.define('isane.controller.aq_yb_lr_zh.zhPanel', {
             	scope: this,
                 url: url,
                 waitMsg: 'Uploading...',
-    			success: function(response){
+    			success: function(form, action){
     				win.close();
-    				Ext.example.msg('系统提示！', "导入成功！");
-    				//store.load();
+    				var obj = action.result;
+                    if(!obj.success) { 
+                    	Ext.example.msg("系统提示！",obj.message);
+                    }
+                    else {
+                    	Ext.example.msg("系统提示！",obj.message);
+                    	store.reload();
+                    }    				
     			},
-    			failure: function(response){
-    				QJ_UtilEntity.failWin(response);
-    			}
+    		    failure: function(form, action) {
+    		        switch (action.failureType) {
+    		            case Ext.form.action.Action.CLIENT_INVALID:
+    		            	Ext.example.msg('Failure', 'Form fields may not be submitted with invalid values');
+    		                break;
+    		            case Ext.form.action.Action.CONNECT_FAILURE:
+    		            	Ext.example.msg('Failure', 'Ajax communication failed');
+    		                break;
+    		            case Ext.form.action.Action.SERVER_INVALID:
+    		            	Ext.example.msg('Failure', action.result.message);
+    		       }
+    		    }
             });
         }		
 	}	

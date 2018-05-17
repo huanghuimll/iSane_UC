@@ -41,7 +41,7 @@
        				Ext.apply(storeCTE.proxy.extraParams, {
        					organKey: QJ_PlantCode,
        					organType: 1,
-       					organLev: 1
+       					organLev: 2
        				});
        				storeCTE.load();     				
        			}

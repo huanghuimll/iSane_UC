@@ -120,7 +120,7 @@ Ext.define('isane.controller.cw_zb.zbPanel', {
 		var dateType = Ext.getCmp('cw_zb-zbListN-dateType').getValue();
 		var obt = {
 				plantCode: organCode,
-				dataType: 'CW-PAGE',
+				dataType: 'HT-CW-PAGE',
 				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
 				dateType: dateType
 		};			
@@ -136,7 +136,7 @@ Ext.define('isane.controller.cw_zb.zbPanel', {
 		var dateType = Ext.getCmp('cw_zb-zbListC-dateType').getValue();
 		var obt = {
 				plantCode: organCode,
-				dataType: 'CW-XLS',
+				dataType: 'HT-CW-XLS',
 				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
 				dateType: dateType
 		};			
@@ -254,14 +254,29 @@ Ext.define('isane.controller.cw_zb.zbPanel', {
             	scope: this,
                 url: url,
                 waitMsg: 'Uploading...',
-    			success: function(response){
+    			success: function(form, action){
     				win.close();
-    				Ext.example.msg('系统提示！', "导入成功！");
-    				//store.load();
+    				var obj = action.result;
+                    if(!obj.success) { 
+                    	Ext.example.msg("系统提示！",obj.message);
+                    }
+                    else {
+                    	Ext.example.msg("系统提示！",obj.message);
+                    	store.reload();
+                    }    				
     			},
-    			failure: function(response){
-    				QJ_UtilEntity.failWin(response);
-    			}
+    		    failure: function(form, action) {
+    		        switch (action.failureType) {
+    		            case Ext.form.action.Action.CLIENT_INVALID:
+    		            	Ext.example.msg('Failure', 'Form fields may not be submitted with invalid values');
+    		                break;
+    		            case Ext.form.action.Action.CONNECT_FAILURE:
+    		            	Ext.example.msg('Failure', 'Ajax communication failed');
+    		                break;
+    		            case Ext.form.action.Action.SERVER_INVALID:
+    		            	Ext.example.msg('Failure', action.result.message);
+    		       }
+    		    }
             });
         }		
 	}

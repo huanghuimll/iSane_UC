@@ -25,8 +25,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.isane.ragdoll.persistent.entity.Operation;
 import com.isane.ragdoll.persistent.type.DaoConst;
 import com.isane.ragdoll.utils.upload.PropertiesUtil;
+import com.isane.ragdoll.web.Errors;
 import com.isane.ragdoll.web.RagdollControllerImpl;
 import com.isane.in.entity.OriginalType;
 import com.isane.in.entity.User;
@@ -65,15 +68,16 @@ public class OriginalTypeController extends RagdollControllerImpl<OriginalType> 
 
 	@PostMapping("addAndUpdate")
 	@ResponseBody
-	public List<OriginalType> addAndUpdate(@RequestBody List<OriginalType> pageList, @RequestParam String storeDate , HttpServletRequest request) {
+	public Operation addAndUpdate(@RequestBody List<OriginalType> pageList, @RequestParam String storeDate , HttpServletRequest request) {
+		Operation op = new Operation();
 		HttpSession session = request.getSession();
-		
 		if(session == null){
 			throw new RuntimeException("====> session is null.");
 		}		
+		
 		Date date = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		String inputDate = sdf.format(date);
+		//String inputDate = sdf.format(date);
 		
 		Date computeDate = null;
 		try {
@@ -83,66 +87,98 @@ public class OriginalTypeController extends RagdollControllerImpl<OriginalType> 
 		}
 		
 		if (pageList.size() == 0 || pageList == null) {
-			return null;
+			 op.setErrCode(Errors.ERROR_DB_ERROR);
+			 op.setMessage("保存失败,数据为空。");
+			 op.setSuccess(false);	
+			 return op;	
 		}
+		
+		//1.将这一时间段的所有数据都查出来
+		OriginalType ot = new OriginalType();
+		ot.setStoreDate(pageList.get(0).getStoreDate());
+		List<OriginalType> tempList = getService().listCustom(ot, DaoConst.PAGE_DEFAULT_START, DaoConst.PAGE_DEFAULT_LIMIT, "selectByDate");
+		//2.进行比对,将已经存在的数据更新，不纯在的数据增加
 		List<OriginalData> insertList = new ArrayList<OriginalData>();
 		List<OriginalData> updateList = new ArrayList<OriginalData>();
-		for (int i = 0; i < pageList.size(); i++) {
-			OriginalType ot = pageList.get(i);
+		
+		Boolean flag = false;
+		for (OriginalType item : pageList) {
 			OriginalData od = new OriginalData();
-
-			od.setDateType(ot.getDateType());
-			od.setOriginalCode(ot.getOriginalCode());
-			od.setOriginalValue(ot.getOriginalValue());
-
-			if (pageList.get(i).getDataId() == 0) {
+			od.setInputDate(date);
+			od.setStoreDate(computeDate);
+			if(tempList != null && tempList.size() > 0){
+				for(OriginalType obj : tempList){
+					if(item.getOriginalCode().equalsIgnoreCase(obj.getOriginalCode())){
+						od.setDateType(item.getDateType());
+						od.setOriginalCode(item.getOriginalCode());
+						od.setOriginalValue(item.getOriginalValue());
+						od.setOriginalDataVersion(obj.getOriginalDataVersion()+1);
+						updateList.add(od);
+						flag = false;
+						break;
+					}else{
+						flag = true;
+					}
+				}
+			}else{
+				flag = true;
+			}
+			
+			if(flag){
+				od.setDateType(item.getDateType());
+				od.setOriginalCode(item.getOriginalCode());
+				od.setOriginalValue(item.getOriginalValue());
 				od.setOriginalDataVersion(1);
-				try {
-					od.setInputDate(sdf.parse(inputDate));
-					od.setStoreDate(sdf.parse(storeDate));
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
 				insertList.add(od);
-			} else {
-				od.setId(ot.getDataId());
-				od.setOriginalDataVersion(ot.getOriginalDataVersion() + 1);
-				try {
-					od.setInputDate(sdf.parse(ot.getInputDate()));
-					od.setStoreDate(sdf.parse(ot.getStoreDate()));
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-				updateList.add(od);
 			}
 		}
 		
+		logger.debug("新增" + insertList.size());
+		logger.debug("修改" + updateList.size());
+		
+		int countC = 0;
+		int countM = 0;
 		if (insertList.size() != 0) {
-			originalDataServer.createMulti(OriginalData.class, insertList);
+			countC = originalDataServer.createMulti(OriginalData.class, insertList);
 		}
 		if (updateList.size() != 0) {
-			originalDataServer.modifyMulti(OriginalData.class, updateList);
-		}
-		System.out.println("=====>"+pageList.size());
-		System.out.println("=====>"+pageList.get(0));
-		OriginalType od = pageList.get(0);
-		boolean m = true;
-		boolean d  = true;
-		if(od.getDateType().equalsIgnoreCase("M")){
-			m = true;
-			d = false;
-		}else if(od.getDateType().equalsIgnoreCase("D")){
-			d = true;
-			m = false;
-		}else if(od.getDateType().equalsIgnoreCase("Y")){
-			d = false;
-			m = true;
+			countM = originalDataServer.modifyMulti(OriginalData.class, updateList);
+		}	
+		
+		boolean flg = false;
+		if(countC > 0 || countM > 0){
+			 op.setErrCode(Errors.ERROR_NO_ERROR);
+			 op.setMessage("导入成功,新增"+countC+"条数据。修改了"+countM+"条数据,开始计算...");
+			 op.setSuccess(true);	
+			 flg = true;
+		}else{
+			 op.setErrCode(Errors.ERROR_DB_ERROR);
+			 op.setMessage("导入失败");
+			 op.setSuccess(false);	
+		}	
+		
+		//判断是否需要计算
+		if(flg){
+			OriginalType od = pageList.get(0);
+			boolean m = true;
+			boolean d  = true;
+			if(od.getDateType().equalsIgnoreCase("M")){
+				m = true;
+				d = false;
+			}else if(od.getDateType().equalsIgnoreCase("D")){
+				d = true;
+				m = false;
+			}else if(od.getDateType().equalsIgnoreCase("Y")){
+				d = false;
+				m = true;
+			}
+			
+			User userSess = (User) session.getAttribute("USER");
+			String computeCode = indexCompute.refreshIndexData(d, m, false, false, computeDate, pageList.get(0).getPlantCode(), "", userSess.getUserName(), false);
+			logger.debug("===computeCode:"+computeCode);
 		}
 		
-		User userSess = (User) session.getAttribute("USER");
-		
-		indexCompute.refreshIndexData(d, m, false, false, computeDate, pageList.get(0).getPlantCode(), "", userSess.getUserName(), false);
-		return null;
+		return op;
 	}
 	
 	@RequestMapping("/exportTemplate")

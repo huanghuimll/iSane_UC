@@ -23,7 +23,7 @@ Ext.define('isane.controller.aq_yb_dc_xzb.xzbPanel', {
 		var fileName = null;
 		if(organCode = 'GZFGS'){
 			tempName = 'GZFGS_Y_XZB_REPORT';
-			fileName = '广州分公司_小指标月报统计';
+			fileName = '广东分公司_小指标月报统计';
 		}
 		
 		var url = "api/IndexDat/DAndY/export?";
@@ -51,7 +51,7 @@ Ext.define('isane.controller.aq_yb_dc_xzb.xzbPanel', {
 		var fileName = null;
 		if(organCode = 'GZFGS'){
 			tempName = 'GZFGS_Y_XZB_REPORT';
-			fileName = '广州分公司_小指标月报统计';
+			fileName = '广东分公司_小指标月报统计';
 		}
 		
 		var url = "api/IndexDat/DAndY/exportHtml01?";

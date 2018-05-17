@@ -24,7 +24,7 @@ Ext.define('isane.controller.aq_yb_dc_nh.nhPanel', {
 		var fileName = null;
 		if(organCode = 'GZFGS'){
 			tempName = 'GZFGS_Y_NH_REPORT';
-			fileName = '广州分公司_能耗月报统计';
+			fileName = '广东分公司_能耗月报统计';
 		}
 		
 		var url = "api/IndexDat/DAndY/export?";
@@ -52,7 +52,7 @@ Ext.define('isane.controller.aq_yb_dc_nh.nhPanel', {
 		var fileName = null;
 		if(organCode = 'GZFGS'){
 			tempName = 'GZFGS_Y_NH_REPORT';
-			fileName = '广州分公司_能耗月报统计';
+			fileName = '广东分公司_能耗月报统计';
 		}
 		
 		var url = "api/IndexDat/DAndY/exportHtml01?";

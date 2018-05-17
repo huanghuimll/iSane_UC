@@ -29,7 +29,7 @@
 			INNER JOIN cte ON cte.organKey = b.organParentId
 		)	
 		SELECT
-		sot.*,so.originalName,do.organKey AS plantCode, do.organName plantName,sod.originalValue, #{storeDate} AS storeDate,sod.inputDate,so.dateType, so.originalDesc,sod.originalDataVersion,sod.id dataId
+		sot.*,so.originalName,do.organKey AS plantCode, do.organName plantName,sod.originalValue, #{storeDate} AS storeDate,sod.inputDate,so.dateType,so.valueUnit, so.originalDesc,sod.originalDataVersion,sod.id dataId
 		FROM SYS_ORIGINAL_TYPE sot
 		LEFT JOIN SYS_ORIGINAL so ON sot.originalCode=so.originalCode
 		LEFT JOIN Dim_Organization do ON so.plantCode=do.organKey
@@ -92,6 +92,11 @@
 	<delete id="clear">
 		delete from SYS_ORIGINAL_TYPE
 	</delete>
-
+	
+	<!-- -->
+	<select id="selectByDate" parameterType="OriginalType" resultType="OriginalType">
+		SELECT a.originalCode, a.originalValue, a.originalDataVersion FROM SYS_ORIGINAL_DATA a 
+		WHERE CONVERT(VARCHAR, a.storeDate,120) LIKE '${storeDate}%'
+	</select>	
 
 </mapper>

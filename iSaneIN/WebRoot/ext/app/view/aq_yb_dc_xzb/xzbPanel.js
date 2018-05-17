@@ -8,7 +8,7 @@ Ext.define('isane.view.aq_yb_dc_xzb.xzbPanel',{
 	'所属单位:',
   	{
   		xtype:'combobox',
-  		store :  new Ext.data.ArrayStore({fields: ['id', 'name'],data: [['GZFGS', '广州分公司']]}),
+  		store :  new Ext.data.ArrayStore({fields: ['id', 'name'],data: [['GZFGS', '广东分公司']]}),
   		name:'organCode',
   		id: 'aq_yb_dc_xzb-xzbPanel-organCode',
   		displayField : 'name',

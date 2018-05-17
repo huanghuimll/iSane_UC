@@ -10,6 +10,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -30,6 +33,8 @@ public class ImportServiceImpl extends RagdollServiceImpl<Import>implements Impo
 	@Autowired
 	@Qualifier("dao")
 	private Dao<OriginalData> originalDataDao;
+	private Pattern p = Pattern.compile("^\\d*\\.\\d*");
+	private Matcher m;
 
 	@Override
 	public List<OriginalData> importFile(MultipartFile mFile, List<Import> dataList, Import importData) {
@@ -87,9 +92,14 @@ public class ImportServiceImpl extends RagdollServiceImpl<Import>implements Impo
 				} else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
 					od.setOriginalValue(
 							new BigDecimal(cell.getNumericCellValue()).setScale(3, BigDecimal.ROUND_HALF_UP));
-				} else {
-					logger.error(String.format("编码:%s的列坐标配置错误.", im.getOriginalCode()));
-					continue;
+				}else {
+					m = p.matcher(cell.toString());
+					if(m.matches()){
+						od.setOriginalValue(new BigDecimal(cell.toString()).setScale(3, BigDecimal.ROUND_HALF_UP));
+					}else{
+						logger.error(String.format("编码:%s的列坐标配置错误.", im.getOriginalCode()));
+						continue;
+					}
 				}
 
 				od.setOriginalCode(im.getOriginalCode());
@@ -157,9 +167,15 @@ public class ImportServiceImpl extends RagdollServiceImpl<Import>implements Impo
 					od.setOriginalValue(
 							new BigDecimal(cell.getNumericCellValue()).setScale(3, BigDecimal.ROUND_HALF_UP));
 				} else {
-					logger.error(String.format("编码:%s的列坐标配置错误.", im.getOriginalCode()));
-					continue;
+					m = p.matcher(cell.toString());
+					if(m.matches()){
+						od.setOriginalValue(new BigDecimal(cell.toString()).setScale(3, BigDecimal.ROUND_HALF_UP));
+					}else{
+						logger.error(String.format("编码:%s的列坐标配置错误.", im.getOriginalCode()));
+						continue;
+					}
 				}
+				
 				od.setOriginalCode(im.getOriginalCode());
 				od.setDateType(im.getDateType());
 				od.setOriginalDataVersion(1);

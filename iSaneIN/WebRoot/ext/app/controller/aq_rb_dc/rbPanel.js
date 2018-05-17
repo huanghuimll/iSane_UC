@@ -23,7 +23,7 @@ Ext.define('isane.controller.aq_rb_dc.rbPanel', {
 		var fileName = null;
 		if(organCode = 'GZFGS'){
 			tempName = 'GZFGS_D_REPORT';
-			fileName = '广州分公司_日报';
+			fileName = '广东分公司_日报';
 		}
 		
 		var url = "api/IndexDat/DAndY/export?";
@@ -51,7 +51,7 @@ Ext.define('isane.controller.aq_rb_dc.rbPanel', {
 		var fileName = null;
 		if(organCode = 'GZFGS'){
 			tempName = 'GZFGS_D_REPORT';
-			fileName = '广州分公司_日报';
+			fileName = '广东分公司_日报';
 		}
 		
 		var url = "api/IndexDat/DAndY/exportHtml01?";
@@ -74,9 +74,9 @@ Ext.define('isane.controller.aq_rb_dc.rbPanel', {
 				QJ_Mask.hide();
 				//console.log(response);
 				var html = Ext.decode(response.responseText);     
-				console.log(html);
+				//console.log(html);
 				var htmlPanel = Ext.getCmp('aq_rb_dc-rbPanel-html');
-				console.log(htmlPanel);
+				//console.log(htmlPanel);
 				htmlPanel.body.dom.innerHTML= html;
 				//htmlPanel.body.clean(true);
 				//htmlPanel.body.update(html);
