@@ -134,7 +134,7 @@ Ext.define('isane.view.aq_scfygl_scfy.scfyList',{
         	 return getItemValueNameByCode(val) == null ? '': getItemValueNameByCode(val).valueName;
          }
          },
-         {header:'数值',dataIndex:'scfyValue', flex:4, editor: 'textfield', 
+         {header:'数值',dataIndex:'scfyValue', flex:4,        	 
         	 renderer: function(val, metadata){
         		 metadata.tdAttr = 'data-qtip="<span style=color:red>双击编辑!</span>"';
         		 return Ext.util.Format.number(val, '0.000');

@@ -94,7 +94,13 @@ Ext.define('isane.view.dl_zb_njh.njhList',{
          {header:'所属单位',dataIndex:'plantName',flex:2},
          {header:'指标编码',dataIndex:'originalCode',flex:3},
          {header:'指标项',dataIndex:'originalName',flex:5},
-         {header:'指标值',dataIndex:'originalValue',flex:3, editor: 'textfield', 
+         {header:'指标值',dataIndex:'originalValue',flex:3,
+        	 editor: {
+        		 xtype: 'textfield',
+             	 allowBlank:false,
+             	 regex: /^(-$|-\d*|-\d*\.|-\d*\.\d*|0|\d*|\d*\.|\d*\.\d*)$/,
+             	 regexText:'请输入数字!'       		 
+        	 },         	 
         	 renderer: function(val, metadata){
         		 metadata.tdAttr = 'data-qtip="<span style=color:red>双击编辑!</span>"';
         		 return Ext.util.Format.number(val, '0.000');

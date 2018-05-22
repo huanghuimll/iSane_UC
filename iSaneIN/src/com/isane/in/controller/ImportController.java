@@ -93,10 +93,10 @@ public class ImportController extends RagdollControllerImpl<Import> {
 		List<OriginalData> updateList = new ArrayList<OriginalData>();
 		
 		for (int i = 0; i < list.size(); i++) {
-			String code = list.get(i).getOriginalCode();
+			String code = list.get(i).getOriginalCode().trim();
 			int count = 0;
 			for (int j = 0; j < objList.size(); j++) {
-				String sqlCode = objList.get(j).getOriginalCode();
+				String sqlCode = objList.get(j).getOriginalCode().trim();
 				if (code.equalsIgnoreCase(sqlCode)) {
 					list.get(i).setId(objList.get(j).getId());
 					list.get(i).setOriginalDataVersion(objList.get(j).getOriginalDataVersion() + 1);
@@ -153,8 +153,8 @@ public class ImportController extends RagdollControllerImpl<Import> {
 			}
 			User userSess = (User) session.getAttribute("USER");
 			//参与计算
-			//String computeCode = remoteIndexComputeService.refreshIndexData(false, true, false, false, storeDate, importData.getPlantCode() , "", userSess.getUserName(), false);
-			//logger.debug("===computeCode:"+computeCode);
+			String computeCode = remoteIndexComputeService.refreshIndexData(false, true, false, false, storeDate, importData.getPlantCode() , "", userSess.getUserName(), false);
+			logger.debug("===computeCode:"+computeCode);
 		}
 		
 		return op;

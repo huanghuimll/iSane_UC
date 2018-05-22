@@ -38,7 +38,8 @@ Ext.define('isane.controller.rl_zb_njh.njhPanel', {
 	
     itemclick_dt: function(own, record, item, index, e, eOpts){
     	this.record = record; 
-		if(!record.data.leaf){
+    	
+		if(record.data.id == 'root'){
 			return;
 		}
 		

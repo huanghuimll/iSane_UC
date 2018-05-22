@@ -108,7 +108,7 @@ public class OriginalTypeController extends RagdollControllerImpl<OriginalType> 
 			od.setStoreDate(computeDate);
 			if(tempList != null && tempList.size() > 0){
 				for(OriginalType obj : tempList){
-					if(item.getOriginalCode().equalsIgnoreCase(obj.getOriginalCode())){
+					if(item.getOriginalCode().trim().equalsIgnoreCase(obj.getOriginalCode().trim())){
 						od.setDateType(item.getDateType());
 						od.setOriginalCode(item.getOriginalCode());
 						od.setOriginalValue(item.getOriginalValue());

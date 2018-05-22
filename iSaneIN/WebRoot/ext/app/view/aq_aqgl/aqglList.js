@@ -139,7 +139,13 @@ Ext.define('isane.view.aq_aqgl.aqglList',{
         	 return getItemValueNameByCode(val) == null ? '': getItemValueNameByCode(val).valueName;
          }
          },
-         {header:'数据值',dataIndex:'dataValue', flex:4, editor: 'textfield', 
+         {header:'数据值',dataIndex:'dataValue', flex:4,
+        	 editor: {
+        		 xtype: 'textfield',
+             	 allowBlank:false,
+             	 regex:/^(-$|-\d*|-\d*\.|-\d*\.\d*|0|\d*|\d*\.|\d*\.\d*)$/,
+             	 regexText:'请输入数字!',        		 
+        	 },         	 
         	 renderer: function(val, metadata){
         		 metadata.tdAttr = 'data-qtip="<span style=color:red>双击编辑!</span>"';
         		 return Ext.util.Format.number(val, '0');

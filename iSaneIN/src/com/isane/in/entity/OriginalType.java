@@ -19,7 +19,7 @@ public class OriginalType implements Entity {
 	private String dateType;
 	private String storeDate;
 	private String inputDate;
-	private BigDecimal originalValue = new BigDecimal(0.0);
+	private BigDecimal originalValue;// = new BigDecimal(0.0);
 	private int originalDataVersion;
 	private String valueUnit;
 
