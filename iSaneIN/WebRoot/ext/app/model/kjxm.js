@@ -5,6 +5,7 @@ Ext.define('isane.model.kjxm',{
 	extend: 'Ext.data.Model',
 	fields: [
 	         'id',
+	         'plantCode',
 	         'projectCode', 
 	         'projectName', 
 	         'developName',

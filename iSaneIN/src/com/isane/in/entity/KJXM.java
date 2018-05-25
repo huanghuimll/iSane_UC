@@ -31,6 +31,7 @@ private static final long serialVersionUID = 1L;
 	private Date dataTime; //$item.comment
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date inputTime; //$item.comment
+	private String plantCode;
 	public void setId (long id) {
 		this.id = id;
 	}
@@ -147,8 +148,14 @@ private static final long serialVersionUID = 1L;
 	public Date getInputTime () {
 		return inputTime;
 	}
-
-@Override
+	public String getPlantCode() {
+		return plantCode;
+	}
+	public void setPlantCode(String plantCode) {
+		this.plantCode = plantCode;
+	}
+	
+	@Override
 	public boolean isEmptyProperties() {
 		if(id != 0) {
 			return false;

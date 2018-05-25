@@ -14,6 +14,7 @@ private static final long serialVersionUID = 1L;
 	private int organType =1;//1常规类型2非常规类型(财务需要能销公司数据)
 	private int organLev;
 	private int disOrder;
+	private String organParentId1;
 	
 	public void setId (long id) {
 		this.id = id;
@@ -81,6 +82,13 @@ private static final long serialVersionUID = 1L;
 	public void setDisOrder(int disOrder) {
 		this.disOrder = disOrder;
 	}
+	
+	public String getOrganParentId1() {
+		return organParentId1;
+	}
+	public void setOrganParentId1(String organParentId1) {
+		this.organParentId1 = organParentId1;
+	}
 @Override
 	public boolean isEmptyProperties() {
 		if(id != 0) {
@@ -106,7 +114,7 @@ private static final long serialVersionUID = 1L;
 
 	@Override
 	public String toString() {
-		return super.toString()+String.format(" id:%s ,  organKey:%s ,  organName:%s ,  organType:%s ,  organParentId:%s  ", 
-				 id ,  organKey ,  organName ,  organType ,  organParentId  );
+		return String.format(" id:%s ,  organKey:%s ,  organName:%s ,  organType:%s ,  organParentId:%s, organLev:%d  ", 
+				 id ,  organKey ,  organName ,  organType ,  organParentId, organLev  );
 	}
 }

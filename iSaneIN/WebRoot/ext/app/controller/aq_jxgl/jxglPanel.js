@@ -27,9 +27,14 @@ Ext.define('isane.controller.aq_jxgl.jxglPanel', {
 	onBeforeRender: function(item){
 		var own = Ext.getCmp('aq_jxgl-jxglWest-id');
 		var storeTre = own.getStore();
-		Ext.apply(storeTre.proxy.extraParams, {uid:0});
+		Ext.apply(storeTre.proxy.extraParams, {
+			organKey: QJ_PlantCode,
+			organLev: 3,
+			organType: 2
+		});
 		storeTre.load();
 		storeTre.getRootNode().set('expanded', true);
+		console.log(storeTre);
 	},
 	
     itemclick_dt: function(own, record, item, index, e, eOpts){
@@ -39,9 +44,11 @@ Ext.define('isane.controller.aq_jxgl.jxglPanel', {
 		}
 		//console.log(record.data);
 		var jzCode = record.data.organCode;
-		var plantCode = record.data.parentCode;
+		var plantCode = record.data.organParentId1;
+		var organParentId = record.data.organParentId;
 		Ext.getCmp('aq_jxgl-jxglList-jzCode').setValue(jzCode);
 		Ext.getCmp('aq_jxgl-jxglList-plantCode').setValue(plantCode);
+		Ext.getCmp('aq_jxgl-jxglList-ownTypeCfg').setValue(organParentId);
 		Ext.getCmp('aq_jxgl-jxglList-searchButton').setDisabled(false);
 		Ext.getCmp('aq_jxgl-jxglList-importButton').setDisabled(false);
 		
@@ -54,12 +61,12 @@ Ext.define('isane.controller.aq_jxgl.jxglPanel', {
 	afterrender: function(panel){
 		var startTime = Ext.getCmp('aq_jxgl-jxglList-startTime').getValue();
 		var endTime = Ext.getCmp('aq_jxgl-jxglList-endTime').getValue();
-		var plantCode = Ext.getCmp('aq_jxgl-jxglList-plantCode').getValue();
+		var ownTypeCfg = Ext.getCmp('aq_jxgl-jxglList-ownTypeCfg').getValue();
 		var jzCode = Ext.getCmp('aq_jxgl-jxglList-jzCode').getValue();
 		
 		var obt = {
-				plantCode: plantCode ,
-				jzCode: jzCode,
+				ownTypeCfg: ownTypeCfg,
+				ownCode: jzCode,
 				startTime: Ext.Date.format(new Date(startTime), 'Y-m-d H:i:s'),
 				endTime: endTime == null ? '2099-01-01 08:00:00' : Ext.Date.format(new Date(endTime), 'Y-m-d H:i:s')
 			};	
@@ -171,9 +178,12 @@ Ext.define('isane.controller.aq_jxgl.jxglPanel', {
 		});
 		
 		var plantCode = Ext.getCmp('aq_jxgl-jxglList-plantCode').getValue();
+		var ownTypeCfg = Ext.getCmp('aq_jxgl-jxglList-ownTypeCfg').getValue();
 		var jzCode = Ext.getCmp('aq_jxgl-jxglList-jzCode').getValue();
 		Ext.getCmp('aq_jxgl-importForm-plantCode').setValue(plantCode);
+		Ext.getCmp('aq_jxgl-importForm-ownTypeCfg').setValue(ownTypeCfg);
 		Ext.getCmp('aq_jxgl-importForm-ownCode').setValue(jzCode);
+		
 		win.show();		
 	},
 	

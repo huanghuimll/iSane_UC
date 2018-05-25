@@ -4,6 +4,9 @@
 
 	<sql id="criteriaSql">
 		<where>
+			<if test="plantCode != null and plantCode != ''">
+				and plantCode = #{plantCode}
+			</if>			
 			<if test="projectCode != null and projectCode != ''">
 				and projectCode like '%${ projectCode }%'
 			</if>
@@ -64,6 +67,9 @@
 	<select id="selectKJXM" parameterType="KJXM" resultType="KJXM">
 		SELECT * from UC_AQ_KJGL_KJXM 
 		<where>
+			<if test="plantCode != null and plantCode != ''">
+				and plantCode = #{plantCode}
+			</if>			
 			<if test="dataTime != null">
 				and year(dataTime) = YEAR(#{dataTime}) AND MONTH(dataTime) = MONTH(#{dataTime}) 
 			</if>	
@@ -92,12 +98,12 @@
 
 	<insert id="insert" parameterType="KJXM" useGeneratedKeys="true"
 		keyProperty="id">
-		insert into UC_AQ_KJGL_KJXM (
+		insert into UC_AQ_KJGL_KJXM (plantCode,
 		projectCode , projectName , developName , projectContent , projectCase ,
 		projectResult , projectCost , projectBudget , projectFinish ,
 		projectTotal , projectPlan , projectNext , projectQuest ,
 		projectLeader , projectDesc , dataTime , inputTime )values (
-		#{projectCode} , #{projectName} , #{developName} , #{projectContent} ,
+		#{plantCode} ,#{projectCode} , #{projectName} , #{developName} , #{projectContent} ,
 		#{projectCase} , #{projectResult} , #{projectCost} , #{projectBudget}
 		, #{projectFinish} , #{projectTotal} , #{projectPlan} , #{projectNext}
 		, #{projectQuest} , #{projectLeader} , #{projectDesc} , #{dataTime} ,
@@ -107,6 +113,10 @@
 	<update id="update" parameterType="KJXM">
 		update UC_AQ_KJGL_KJXM
 		<set>
+			<if test="plantCode != null and plantCode != ''">
+				plantCode = #{plantCode}
+				,
+			</if>		
 			<if test="projectCode != null and projectCode != ''">
 				projectCode = #{projectCode}
 				,

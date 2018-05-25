@@ -4,6 +4,9 @@
 
 	<sql id="criteriaSql">
 		<where>
+			<if test="plantCode != null and plantCode != ''">
+				and plantCode = #{plantCode}
+			</if>			
 			<if test="unit != null and unit != ''">
 				and unit like '%${ unit }%'
 			</if>
@@ -31,6 +34,9 @@
 	<select id="selectHLHJY" parameterType="HLHJY" resultType="HLHJY">
 		SELECT * from UC_AQ_KJGL_HLHJY
 		<where>
+			<if test="plantCode != null and plantCode != ''">
+				and plantCode = #{plantCode}
+			</if>			
 			<if test="dataTime != null">
 				and year(dataTime) = YEAR(#{dataTime}) AND MONTH(dataTime) = MONTH(#{dataTime}) 
 			</if>	
@@ -61,14 +67,18 @@
 	<insert id="insert" parameterType="HLHJY" useGeneratedKeys="true"
 		keyProperty="id">
 		insert into UC_AQ_KJGL_HLHJY (
-		unit , projectName , person , projectBriefing , status , dataTime , result
-		)values ( #{unit} , #{projectName} , #{person} , #{projectBriefing} ,
+		plantCode, unit , projectName , person , projectBriefing , status , dataTime , result
+		)values ( #{plantCode} , #{unit} , #{projectName} , #{person} , #{projectBriefing} ,
 		#{status} , #{dataTime} , #{result} )
 	</insert>
 
 	<update id="update" parameterType="HLHJY">
 		update UC_AQ_KJGL_HLHJY
 		<set>
+			<if test="plantCode != null and plantCode != ''">
+				plantCode = #{plantCode}
+				,
+			</if>			
 			<if test="unit != null and unit != ''">
 				unit = #{unit}
 				,

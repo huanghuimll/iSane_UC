@@ -5,9 +5,20 @@ Ext.define('isane.view.aq_kjgl_zltj.zltjList',{
 	store: Ext.create('isane.store.aq_kjgl_zltj.zltj',{storeId: 'aq_kjgl_zltj-zltjList-storeId'}),
 	border: 0,
 	tbar:[
+	'所属单位:',	      
+	{
+		xtype: 'textfield',
+		name: 'plantCode',
+		width: 100,
+		emptyText: '所属单位..',
+		id: 'aq_kjgl_zltj-zltjList-organCode',
+		readOnly: true,
+		fieldStyle: 'color:gray'
+	},'-',		      
   	{
 	 	text: '增加',
 	 	id: 'aq_kjgl_zltj-zltjList-addButton',
+	 	disabled: true,
 	 	tooltip:'增加一条新数据',
         iconCls: 'add'
 	},'-',

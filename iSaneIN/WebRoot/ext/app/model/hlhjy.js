@@ -5,6 +5,7 @@ Ext.define('isane.model.hlhjy',{
 	extend: 'Ext.data.Model',
 	fields: [
 	         'id',
+	         'plantCode',
 	         'unit', 
 	         'projectName',
 	         'person',

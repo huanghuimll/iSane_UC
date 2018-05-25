@@ -55,8 +55,8 @@ private static final long serialVersionUID = 1L;
 	public String getContentCode () {
 		return contentCode;
 	}
-
-@Override
+	
+	@Override
 	public boolean isEmptyProperties() {
 		if(id != 0) {
 			return false;

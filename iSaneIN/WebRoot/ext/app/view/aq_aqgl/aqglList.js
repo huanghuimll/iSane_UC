@@ -17,7 +17,7 @@ Ext.define('isane.view.aq_aqgl.aqglList',{
 		xtype: 'textfield',
 		name: 'plantCode',
 		emptyText: '所属单位..',
-		value: 'GZFGS',
+		id: 'aq_aqgl-aqglList-organCode',
 		readOnly: true,
 		fieldStyle: 'color:gray'
 	},'-',
@@ -46,18 +46,21 @@ Ext.define('isane.view.aq_aqgl.aqglList',{
 	{
 		text: '搜索',
 	    id: 'aq_aqgl-aqglList-searchButton',
+	    disabled: true,
 	    tooltip:'搜索数据',
         iconCls: 'search'		
 	},'-',
 	{
 	 	text: '增加',
 	 	id: 'aq_aqgl-aqglList-addButton',
+	 	disabled: true,
 	 	tooltip:'增加一条新数据',
         iconCls: 'add',
         handler : function(btn){
+        	var plantCode = Ext.getCmp('aq_aqgl-aqglList-organCode').getValue();
             var r = Ext.create('isane.model.aqgl', {
    	         id: 0,
-	         plantCode: QJ_PlantCode, 
+	         plantCode: plantCode, 
 	         dataType: null, 
 	         dataTypeValue: null, 
 	         dataValue: 0.0,
@@ -71,13 +74,14 @@ Ext.define('isane.view.aq_aqgl.aqglList',{
             //console.log(cell);
             //cell.startEditByPosition({row: 0, column: 1});
         }        
-	},'-',	
+	},'-',
 	{
 		text: '保存',
 		tooltip: "<span style='color:red'>多条数据保存！</span>",
 		iconCls: 'ok1',
+		hidden: true,
 		id: 'aq_aqgl-aqglList-saveButton'
-	},'-',
+	}
     ],
 	columns:[
          {header:'选择',dataIndex:'id', width:50},

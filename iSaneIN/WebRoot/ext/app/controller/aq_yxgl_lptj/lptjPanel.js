@@ -2,13 +2,19 @@ Ext.define('isane.controller.aq_yxgl_lptj.lptjPanel', {
 	extend : 'Ext.app.Controller',
 	stores : ['aq_yxgl_lptj.lptj'],
 	models : ['lptj'],	
-	views : ['aq_yxgl_lptj.lptjPanel', 'aq_yxgl_lptj.lptjList'],
+	views : ['aq_yxgl_lptj.lptjPanel', 'aq_yxgl_lptj.lptjList', 'aq_yxgl_lptj.lptjWest'],
 	init: function() {
 		this.control({
-			'aq_yxgl_lptj-lptjList':{
+			'aq_yxgl_lptj-lptjPanel':{
+				beforerender: this.onBeforeRender
+			},	
+			'aq_yxgl_lptj-lptjWest':{
+    			itemclick: this.itemclick_dt
+    		},				
+			/*'aq_yxgl_lptj-lptjList':{
 				afterrender:this.afterrender
 				//itemclick: this.itemclick
-			},
+			},*/
 			'aq_yxgl_lptj-lptjList button[text=搜索]':{
 				click:this.click_search
 			},			
@@ -22,12 +28,40 @@ Ext.define('isane.controller.aq_yxgl_lptj.lptjPanel', {
 		});
 	},
 	
+	onBeforeRender: function(item){
+		var own = Ext.getCmp('aq_yxgl_lptj-lptjWest-id');
+		var storeTre = own.getStore();
+		Ext.apply(storeTre.proxy.extraParams, {
+			organKey: QJ_PlantCode,
+			organLev: 1,
+			organType: 2
+		});
+		storeTre.load();
+		storeTre.getRootNode().set('expanded', true);
+	},
+	
+    itemclick_dt: function(own, record, item, index, e, eOpts){
+    	this.record = record; 
+		if(record.data.id == 'root'){
+			return;
+		}
+		//console.log(record.data);
+		var organCode = record.data.organCode;
+		Ext.getCmp('aq_yxgl_lptj-lptjList-organCode').setValue(organCode);
+		Ext.getCmp('aq_yxgl_lptj-lptjList-searchButton').setDisabled(false);
+		Ext.getCmp('aq_yxgl_lptj-lptjList-addButton').setDisabled(false);		
+		
+		var grid = Ext.getCmp('aq_yxgl_lptj-lptjList-id');
+		this.afterrender(grid);
+    },	
+	
 	afterrender: function(panel){
+		var plantCode = Ext.getCmp('aq_yxgl_lptj-lptjList-organCode').getValue();
 		var storeY = Ext.getCmp('aq_yxgl_lptj-lptjList-storeY').getValue();
 		var storeM = Ext.getCmp('aq_yxgl_lptj-lptjList-storeM').getValue();
 		
 		var obt = {
-				plantCode: QJ_PlantCode,
+				plantCode: plantCode,
 				dataTime: storeY + '-' + QJ_UtilEntity.month(storeM),
 			};	
 		var store = panel.getStore();	

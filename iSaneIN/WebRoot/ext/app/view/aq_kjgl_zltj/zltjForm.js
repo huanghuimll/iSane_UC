@@ -26,6 +26,13 @@
 		},		    
 		items:[
 		{
+			xtype: 'textfield',
+			name: 'plantCode',
+			id: 'aq_kjgl_zltj-zltjForm-hidden-plantCode',
+			allowBlank: false,
+			hidden: true
+		},			       
+		{
 			xtype: 'textareafield',
 			name: 'id',
 			id: 'aq_kjgl_zltj-zltjForm-hidden-id',

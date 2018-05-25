@@ -1,14 +1,20 @@
 Ext.define('isane.controller.aq_aqgl.aqglPanel', {
 	extend : 'Ext.app.Controller',
-	stores : ['aq_aqgl.aqgl'],
+	stores : ['aq_aqgl.aqgl', 'aq_aqgl.aqglTree'],
 	models : ['aqgl'],	
-	views : ['aq_aqgl.aqglPanel', 'aq_aqgl.aqglList'],
+	views : ['aq_aqgl.aqglPanel', 'aq_aqgl.aqglList', 'aq_aqgl.aqglWest'],
 	init: function() {
 		this.control({
-			'aq_aqgl-aqglList':{
+			'aq_aqgl-aqglPanel':{
+				beforerender: this.onBeforeRender
+			},
+			'aq_aqgl-aqglWest':{
+    			itemclick: this.itemclick_dt
+    		},			
+			/*'aq_aqgl-aqglList':{
 				afterrender:this.afterrender
 				//itemclick: this.itemclick
-			},
+			},*/
 			'aq_aqgl-aqglList button[text=搜索]':{
 				click:this.click_search
 			},			
@@ -22,12 +28,40 @@ Ext.define('isane.controller.aq_aqgl.aqglPanel', {
 		});
 	},
 	
+	onBeforeRender: function(item){
+		var own = Ext.getCmp('aq_aqgl-aqglWest-id');
+		var storeTre = own.getStore();
+		Ext.apply(storeTre.proxy.extraParams, {
+			organKey: QJ_PlantCode,
+			organLev: 1,
+			organType: 2
+		});
+		storeTre.load();
+		storeTre.getRootNode().set('expanded', true);
+	},
+	
+    itemclick_dt: function(own, record, item, index, e, eOpts){
+    	this.record = record; 
+		if(record.data.id == 'root'){
+			return;
+		}
+		//console.log(record.data);
+		var organCode = record.data.organCode;
+		Ext.getCmp('aq_aqgl-aqglList-organCode').setValue(organCode);
+		Ext.getCmp('aq_aqgl-aqglList-searchButton').setDisabled(false);
+		Ext.getCmp('aq_aqgl-aqglList-addButton').setDisabled(false);		
+		
+		var grid = Ext.getCmp('aq_aqgl-aqglList-id');
+		this.afterrender(grid);
+    },
+    
 	afterrender: function(panel){
+		var plantCode = Ext.getCmp('aq_aqgl-aqglList-organCode').getValue();
 		var storeY = Ext.getCmp('aq_aqgl-aqglList-storeY').getValue();
 		var storeM = Ext.getCmp('aq_aqgl-aqglList-storeM').getValue();
 		
 		var obt = {
-				plantCode: QJ_PlantCode,
+				plantCode: plantCode,
 				dataTime: storeY + '-' + QJ_UtilEntity.month(storeM),
 			};	
 		var store = panel.getStore();	

@@ -16,26 +16,59 @@
     		labelAlign: 'right'
     	},
     	items: [
-    	{
-    		xtype: 'textfield',
-    		name: 'plantCode',
+		{
+	    	xtype:'combobox',
+    		fieldLabel:'<span style="color:red">*</span>单位',
     		id: 'aq_jxgl-importForm-plantCode',
-    		fieldLabel: '所属单位',
-    		//value: 'GZFGS',
-    	},    	        
+    		store: Ext.create('isane.store.util.OrganCTE'),
+       	    name:'plantCode',
+       		displayField : 'organName',
+       		valueField : 'organKey',
+       		editable: false,
+    		readOnly: true,
+    		fieldStyle: 'color:gray',       		
+       		emptyText: '==请选择==',
+       		listeners: {
+       			beforerender: function(){
+       				var storeTre = this.getStore();
+       				Ext.apply(storeTre.proxy.extraParams, {
+       					organKey: QJ_PlantCode,
+       					organType: 1,
+       					organLev: 3
+       				});
+       				storeTre.load();     				
+       			}
+       		}
+	    },	    	           	        
     	{
     		xtype: 'textfield',
     		name: 'ownCode',
     		id: 'aq_jxgl-importForm-ownCode',
+    		readOnly: true,
+    		fieldStyle: 'color:gray',     		
     		fieldLabel: '机组',
-    	},    	        
+    	}, 
     	{
-    		xtype: 'textfield',
-    		name: 'ownTypeCfg',
-    		id: 'aq_jxgl-importForm-ownTypeCfg',
-    		fieldLabel: '类型',
-    		value: 'aq_jxgl'
-    	},    	         	        
+            xtype: 'combobox',
+            name: 'ownTypeCfg',
+            fieldLabel: '类型',
+            id: 'aq_jxgl-importForm-ownTypeCfg',
+            store: Ext.create('isane.store.system.systemitemvalue'),
+            displayField: 'valueName',
+            valueField: 'valueCode',
+    		editable: false,
+    		//readOnly: true,
+    		//hidden: false,
+    		//fieldStyle: 'color:gray',
+    		listeners:{
+    			beforerender: function(item){
+    				var store = item.getStore();
+    				var obt =  {'itemCode': 'AQSC_JXGL_JXLX'};
+    				Ext.apply(store.proxy.extraParams, obt);
+    				store.load();	
+    			}
+    		}        
+    	},  	   	         	        
     	{
     		xtype: 'datefield',
     		name: 'inputTime',

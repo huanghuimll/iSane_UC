@@ -13,6 +13,7 @@ public class DimOrganNode {
 	//private int childrenCount;// 菜单异步加载判断是否有子集
 	private boolean leaf = true;
 	private List<DimOrganNode> children;// 子菜单
+	private String organParentId1; //
 	
 	public long getId() {
 		return id;
@@ -65,8 +66,16 @@ public class DimOrganNode {
 	public List<DimOrganNode> getChildren() {
 		return children;
 	}
+	
 	public void setChildren(List<DimOrganNode> children) {
 		this.children = children;
+	}
+	
+	public String getOrganParentId1() {
+		return organParentId1;
+	}
+	public void setOrganParentId1(String organParentId1) {
+		this.organParentId1 = organParentId1;
 	}
 	
 	@Override
@@ -79,6 +88,7 @@ public class DimOrganNode {
 		this.organKey = m.getOrganKey();
 		this.organName = m.getOrganName();
 		this.organParentId = m.getOrganParentId();
+		this.organParentId1= m.getOrganParentId1();
 		this.organDesc = m.getOrganDesc();
 		this.organType = m.getOrganType();
 		this.organLev = m.getOrganLev();

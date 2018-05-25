@@ -4,12 +4,12 @@ Ext.define('isane.store.aq_kkxgl.organtree',{
 	autoLoad: false,
     proxy: {
         type: 'ajax',
-        //url: 'api/Menu/4u3d/atree',
-        url: 'ext/test/organTree.json',
+        url: 'api/DimOrganization/selectTree',
+        //url: 'ext/test/organTree.json',
         reader:'json'
     },
     root: {  
-        text: '广东分工公司',
+        text: '==ROOT==',
         expanded: false
     }  
 });

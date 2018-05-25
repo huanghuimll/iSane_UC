@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.apache.log4j.Logger;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -26,6 +25,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.apache.poi.hssf.converter.ExcelToHtmlConverter;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -328,6 +328,11 @@ public class ReportExportImpl implements ReportExport {
 					value = indexDataStore.getValueDQ();
 				}
 				break;
+			case ExportConst.REPORT_DATETYPE_SR:
+				if(indexDataStore.isTypeSR() ) {
+					value = indexDataStore.getValueSR();
+				}
+				break;
 			case ExportConst.REPORT_DATETYPE_SY:
 				if(indexDataStore.isTypeSY() ) {
 					value = indexDataStore.getValueSY();
@@ -485,6 +490,7 @@ public class ReportExportImpl implements ReportExport {
 		 * D4. 取出去年当月(所有月同期指标)
 		 * D5. 取出上月(所有月同期指标)
 		 * D6. 取出当日(所有当日指标)
+		 * D7. 取出上日(所有上日指标)
 		 */
 		
 		Calendar c = Calendar.getInstance();
@@ -743,6 +749,43 @@ public class ReportExportImpl implements ReportExport {
 				});
 			}
 		}	
+		
+		//D7.
+		dateType = IndexCompute.DATE_TYPE_DAY;
+		storeDate = getForDay(c, date, 0, 0,-1);
+		monthOfYear = 0;
+		List<String> dtListDaySR = indexReportDateTypeMap.get(ExportConst.REPORT_DATETYPE_SR);
+		
+		if( null != dtListDaySR && dtListDaySR.size() > 0) {
+			indexCodeList = indexMap.values()
+				.stream()
+				.filter( idx -> IndexCompute.DATE_TYPE_DAY.equals( idx.getDateType() ) )
+				.filter( idx -> dtListDaySR.contains( idx.getIndexCode() ) )
+				.map( idx -> {
+					return idx.getIndexCode();
+				})
+				.collect( Collectors.toList() );
+		}
+		if( null != indexCodeList && indexCodeList.size() > 0) {
+			indexDataList = indexDataService.listByCodes(storeDate, dateType, monthOfYear, indexCodeList);
+			logger.debug( "\t\t处理指标数据，个数:" + indexDataList.size() );
+			if( null != indexDataList && indexDataList.size() > 0 ) {
+				indexDataList.stream().forEach( data -> {
+					logger.debug( "\t\t指标数据:" + data.getIndexCode() );
+					IndexDataStore ids = null;
+					if( indexDataCache.containsKey(data.getIndexCode()) ) {
+						ids = indexDataCache.get( data.getIndexCode() );
+					} else {
+						ids = new IndexDataStore();
+						ids.setIndexDateType( IndexCompute.DATE_TYPE_DAY );
+						indexDataCache.put(data.getIndexCode(), ids);
+					}
+					
+					ids.setTypeSR(true);
+					ids.setValueSR(data.getIndexValue());
+				});
+			}
+		}
 
 	}
 	
@@ -765,6 +808,20 @@ public class ReportExportImpl implements ReportExport {
 		
 		c.add(Calendar.YEAR, yearFix);
 		c.add(Calendar.MONTH, monthFix);
+		
+		return c.getTime();
+	}
+	
+	private Date getForDay(Calendar c, Date date, int yearFix, int monthFix, int dayFix) {
+		c.setTime(date);
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+		
+		c.add(Calendar.YEAR, yearFix);
+		c.add(Calendar.MONTH, monthFix);
+		c.add(Calendar.DATE,dayFix);
 		
 		return c.getTime();
 	}
@@ -950,7 +1007,7 @@ public class ReportExportImpl implements ReportExport {
 		processTemplateFileHtml(outpath, templateFile, dateCellMap, formulaCellMap, indexCellMap, indexCellToFormulaMap, customizedMap, indexDataCache);
 		logger.info("保存到输出流，成功。");		
 		
-	}
+	}	
 
 	/**
 	 *huangh 20180502 excel转html
@@ -1013,7 +1070,7 @@ public class ReportExportImpl implements ReportExport {
 		logger.info("保存到输出流，成功。");
 		return html;
 		
-	}
+	}	
 	
 	/**
 	 * 得到excel并转换为Html,并导出outpath huangh 20180502
@@ -1150,7 +1207,7 @@ public class ReportExportImpl implements ReportExport {
 			}
 		}
 	}
-	
+
 	private String processTemplateFileHtml01(File templateFile, 
 			Map<Integer, String> dateCellMap, Map<Integer, String> formulaCellMap,
 			Map<Integer, Index> indexCellMap, Map<Integer, Index> indexCellToFormulaMap,
@@ -1275,4 +1332,6 @@ public class ReportExportImpl implements ReportExport {
 		}
 		 return content;
 	}
+	
+
 }

@@ -4,6 +4,9 @@
 
 	<sql id="criteriaSql">
 		<where>
+			<if test="plantCode != null and plantCode != ''">
+				and plantCode = #{plantCode}
+			</if>			
 			<if test="lwName != null and lwName != ''">
 				and lwName like '%${ lwName }%'
 			</if>
@@ -34,6 +37,9 @@
 	<select id="selectLWTJ" parameterType="LWTJ" resultType="LWTJ">
 		SELECT * from UC_AQ_KJGL_LWTJ
 		<where>
+			<if test="plantCode != null and plantCode != ''">
+				and plantCode = #{plantCode}
+			</if>		
 			<if test="dataTime != null">
 				and year(dataTime) = YEAR(#{dataTime}) AND MONTH(dataTime) = MONTH(#{dataTime}) 
 			</if>	
@@ -62,15 +68,19 @@
 
 	<insert id="insert" parameterType="LWTJ" useGeneratedKeys="true"
 		keyProperty="id">
-		insert into UC_AQ_KJGL_LWTJ (
+		insert into UC_AQ_KJGL_LWTJ (plantCode,
 		lwName , lwContent , lwAuthor , lwUnit , lwFKW , lwSL , dataTime , inputTime
-		)values ( #{lwName} , #{lwContent} , #{lwAuthor} , #{lwUnit} ,
+		)values ( #{plantCode} , #{lwName} , #{lwContent} , #{lwAuthor} , #{lwUnit} ,
 		#{lwFKW} , #{lwSL} , #{dataTime} , #{inputTime} )
 	</insert>
 
 	<update id="update" parameterType="LWTJ">
 		update UC_AQ_KJGL_LWTJ
 		<set>
+			<if test="plantCode != null and plantCode != ''">
+				plantCode = #{plantCode}
+				,
+			</if>		
 			<if test="lwName != null and lwName != ''">
 				lwName = #{lwName}
 				,

@@ -4,11 +4,12 @@ Ext.define('isane.store.aq_jxgl.jxgltree',{
 	autoLoad: false,
     proxy: {
         type: 'ajax',
-        url: 'ext/test/jxglTree.json',
+        //url: 'ext/test/jxglTree.json',
+        url: 'api/DimOrganization/selectTreeJX',
         reader:'json'
     },
     root: {	  
-        text: '分工公司',
+        text: '==ROOT==',
         expanded: false
     }  
 });

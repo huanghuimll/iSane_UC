@@ -5,6 +5,7 @@ Ext.define('isane.model.lwtj',{
 	extend: 'Ext.data.Model',
 	fields: [
 	         'id',
+	         'plantCode',
 	         'lwName', 
 	         'lwContent',
 	         'lwAuthor',

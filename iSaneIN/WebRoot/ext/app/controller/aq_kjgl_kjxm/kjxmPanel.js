@@ -2,11 +2,17 @@ Ext.define('isane.controller.aq_kjgl_kjxm.kjxmPanel', {
 	extend : 'Ext.app.Controller',
 	stores : ['aq_kjgl_kjxm.kjxm'],
 	models : ['kjxm'],	
-	views : ['aq_kjgl_kjxm.kjxmPanel', 'aq_kjgl_kjxm.kjxmList', 'aq_kjgl_kjxm.kjxmForm'],
+	views : ['aq_kjgl_kjxm.kjxmPanel', 'aq_kjgl_kjxm.kjxmList', 'aq_kjgl_kjxm.kjxmForm', 'aq_kjgl_kjxm.kjxmWest'],
 	init: function() {
 		this.control({
+			'aq_kjgl_kjxm-kjxmPanel':{
+				beforerender: this.onBeforeRender
+			},
+			'aq_kjgl_kjxm-kjxmWest':{
+    			itemclick: this.itemclick_dt
+    		},			
 			'aq_kjgl_kjxm-kjxmList':{
-				afterrender:this.afterrender,
+				//afterrender:this.afterrender,
 				itemclick: this.itemclick
 			},
 			'aq_kjgl_kjxm-kjxmList button[text=增加]': {
@@ -27,11 +33,40 @@ Ext.define('isane.controller.aq_kjgl_kjxm.kjxmPanel', {
 		});
 	},
 	
+	onBeforeRender: function(item){
+		var own = Ext.getCmp('aq_kjgl_kjxm-kjxmWest-id');
+		var storeTre = own.getStore();
+		Ext.apply(storeTre.proxy.extraParams, {
+			organKey: QJ_PlantCode,
+			organLev: 1,
+			organType: 2
+		});
+		storeTre.load();
+		storeTre.getRootNode().set('expanded', true);
+	},
+	
+    itemclick_dt: function(own, record, item, index, e, eOpts){
+    	this.record = record; 
+		if(record.data.id == 'root'){
+			return;
+		}
+		//console.log(record.data);
+		var organCode = record.data.organCode;
+		Ext.getCmp('aq_kjgl_kjxm-kjxmList-organCode').setValue(organCode);
+		Ext.getCmp('aq_kjgl_kjxm-kjxmList-searchButton').setDisabled(false);
+		Ext.getCmp('aq_kjgl_kjxm-kjxmList-addButton').setDisabled(false);		
+		
+		var grid = Ext.getCmp('aq_kjgl_kjxm-kjxmList-id');
+		this.afterrender(grid);
+    },
+    
 	afterrender: function(panel){
+		var plantCode = Ext.getCmp('aq_kjgl_kjxm-kjxmList-organCode').getValue();
 		var storeY = Ext.getCmp('aq_kjgl_kjxm-kjxmList-storeY').getValue();
 		var storeM = Ext.getCmp('aq_kjgl_kjxm-kjxmList-storeM').getValue();
 		
 		var obt = {
+				plantCode: plantCode,
 				dataTime: storeY + '-' + QJ_UtilEntity.month(storeM) + '-01 00:00:00'
 			};	
 		var store = panel.getStore();	
@@ -65,7 +100,11 @@ Ext.define('isane.controller.aq_kjgl_kjxm.kjxmPanel', {
 			buttons: [{scope: this, text:'添加', iconCls:'ok1', handler: this.click_add_but},{text:'取消', iconCls:'delete1', handler:function(btn,o){btn.ownerCt.ownerCt.close();}}],
 			buttonAlign: 'right'
 		});
-		win.show();	
+		var plantCode = Ext.getCmp('aq_kjgl_kjxm-kjxmList-organCode').getValue();
+		if(plantCode){
+			Ext.getCmp('aq_kjgl_kjxm-kjxmForm-hidden-plantCode').setValue(plantCode);
+			win.show();	
+		}
 	},
 	
 	click_add_but: function(btn){

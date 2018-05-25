@@ -5,20 +5,43 @@ Ext.define('isane.view.aq_jxgl.jxglList',{
 	store: Ext.create('isane.store.aq_jxgl.jxgl',{storeId: 'aq_jxgl-jxglList-storeId'}),
 	border: 0,
 	tbar:[      
-	'所属单位:',	      
 	{
 		xtype: 'textfield',
 		name: 'plantCode',
 		id: 'aq_jxgl-jxglList-plantCode',
+		width: 100,
 		emptyText: '所属单位..',
 		value: 'GZFGS',
 		readOnly: true,
+		hidden: true,
 		fieldStyle: 'color:gray'
-	},'-',
+	},'类型:',		
+	{
+        xtype: 'combobox',
+        name: 'ownTypeCfg',
+        id: 'aq_jxgl-jxglList-ownTypeCfg',
+        store: Ext.create('isane.store.system.systemitemvalue'),
+        displayField: 'valueName',
+        valueField: 'valueCode',
+		width: 100,
+		editable: false,
+		//readOnly: true,
+		//hidden: false,
+		//fieldStyle: 'color:gray',
+		listeners:{
+			beforerender: function(item){
+				var store = item.getStore();
+				var obt =  {'itemCode': 'AQSC_JXGL_JXLX'};
+				Ext.apply(store.proxy.extraParams, obt);
+				store.load();	
+			}
+		}        
+	},'-',		
 	{
 		xtype: 'textfield',
 		name: 'jzCode',
 		id: 'aq_jxgl-jxglList-jzCode',
+		width: 100,
 		readOnly: true,
 		fieldStyle: 'color:gray'
 	},'-',	
@@ -59,11 +82,15 @@ Ext.define('isane.view.aq_jxgl.jxglList',{
 	},'-'	
     ],
 	columns:[
-         {header:'选择',dataIndex:'id', width:50},
-         {header:'所属单位',dataIndex:'plantCode', flex:2},
-         {header:'类型',dataIndex:'ownTypeCfg', hidden: true, flex:2},
-         {header:'机组',dataIndex:'ownCode', flex:2},
-         {header:'名称',dataIndex:'attachmentName', flex:2},
+         {header:'选择',dataIndex:'id', width:40},
+         {header:'所属单位',dataIndex:'plantCode', width:70},
+         {header:'类型',dataIndex:'ownTypeCfg', flex:2,
+             renderer: function(val, metaData, record, rowIndex, colIndex, store, view){
+            	 return getItemValueNameByCode(val) == null ? '': getItemValueNameByCode(val).valueName;
+             }       	 
+         },
+         {header:'机组',dataIndex:'ownCode', width:50},
+         {header:'名称',dataIndex:'attachmentName', flex:4},
          {header:'虚拟路径',dataIndex:'attachmentUrl', flex:4},
          {header:'全路径',dataIndex:'serverPath', flex:4},
          {header:'文档类型',dataIndex:'attachmentTypeCfg', flex:2},      

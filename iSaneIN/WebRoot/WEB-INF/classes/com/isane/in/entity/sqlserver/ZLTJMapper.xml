@@ -4,6 +4,9 @@
 
 	<sql id="criteriaSql">
 		<where>
+			<if test="plantCode != null and plantCode != ''">
+				and plantCode = #{plantCode}
+			</if>				
 			<if test="zlName != null and zlName != ''">
 				and zlName like '%${ zlName }%'
 			</if>
@@ -48,6 +51,9 @@
 	<select id="selectZLTJ" parameterType="ZLTJ" resultType="ZLTJ">
 		SELECT * from UC_AQ_KJGL_ZLTJ
 		<where>
+			<if test="plantCode != null and plantCode != ''">
+				and plantCode = #{plantCode}
+			</if>				
 			<if test="dataTime != null">
 				and year(dataTime) = YEAR(#{dataTime}) AND MONTH(dataTime) = MONTH(#{dataTime}) 
 			</if>	
@@ -75,10 +81,10 @@
 
 	<insert id="insert" parameterType="ZLTJ" useGeneratedKeys="true"
 		keyProperty="id">
-		insert into UC_AQ_KJGL_ZLTJ (
+		insert into UC_AQ_KJGL_ZLTJ (plantCode,
 		zlName , zlContent , zlType , zlProposer , zlInvent , zlStatus , zlApplyNum
 		, zlApplyTime , zlSQGH , zlSQGGR , zlIs , inputTime , dataTime )values
-		( #{zlName} , #{zlContent} , #{zlType} , #{zlProposer} , #{zlInvent} ,
+		( #{plantCode} ,#{zlName} , #{zlContent} , #{zlType} , #{zlProposer} , #{zlInvent} ,
 		#{zlStatus} , #{zlApplyNum} , #{zlApplyTime} , #{zlSQGH} , #{zlSQGGR}
 		, #{zlIs} , #{inputTime} , #{dataTime} )
 	</insert>
@@ -86,6 +92,10 @@
 	<update id="update" parameterType="ZLTJ">
 		update UC_AQ_KJGL_ZLTJ
 		<set>
+			<if test="plantCode != null and plantCode != ''">
+				plantCode = #{plantCode}
+				,
+			</if>		
 			<if test="zlName != null and zlName != ''">
 				zlName = #{zlName}
 				,

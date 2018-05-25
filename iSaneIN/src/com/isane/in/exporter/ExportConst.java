@@ -55,6 +55,10 @@ public class ExportConst {
 	 */
 	public static final String REPORT_DATETYPE_DQ = "DQ";
 	/**
+	 * 上日
+	 */
+	public static final String REPORT_DATETYPE_SR = "SR";
+	/**
 	 * 上月
 	 */
 	public static final String REPORT_DATETYPE_SY = "SY";

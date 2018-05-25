@@ -28,7 +28,11 @@ Ext.define('isane.controller.aq_kkxgl.kkxglPanel', {
 	onBeforeRender: function(item){
 		var own = Ext.getCmp('aq_kkxgl-kkxglWest-id');
 		var storeTre = own.getStore();
-		Ext.apply(storeTre.proxy.extraParams, {uid:0});
+		Ext.apply(storeTre.proxy.extraParams, {
+			organKey: QJ_PlantCode,
+			organLev: 3,
+			organType: 1
+		});		
 		storeTre.load();
 		storeTre.getRootNode().set('expanded', true);
 	},
@@ -40,7 +44,7 @@ Ext.define('isane.controller.aq_kkxgl.kkxglPanel', {
 		}
 		//console.log(record.data);
 		var jzCode = record.data.organCode;
-		var plantCode = record.data.parentCode;
+		var plantCode = record.data.organParentId;
 		Ext.getCmp('aq_kkxgl-kkxglList-jzKey').setValue(jzCode);
 		Ext.getCmp('aq_kkxgl-kkxglList-organCode').setValue(plantCode);
 		

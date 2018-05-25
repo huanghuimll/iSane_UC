@@ -16,7 +16,8 @@ Ext.define('isane.view.aq_yxgl_pxtj.pxtjList',{
 		xtype: 'textfield',
 		name: 'plantCode',
 		emptyText: '所属单位..',
-		value: 'GZFGS',
+		id: 'aq_yxgl_pxtj-pxtjList-organCode',
+		//value: 'GZFGS',
 		readOnly: true,
 		fieldStyle: 'color:gray'
 	},'-',
@@ -45,18 +46,21 @@ Ext.define('isane.view.aq_yxgl_pxtj.pxtjList',{
 	{
 		text: '搜索',
 	    id: 'aq_yxgl_pxtj-pxtjList-searchButton',
+	    disabled: true,
 	    tooltip:'搜索数据',
         iconCls: 'search'		
 	},'-',
 	{
 	 	text: '增加',
 	 	id: 'aq_yxgl_pxtj-pxtjList-addButton',
+	 	disabled: true,
 	 	tooltip:'增加一条新数据',
         iconCls: 'add',
         handler : function(btn){
+        	var plantCode = Ext.getCmp('aq_yxgl_pxtj-pxtjList-organCode').getValue();
             var r = Ext.create('isane.model.pxtj', {
    	         id: 0,
-	         plantCode: QJ_PlantCode, 
+	         plantCode: plantCode, 
 	         dataTypeValue: null, 
 	         dataValue: 0.0,
 	         dataTime: new Date(),
@@ -75,8 +79,9 @@ Ext.define('isane.view.aq_yxgl_pxtj.pxtjList',{
 		text: '保存',
 		tooltip: "<span style='color:red'>多条数据保存！</span>",
 		iconCls: 'ok1',
+		hidden: true,
 		id: 'aq_yxgl_pxtj-pxtjList-saveButton'
-	},'-',
+	}
     ],
 	columns:[
          {header:'选择',dataIndex:'id', width:50},

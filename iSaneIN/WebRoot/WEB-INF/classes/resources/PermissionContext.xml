@@ -53,6 +53,10 @@
 		<property name="dao" ref="dao" />
 	</bean>
 	
+<!-- 	<bean id="systemItemValueService" class="com.isane.in.service.impl.SystemItemValueService">
+		<property name="dao" ref="dao" />
+	</bean> -->	
+	
 	<!-- 计算应用WEB访问路径配置 -->
 	<bean id="remoteIndexComputeService" class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
         <property name="serviceUrl" value="http://127.0.0.1:8080/iSaneIndexComputeWeb/service/indexCompute"/>

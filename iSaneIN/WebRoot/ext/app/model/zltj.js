@@ -5,6 +5,7 @@ Ext.define('isane.model.zltj',{
 	extend: 'Ext.data.Model',
 	fields: [
 	         'id',
+	         'plantCode',
 	         'zlName', 
 	         'zlContent',
 	         'zlType',
