@@ -139,21 +139,36 @@ public class ImportController extends RagdollControllerImpl<Import> {
 		if(flg){
 			String date = importData.getStoreDate();
 			Date storeDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			if(date != null && date != ""){
 				int len = date.length();
 				if(len == 7){
 					date = date + "-01";
 				}
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				try {
 					storeDate = sdf.parse(date);
 				} catch (ParseException e) {
 					e.printStackTrace();
 				}
 			}
+			
+			OriginalData od = list.get(0);
+			boolean m = true;
+			boolean d  = true;
+			if(od.getDateType().equalsIgnoreCase("M")){
+				m = true;
+				d = false;
+			}else if(od.getDateType().equalsIgnoreCase("D")){
+				d = true;
+				m = false;
+			}else if(od.getDateType().equalsIgnoreCase("Y")){
+				d = false;
+				m = true;
+			}
+			
 			User userSess = (User) session.getAttribute("USER");
 			//参与计算
-			String computeCode = remoteIndexComputeService.refreshIndexData(false, true, false, false, storeDate, importData.getPlantCode() , "", userSess.getUserName(), false);
+			String computeCode = remoteIndexComputeService.refreshIndexData(d, m, false, false, storeDate, importData.getPlantCode() , "", userSess.getUserName(), false);
 			logger.debug("===computeCode:"+computeCode);
 		}
 		

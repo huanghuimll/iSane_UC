@@ -2,7 +2,7 @@ Ext.define('isane.controller.aq_rb_rl.rbPanel', {
 	extend : 'Ext.app.Controller',
 	stores : ['aq_rb_rl.rbTree'],
 	models : ['organtree'],	
-	views : ['aq_rb_rl.rbPanel', 'aq_rb_rl.rbWest', 'aq_rb_rl.rbList'],
+	views : ['aq_rb_rl.rbPanel', 'aq_rb_rl.rbWest', 'aq_rb_rl.rbList', 'aq_rb_rl.rbImportForm'],
 	init: function() {
 		this.control({
 			//rb
@@ -20,7 +20,13 @@ Ext.define('isane.controller.aq_rb_rl.rbPanel', {
 			},				
 			'aq_rb_rl-rbList actioncolumn':{
 				saveSingle: this.singleSave
-			}    		
+			},
+			'aq_rb_rl-rbList button[text=导入]':{
+				click: this.importBtn
+			},
+			'aq_rb_rl-rbList button[text=模板]':{
+				click: this.templeteBtn
+			}			
 		});
 	},
 	
@@ -44,6 +50,9 @@ Ext.define('isane.controller.aq_rb_rl.rbPanel', {
 		//console.log(record.data);
 		var organCode = record.data.organCode;
 		Ext.getCmp('aq_rb_rl-rbList-organCode').setValue(organCode);
+		Ext.getCmp('aq_rb_rl-rbList-searchButton').setDisabled(false);
+		Ext.getCmp('aq_rb_rl-rbList-saveButton').setDisabled(false);		
+		Ext.getCmp('aq_rb_rl-rbList-refresh').setDisabled(false);	
 		
 		var grid = Ext.getCmp('aq_rb_rl-rbList-id');
 		this.afterrender(grid);
@@ -58,7 +67,7 @@ Ext.define('isane.controller.aq_rb_rl.rbPanel', {
 		
 		var obt = {
 				plantCode: Ext.getCmp('aq_rb_rl-rbList-organCode').getValue(),
-				dataType: 'HT-RB-PAGE',
+				dataType: 'HT-RB-XLS',
 				storeDate: storeY + '-' + QJ_UtilEntity.month(storeM) + '-'+ QJ_UtilEntity.month(storeD),
 		};	
 		var store = panel.getStore();	
@@ -163,6 +172,74 @@ Ext.define('isane.controller.aq_rb_rl.rbPanel', {
 				QJ_UtilEntity.failWin(response);
 			}
 		});			
-	}
+	},
+	
+	//电量导入
+	importBtn: function(btn){
+		var win = Ext.create('Ext.window.Window',{
+			title: '电量导入',
+			modal: true,
+			border: 0,
+			items: [{xtype: 'aq_rb_rl-rbImportForm'}],
+			buttons: [{scope: this,text: '确定', iconCls:'ok1', handler: this.importSave},{text: '取消', iconCls:'delete1',  handler: function(btn){btn.ownerCt.ownerCt.close();}}],
+			buttonAlign: 'right'
+		});
+		var storeY = Ext.getCmp('aq_rb_rl-rbList-storeY').getValue();
+		var storeM = Ext.getCmp('aq_rb_rl-rbList-storeM').getValue();
+		var storeD = Ext.getCmp('aq_rb_rl-rbList-storeD').getValue();
+        if(storeY == null || storeY == '' || storeM == null || storeM == ''){
+        	return;
+        }
+        var storeDate = storeY + '-' + QJ_UtilEntity.month(storeM) + '-' + QJ_UtilEntity.month(storeD);  
+		Ext.getCmp('aq_rb_rl-rbImportForm-storeDate').setValue(storeDate);
+		
+		win.show();		
+	},
+	
+	importSave: function(btn){
+    	var win = btn.up('window');
+    	var form = win.down('form').getForm();
+    	/*var grid = Ext.getCmp('aq_yb_lr_hb-hbList-id');
+    	var store = grid.getStore();*/
+    	//var url = store.proxy.api.upload;
+    	var url = 'api/Import/in';
+    	//alert('111');
+    	//return;
+        if(form.isValid()){
+            form.submit({
+            	scope: this,
+                url: url,
+                waitMsg: 'Uploading...',
+    			success: function(form, action){
+    				win.close();
+    				var obj = action.result;
+                    if(!obj.success) { 
+                    	Ext.example.msg("系统提示！",obj.message);
+                    }
+                    else {
+                    	Ext.example.msg("系统提示！",obj.message);
+                    	store.reload();
+                    }    				
+    			},
+    		    failure: function(form, action) {
+    		        switch (action.failureType) {
+    		            case Ext.form.action.Action.CLIENT_INVALID:
+    		            	Ext.example.msg('Failure', 'Form fields may not be submitted with invalid values');
+    		                break;
+    		            case Ext.form.action.Action.CONNECT_FAILURE:
+    		            	Ext.example.msg('Failure', 'Ajax communication failed');
+    		                break;
+    		            case Ext.form.action.Action.SERVER_INVALID:
+    		            	Ext.example.msg('Failure', action.result.message);
+    		       }
+    		    }
+            });
+        }		
+	},
+	
+	//模板导出
+	templeteBtn: function(){
+		 window.location.href = 'api/OriginalType/exportTemplate?fileName=日报导入模板&fileCode=DR_AQ_RB.xls';
+	}	
 	
 });

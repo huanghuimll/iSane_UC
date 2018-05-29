@@ -63,23 +63,40 @@ Ext.define('isane.view.aq_rb_rl.rbList',{
 	{
 		text: '搜索',
 	    id: 'aq_rb_rl-rbList-searchButton',
+	    disabled: true,
 	    tooltip:'搜索数据',
         iconCls: 'search'		
 	},'-',
 	{
 		text: '保存',
 		tooltip: "<span style='color:red'>多条数据保存！</span>",
+		disabled: true,
 		iconCls: 'ok1',
 		id: 'aq_rb_rl-rbList-saveButton'
 	},'-',
 	{
+		text: '导入',
+		tooltip:'导入数据',
+		//disabled: true,
+		iconCls: 'list_import',
+		id: 'aq_rb_rl-rbList-importButton'
+	},'-',	
+	{
 		text: '刷新',
 		tooltip:'刷新数据',
+		id: 'aq_rb_rl-rbList-refresh',
+		disabled: true,
 		iconCls: 'refresh',
 		handler: function(btn){
 			btn.up('grid').getStore().reload();
 		}		
-	}	
+	},'->','-',
+	{
+		text: '模板',
+		tooltip:'导出模板',
+		iconCls: 'list_export',
+		id: 'aq_rb_rl-rbList-templeteButton'
+	},'-'	
     ],
 	columns:[
          {header:'选择',dataIndex:'id',width:50},

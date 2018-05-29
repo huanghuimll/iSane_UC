@@ -172,7 +172,6 @@ public class OriginalTypeController extends RagdollControllerImpl<OriginalType> 
 				d = false;
 				m = true;
 			}
-			
 			User userSess = (User) session.getAttribute("USER");
 			String computeCode = indexCompute.refreshIndexData(d, m, false, false, computeDate, pageList.get(0).getPlantCode(), "", userSess.getUserName(), false);
 			logger.debug("===computeCode:"+computeCode);

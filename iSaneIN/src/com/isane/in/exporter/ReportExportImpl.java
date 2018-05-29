@@ -32,6 +32,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.w3c.dom.Document;
 
 import com.isane.in.entity.ExportCell;
@@ -1234,18 +1235,6 @@ public class ReportExportImpl implements ReportExport {
 				cell.setCellType( Cell.CELL_TYPE_STRING );
 				cell.setCellValue( es.getValue() );
 			});
-			
-			// 写入公式单元格
-			formulaCellMap.entrySet().stream().forEach(es -> {
-				Integer rowAndCol = es.getKey();
-				int r = unZipRow(rowAndCol);
-				int c = unZipCol(rowAndCol);
-
-				HSSFRow row = sh.getRow(r);
-				HSSFCell cell = row.getCell(c);
-//				cell.setCellType( Cell.CELL_TYPE_FORMULA );
-				cell.setCellFormula( es.getValue() );
-			});
 
 			// 写入指标单元格
 			indexCellMap.entrySet().stream().forEach(es -> {
@@ -1297,6 +1286,21 @@ public class ReportExportImpl implements ReportExport {
 				cell.setCellType( Cell.CELL_TYPE_STRING );
 				cell.setCellValue( es.getValue() );
 			});
+			
+			FormulaEvaluator evaluator = workbook.getCreationHelper().createFormulaEvaluator();
+			// 写入公式单元格 //最后计算单元格公式
+			formulaCellMap.entrySet().stream().forEach(es -> {
+				Integer rowAndCol = es.getKey();
+				int r = unZipRow(rowAndCol);
+				int c = unZipCol(rowAndCol);
+
+				HSSFRow row = sh.getRow(r);
+				HSSFCell cell = row.getCell(c);
+				//cell.setCellType( Cell.CELL_TYPE_FORMULA );
+				//cell.setCellFormula( es.getValue() );
+				//20180529 huangh 处理单元格公式时--在产生excel前得到的是数值而不是直接塞公式
+				cell.setCellValue(evaluator.evaluate(cell).getNumberValue());
+			});			
 			 // 写入流
 			 //workbook.write(out);
 			 //*****excel转换成html******
@@ -1332,6 +1336,5 @@ public class ReportExportImpl implements ReportExport {
 		}
 		 return content;
 	}
-	
 
 }
